@@ -1,0 +1,36 @@
+This is the overview for version 2.0
+Right now the fleen is a diamond composition generator
+it takes a grammar. from the grammar derive a root bubble. apply operators from the grammar to that root bubble
+to accquire more bubbles... apply opeerators to those new bubbles to create more bubbles... and so on. Thus 
+a diamond composition is created
+
+We have removed tagging. Put it back later if we like. Presently we just id jigs and bubbles with a few flags
+We are going to do a couple of apps with this version
+
+FLEEN consists of 4 systems
+
+SYSTEM #1 : BRAIN
+It culminates in a Brain interface.
+It is a number generator. It's interface is basically like that of the Java Random class.
+eg : nextInt(), nextDouble(), etc.
+By controlling the seed we have access to a catalog of some trillion-odd specifiable forms. 
+
+SYSTEM #2 : DIAMOND
+A tree of Grid and Bubble class objects interlaced with a tree of Foam class objects.
+Bubbles are grouped into Foams. Grids describe geometry local to a Bubble for it's children.
+The trees are generated shapegrammarwise. Our operators are Jig class objects.
+A Jig differentiates a Bubble into further Bubbles, puzzlewise. 
+Our Bubbles are described in the abstract; in a location, scale, orientation and chirality independent way; by
+BubbleModel class objects.
+
+SYSTEM #3 : QUILT
+It is a graph describing the edges of a system of adjacent shapes. Our nodes are 2d points each with 2..n linked neighbors.
+These shapes are our leaf bubbles from the Diamond. They are also grouped into foams.
+We talk about adjacentness and shared vertices.
+We may process edges here. Do selective curve smoothing or whatever.
+
+SYSTEM #4 : COLORMAP
+Given the Quilt, assign integer color values to each shape. Consider adjacentness, scale, detail, symmetry, etc.
+
+
+ 

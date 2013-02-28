@@ -1,0 +1,16 @@
+Fix that darn cleaning standardizing bug in the grammar editor
+DONE
+
+The cultivation process is really pigging out if we go more than 2 levels or so. Debug that.
+
+Put a "create bubblemodel mode" in the jig editor so we can just create our new bubblemodel right 
+there rather than going back to the overview etc.
+Maybe merge the 2 editors?
+
+YES
+rather than looking through a list of bubblemodels and trying to fit one to whatever geometric context, just
+draw a shape. Then the machine finds a matching bubblemodel. If no such bubblemodel exists then create a new one.
+
+It won't even be a mode, it will be the new way that the jig editor works.
+
+So we're looking at 2 ways to create bubblemodels : out of context and in context.
