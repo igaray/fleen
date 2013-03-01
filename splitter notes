@@ -1,0 +1,11 @@
+frame splitter idea
+
+when picking segs
+
+consider the lengths of all straights on the frame
+get greatest common factor
+use vertex indices that are a multiple of that
+
+it will reduce our search space, thus speed.
+
+it will give us nice proportions

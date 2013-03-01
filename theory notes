@@ -1,0 +1,215 @@
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+---------------------
+
+a SPLITTER creates CHUNKS
+a chunk, a system of chunks, has a SHELL
+a BOILER creates RAFTS
+a raft, a bunch of rafts, has a LAKE
+a SMOKER creates 1 big raft
+we have BUBBLE, ROOT and LEAF too 
+
+---------------------------
+
+
+D24 GEOMETRY SYSTEM
+
+Consider a polygon or a string of connected points. We have points in sequence. P6 has neighbors P5 and P7. We constrain allowable direction from a point to either of it's neighbors to one of 12 axii. A 24 direction system. All segs lay on one of the 12 axii, it's ends point in 2 opposing directions of the 24. Clear enough.
+
+We build our fleen shapes in this system. It gives us a straightforeward, simplified and esthetically unified geometry system to do our work within.
+A circle is a 24 sided polygon. 
+We can use tables for alot of our geometry calculations, speeding it up.
+
+Another unifyer might be a rule on polygon proportions. A minimal degree of chunkiness... no sharp corners.
+
+And speaking of sharp corners, we have edge processing. A few iterations of split-tweak should make those shapes soft and curvy.
+We can also do zigzags, of course. More sophisticated edge-processing too - varying styles - graphical effects - unifying effects.
+
+
+------------------------
+
+
+Splitter should express preference for sets of symmetric loops
+give them a higher rating
+
+2012/01/13
+
+symmetry depth
+in signature matching for symmetry, how about match just the first 1..3 or whatever levels of the signature. Might make a cool effect. Dupe patterns more or something. A diff kind of symmetry. A means of control.
+Use in symmetricprobablisticbushdifferentiator. An option in signature matching.
+
+consider shape signature levels.
+each level of ancestry behind the shape is a level in the signature.
+from it can be gleaned relationships : siblings, cousins, grandparents...
+useful info
+
+get AbstractDifferentiator working
+use params map. we have alot of params floating around. 
+get generalizer working
+
+2012/01/14
+
+sound idea
+for accompanying fleen animation
+the sound of 1000 people talking at once. Not very loud, just loud enough to be heard + a notch or 3.
+
+get generalizer working, get animation working
+
+2012/01/23
+
+make all loops clockwise
+use decorated shape geometry system
+do the basic shapes system (+ derivation via analysis?)
+
+2012/02/01
+
+METAGEOMETRY
+
+a collection of geometry objects keyed arbitrarily
+contains Frame, Holes, Bubble, Sponge, Slat, Twink etc or whatever
+created by a shape operator (or at fleen init for root)
+
+consider : Shape(Diamond,Metageometry)
+
+consider shape creation process 
+
+1) construct : Shape(Diamond,Metageometry)
+2) make links to other shapes (parent, children, contents, container, etc)
+3) optionally set chorus index (how about that color chorus index? TODO)
+4) flip flags however 
+
+2012/01/30
+
+SHAPE
+
+Geometry objects. Refer to SHAPE. Have INIT method. may generate other geometry objects upon init. For example, a SLAT would generate a RAFT and a FRAME
+
+FLAGS
+simply stored key strings. Is it there or not?
+
+RELATIONSHIPS
+keyed connections to other shapes
+
+2012/02/17
+
+----TODO redo spbd and dissector_abstract
+
+address all isomorphic leaves at once
+yes, dissectors can fail. and then we try another one. So no need to change dissectors.
+
+It might be hard to do a mix of symm and asymm in the same process tho.
+
+we could do it like this
+ 
+0) get all the leaves into ISOMORPHIC GROUPS
+1) arbirtarily (according to symmetry probability param), pick A LEAF (from a group) or A GROUP OF ISOMORPHIC LEAVES
+2) pick a dissectorfactory for that bubble or group. try, try till we find one (that gives us a nonnull dissector) or we run out
+3) apply dissector to LEAF (that's an asymmetric operation) or to a GROUP (that's a symmetric operation).
+4) goto 1. keep on doing this till we run out of leaves
+
+dissectors can be null.
+actually, isNull() sounds better than isValid()
+allow null.
+no need for "compatibility" either. just getSample. We can test the sample, compare it with prospective targets.
+
+we need to formalize the way we use dissector classes
+1) construct instance with params
+2) get (init) a "child" of that instance with (sample,seed)
+one is the "factory", the others are "products"? Think up good names. 
+
+----TODO for splitter : enforce symmetry, enforce asymmetry, don't enforce
+
+2012/02/18
+
+ok, did all that. the spbd is being weirdly reluctant to apply dissectors, or they're nulling alot, or something. investigation called for.
+it's slick tho.
+---
+ok, fixed that. trivial.
+
+how about constraining splitter vertex indices to some factor of perimeter or side length? It might regularize the effect, make it prettier. It would speed it up too.
+
+presently the effect is regularized by the diamond cell structure, which is resolution dependent, which can look bad at high rezzes.
+
+
+2012/02/19
+
+made a vertex subclass : framevertex
+it could simplify the splitter alg if we wanna go back in there.
+
+do something about the fact that we're holding whole vertices in the partition class too.
+
+there's got to be an easier way to deal with frame geometry
+frameloop?
+framestrand?
+
+SIMPLIFY LOOP. just make it a list of well mapped vertices. init it that way too. 
+immutable. stop being so complicated.
+
+redo frame so it can be constructed using vertices, much like loop except with a twist.
+
+
+2012/02/20
+
+we're getting ccw loop errors
+
+it's because it's so complicated dealing with loops in ccw contexts
+
+we need to be able to deal with frames with just vertex params, let the frame handle cw/ccw. a clean wrapper
+
+
+we should get rid of strand. it doesn't really do much but get in the way.
+
+2012/02/21
+
+vertex flatness for splitter, boiler etc should be considered within the context of the whole loop.
+
+get rid of getFlatness method. Use distancetopreviouskink, distancetonextkink and side lengths to get a better flatness rating for vertices.
+
+maybe make a getFlatterVertices method in Loop. 
+
+--------------------------------------
+2012/02/25
+
+use params table for dissectors and dissectorfactories.
+standardize that interface, subsume some stuff in the abstractdissector. 
+
+put a big try catch on the createbubbles method
+
+
+---------------------------------------
+2012/02/28
+
+new animation idea
+fixed field of cells
+apply dissectors, assemblers, dissectors, etc cyclically. Ok, I guess this isn't a new idea.
+
+-------------------------------------
+2012/04/01
+
+POST PROCESS
+
+After the diamond has been satisfactorially cultivated...
+
+1) Curve processing. Curve smoothing. Turn angles into nice curves appropriately.
+2) Patterns. Fill shapes with dot patterns placed by triangles, hexagons or whatever. Other non-diamond geometry image patterns too. Gradients? Glows? Coordinate-dependent colorization...
+3) do a custom rasterization alg. It'll be faster and better. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
