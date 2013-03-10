@@ -1,4 +1,4 @@
-package org.fleen.samples.gen2DComposition;
+package org.fleen.samples.fleenRasterCompositionGen.renderer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,27 +15,8 @@ import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.diamondCompositionInspector.Util;
 
 
-public class Renderer_001{
+public class Renderer_001 extends Renderer_Abstract{
 
-  private static HashMap<RenderingHints.Key,Object> RENDERING_HINTS=
-      new HashMap<RenderingHints.Key,Object>();
-    
-    static{
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_DITHERING,RenderingHints.VALUE_DITHER_DEFAULT);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_ALPHA_INTERPOLATION,RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY); 
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_NORMALIZE);}
-  
   static final Color
     COLOR_POLYGONEDGE=new Color(110,110,110),
     COLOR_POLYGONFILL_SHARDFOAM=new Color(238,238,238,192),

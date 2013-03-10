@@ -92,6 +92,6 @@ public class BubbleModel implements Serializable{
    */
   
   public String toString(){
-    return "BubbleModel["+id+"]";}
+    return id;}
   
 }

@@ -1,8 +1,7 @@
 package org.fleen.samples.fleenRasterCompositionGen;
 
-import java.awt.image.BufferedImage;
+import java.awt.EventQueue;
 
-import org.fleen.core.diamondGrammar.DGComposition;
 
 /*
  * create a diamond composition
@@ -14,37 +13,51 @@ import org.fleen.core.diamondGrammar.DGComposition;
  */
 public class FleenRasterCompositionGen{
   
-  private static final String VERSIONID="0.1 alpha";
-  //
+  /*
+   * ################################
+   * APP MAIN
+   * ################################
+   */
   
-  private static final double DETAIL_LIMIT_DEFAULT=0.03;
-  private static final int 
-    IMAGE_COUNT_DEFAULT=3,
-    IMAGE_WIDTH_DEFAULT=1300;
-  private static final Renderer_000 renderer=new Renderer_000();
-  private static FileWriterPNG filewriter=new FileWriterPNG();
-  private static final String EXPORTDIR="/home/john/Desktop/generator_export/";
+  public static final String
+    TITLE="Fleen Raster Composition Gen",
+    VERSION="0.1 alpha";
+  
+  public static FleenRasterCompositionGen frcg_instance=null;
   
   public static final void main(String[] a){
-    
-    
-    
-    System.out.println("<><><><>GENERATOR STARTED<><><><>");
-    System.out.println("   Creating ["+IMAGE_COUNT_DEFAULT+"] images");
-    System.out.println("----------------------------------");
-    
-    for(int i=0;i<IMAGE_COUNT_DEFAULT;i++){
-      System.out.println("COMPOSITION #"+i+" START");
-      System.out.println("BUILDING");
-      DGComposition dgc=new DGC0(DETAIL_LIMIT_DEFAULT);
-      System.out.println("RENDERING");
-      BufferedImage image=renderer.render(dgc,IMAGE_WIDTH_DEFAULT);
-      System.out.println("EXPORTING");
-      filewriter.write(image,EXPORTDIR,300);
-      System.out.println("COMPOSITION #"+i+" END");}
-    
-    System.out.println("--+--+--GENERATOR FINISHED--+--+--");
-    
+    frcg_instance=new FleenRasterCompositionGen();}
+  
+  /*
+   * ################################
+   * INSTANCE CONSTRUCTOR AND FIELDS
+   * ################################
+   */
+  
+  public static final FileWriterPNG FILEWRITER=new FileWriterPNG();
+  public UI ui;
+  public FRCGParams params;
+  
+  private FleenRasterCompositionGen(){EventQueue.invokeLater(new Runnable(){
+    public void run(){
+      try{
+        ui=new UI();
+        ui.frame.setVisible(true);
+        //init the params after the ui is done initializing
+        //so we have some ui components to update
+        params=new FRCGParams();
+      }catch(Exception e){
+        e.printStackTrace();}}});}
+  
+  /*
+   * ################################
+   * INSTANCE TERMINATOR
+   * ################################
+   */
+  
+  static final void terminate(){
+    //TODO serialize params
+    //make sure all exports are finished writing
   }
-
+  
 }

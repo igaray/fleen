@@ -1,4 +1,4 @@
-package org.fleen.samples.gen2DComposition;
+package org.fleen.samples.fleenRasterCompositionGen.renderer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,7 +15,7 @@ import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.diamondCompositionInspector.Util;
 
 
-public class Renderer_000{
+public class Renderer_000 extends Renderer_Abstract{
 
   private static HashMap<RenderingHints.Key,Object> RENDERING_HINTS=
       new HashMap<RenderingHints.Key,Object>();

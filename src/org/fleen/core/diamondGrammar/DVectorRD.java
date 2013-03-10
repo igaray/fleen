@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 /*
  * diamond vector with relative direction
- * direction and distance
  * direction is integer in range [-5,5].
  * distance is double. A sum of integers (1s and 2s) or integer multiples of sqrt3.
  */
