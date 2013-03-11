@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.fleen.core.diamondGrammar.Bubble;
-import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.diamondCompositionInspector.Util;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 
@@ -44,25 +43,16 @@ public class Renderer_000 extends Renderer_Abstract{
   
   static final Color[] FOAMCOLORS={
     new Color(0,0,0,ALPHA),
-    new Color(255,255,255,ALPHA),
-    new Color(128,128,128,ALPHA)
-    };
+    new Color(255,255,255,ALPHA)};
 
   public static final float 
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   
-  public BufferedImage render(Composition fleen,double scale){
-    Rectangle2D.Double dgcb=getRootBubbleBounds(fleen);
-    //transform
-    double
-      offx=-dgcb.getMinX(),
-      offy=-dgcb.getMinY();
-    AffineTransform transform=new AffineTransform();
-    transform.scale(scale,scale);
-    transform.translate(offx,offy);
+  public BufferedImage getImage(Composition fleen,Rectangle2D.Double bounds,AffineTransform transform){
     //init image
-    BufferedImage image=new BufferedImage(
-      (int)(dgcb.getWidth()*scale),(int)(dgcb.getHeight()*scale),BufferedImage.TYPE_INT_ARGB);
+    double scale=transform.getScaleX();
+    int w=(int)(bounds.getWidth()*scale),h=(int)(bounds.getHeight()*scale);
+    BufferedImage image=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics=image.createGraphics();
     graphics.addRenderingHints(RENDERING_HINTS);
     graphics.setTransform(transform);
@@ -86,16 +76,5 @@ public class Renderer_000 extends Renderer_Abstract{
         graphics.draw(path);}
       }
     return image;}
-  
-  Rectangle2D.Double getRootBubbleBounds(DGComposition dgc){
-    Bubble a=dgc.getRootGrid().getChildBubbles().get(0);
-    double[][] vp=a.getVertexPoints2D();
-    double maxx=Double.MIN_VALUE,maxy=maxx,minx=Double.MAX_VALUE,miny=minx;
-    for(int i=0;i<vp.length;i++){
-      if(minx>vp[i][0])minx=vp[i][0];
-      if(miny>vp[i][1])miny=vp[i][1];
-      if(maxx<vp[i][0])maxx=vp[i][0];
-      if(maxy<vp[i][1])maxy=vp[i][1];}
-    return new Rectangle2D.Double(minx,miny,maxx-minx,maxy-miny);}
 
 }

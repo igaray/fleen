@@ -32,24 +32,28 @@ public class MessageTextPane extends JTextArea{
     SwingUtilities.invokeLater(new Runnable(){
       public void run(){
         Document doc=thistextpane.getDocument();
-        doConditionalTrim(doc,text.length()*2);
         try {
           doc.insertString(0,text+"\n",null);
+          doConditionalTrim(doc);
         }catch(BadLocationException e) {}
         thistextpane.setCaretPosition(0);}});}
   
   /*
    * ################################
    * TRIM
-   * it isn't pretty but it works
+   * for our little loggy thing
    * ################################
    */
   
-  private void doConditionalTrim(Document doc,int trimlength){
-    if(getPreferredSize().getHeight()>(getParent().getHeight()*1.5)){
+  private static final int MAX_LOG_CHARS=1000;
+  
+  private void doConditionalTrim(Document doc){
+    int a=doc.getLength();
+    if(a>MAX_LOG_CHARS)
       try{
-        doc.remove(doc.getLength()-trimlength,trimlength);
-      }catch(Exception x){}}}
+        doc.remove(MAX_LOG_CHARS,a-MAX_LOG_CHARS);
+      }catch(Exception x){
+        System.out.println("BAD REMOIVE");}}
    
 //  /*
 //   * ################################

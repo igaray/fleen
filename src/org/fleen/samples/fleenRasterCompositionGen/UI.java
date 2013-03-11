@@ -30,21 +30,22 @@ import javax.swing.event.ChangeListener;
 
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.core.diamondGrammar.Grammar;
+import org.fleen.samples.fleenRasterCompositionGen.gre.GRECommandManager;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 public class UI{
 
-  JFrame frame;
-  Viewer panViewer;
-  JTextField txtGrammar;
-  JComboBox cmbRootBubbleModel;
-  JTextField txtDetailSizeLimit;
-  JLabel lblTxtSymmetryControlFunction;
-  JComboBox cmbRenderer;
-  JTextField txtExportImageScale;
-  JTextField txtExportDir;
-  JSpinner spiGenExpImageCount;
-  MessageTextPane txtMessage;
+  public JFrame frame;
+  public Viewer panViewer;
+  public JTextField txtGrammar;
+  public JComboBox cmbRootBubbleModel;
+  public JTextField txtDetailSizeLimit;
+  public JLabel lblTxtSymmetryControlFunction;
+  public  JComboBox cmbRenderer;
+  public JTextField txtExportImageScale;
+  public  JTextField txtExportDir;
+  public  JSpinner spiGenExpImageCount;
+  public MessageTextPane txtMessage;
   
   /**
    * TEST
@@ -204,7 +205,7 @@ public class UI{
     btnGenerate.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          FRCG.instance.generate();
+          GRECommandManager.generate();
         }catch(Exception x){
           System.out.println("exception in generate");}}});
     
@@ -214,7 +215,8 @@ public class UI{
     btnExport.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          FRCG.instance.export();
+          GRECommandManager.renderForExport();
+          GRECommandManager.export();
         }catch(Exception x){
           System.out.println("exception in export");}}});
     
@@ -224,7 +226,7 @@ public class UI{
     btnGenExp.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          FRCG.instance.generateAndExport();
+          GRECommandManager.generateAndExport();
         }catch(Exception x){
           System.out.println("exception in generate and export");}}});
     
@@ -244,17 +246,18 @@ public class UI{
           FRCG.instance.params.getGenExpImageCount());}});
     
     //BUTTON ABOUT
-    JButton btnAbout = new JButton("About");
-    btnAbout.addMouseListener(new MouseAdapter() {
+    JButton btnInfo = new JButton("Info");
+    btnInfo.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+    btnInfo.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          FRCG.instance.post(FRCG.ABOUT_TEXT);
+          FRCG.instance.postMessage(FRCG.ABOUT_TEXT);
         }catch(Exception x){
           System.out.println("exception in about");}}});
     
     //MESSAGE TEXT PANE AND SCROLLPANE
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     
     GroupLayout gl_panControl = new GroupLayout(panControl);
@@ -277,7 +280,7 @@ public class UI{
               .addComponent(btnGenExp, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spiGenExpImageCount, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE))
-            .addComponent(btnAbout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
+            .addComponent(btnInfo, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
           .addContainerGap())
     );
     gl_panControl.setVerticalGroup(
@@ -308,12 +311,14 @@ public class UI{
           .addPreferredGap(ComponentPlacement.RELATED)
           .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(btnAbout))
+          .addComponent(btnInfo))
     );
     
     txtMessage = new MessageTextPane();
+    txtMessage.setForeground(Color.WHITE);
+    txtMessage.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     txtMessage.setEditable(false);
-    txtMessage.setBackground(new Color(255, 165, 0));
+    txtMessage.setBackground(Color.GRAY);
     scrollPane.setViewportView(txtMessage);
     panControl.setLayout(gl_panControl);
     frame.getContentPane().setLayout(groupLayout);

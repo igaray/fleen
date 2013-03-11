@@ -3,6 +3,9 @@ package org.fleen.samples.fleenRasterCompositionGen;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+
+import org.fleen.samples.fleenRasterCompositionGen.gre.GRECommandManager;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 /*
@@ -36,11 +39,10 @@ public class FRCG{
    * ################################
    */
   
-  public FileWriterPNG filewriter=new FileWriterPNG();
-  public UI ui;
-  public FRCGParams params;
-  Composition composition;
-  BufferedImage image;
+  public UI ui=null;
+  public FRCGParams params=null;
+  public Composition composition=null;
+  public BufferedImage viewerimage=null,exportimage=null;
   
   /*
    * ################################
@@ -51,12 +53,14 @@ public class FRCG{
   private FRCG(){EventQueue.invokeLater(new Runnable(){
     public void run(){
       try{
+        GRECommandManager.init();
         ui=new UI();
         ui.frame.setVisible(true);
+        ui.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //init the params after the ui is done initializing
         //so we have some ui components to update
         params=new FRCGParams();
-        post(ABOUT_TEXT);
+        postMessage(ABOUT_TEXT);
       }catch(Exception e){
         e.printStackTrace();}}});}
   
@@ -66,52 +70,10 @@ public class FRCG{
    * ################################
    */
   
-  static final void terminate(){
+  public void terminate(){
     //TODO serialize params
     //make sure all exports are finished writing
-  }
-  
-  /*
-   * ################################
-   * GENERATE
-   * ################################
-   */
-  
-  public void generate(){
-    post("started generate");
-    composition=new Composition();
-    post("finished generate");
-    post("start render");
-    Renderer_Abstract r=params.getRenderer();
-    image=r.render(composition,params.getExportImageScale());
-    ui.panViewer.update();
-    post("finished render");
-  }
-  
-  /*
-   * ################################
-   * EXPORT
-   * ################################
-   */
-  
-  public void export(){
-    post("started export");
-    
-    post("finished export");
-  }
-  
-  /*
-   * ################################
-   * GENERATE AND EXPORT
-   * ################################
-   */
-  
-  public void generateAndExport(){
-    
-    post("started generate and export");
-    
-    post("finished generate and export");
-    
+    //terminate command queue
   }
   
   /*
@@ -120,13 +82,22 @@ public class FRCG{
    * ################################
    */
   
-  public static final String ABOUT_TEXT=
-    TITLE+" "+VERSION+"\n"+
-    "By John Greene\n"+
-    "john@fleen.org\n"+
-    "http://fleen.org";
+//  public static final String ABOUT_TEXT=
+//    TITLE+" "+VERSION+"\n"+
+//    "By John Greene\n"+
+//    "john@fleen.org\n"+
+//    "http://fleen.org\n"+
+//    "==VIEWER CONTROLS==\n"+
+//    "ZOOM : Ctrl+Mouse1+Drag\n"+
+//    "PAN : Shift+Mouse1+Drag\n";
   
-  public void post(String s){
-    ui.txtMessage.postMessage(s);}
+  public static final String ABOUT_TEXT=
+      TITLE+" "+VERSION+"\n"+
+      "By John Greene\n"+
+      "john@fleen.org\n"+
+      "http://fleen.org\n";
+  
+  public void postMessage(String m){
+    ui.txtMessage.postMessage("["+System.currentTimeMillis()+"]\n"+m);}
   
 }

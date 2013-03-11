@@ -32,7 +32,7 @@ public class Composition extends DGComposition{
       bubblemodel);
     boolean cultivationhappened=true;
     while(cultivationhappened){
-      FRCG.instance.post("cultivating");
+      FRCG.instance.postMessage("cultivating");
       cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}}
   
   //returns true if cultivation happened

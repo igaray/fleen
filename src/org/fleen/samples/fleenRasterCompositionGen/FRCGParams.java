@@ -12,7 +12,6 @@ import javax.swing.JFileChooser;
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.core.diamondGrammar.Grammar;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_000;
-import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_001;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SCF_Default;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SymmetryControlFunction_Abstract;
@@ -115,7 +114,7 @@ public class FRCGParams{
    * ################################
    */
   
-  private static final double DETAIL_SIZE_LIMIT_DEFAULT=0.03;
+  private static final double DETAIL_SIZE_LIMIT_DEFAULT=0.07;
   private double detailsizelimit=-1;
   
   public double getDetailSizeLimit(){
@@ -172,7 +171,8 @@ public class FRCGParams{
   
   private static final Renderer_Abstract[] RENDERERS={
     new Renderer_000(),
-    new Renderer_001()};
+//    new Renderer_001()
+    };
   private Renderer_Abstract renderer=null;
   
   public Renderer_Abstract getRenderer(){
@@ -199,7 +199,7 @@ public class FRCGParams{
    * ################################
    */
    
-  private static final double EXPORT_IMAGE_SCALE_DEFAULT=200;
+  private static final double EXPORT_IMAGE_SCALE_DEFAULT=800.0;
   private double exportimagescale=-1;
   
   public double getExportImageScale(){
