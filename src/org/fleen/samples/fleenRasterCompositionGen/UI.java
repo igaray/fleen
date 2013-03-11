@@ -17,19 +17,25 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.core.diamondGrammar.Grammar;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 public class UI{
 
   JFrame frame;
+  Viewer panViewer;
   JTextField txtGrammar;
   JComboBox cmbRootBubbleModel;
   JTextField txtDetailSizeLimit;
@@ -38,6 +44,7 @@ public class UI{
   JTextField txtExportImageScale;
   JTextField txtExportDir;
   JSpinner spiGenExpImageCount;
+  MessageTextPane txtMessage;
   
   /**
    * TEST
@@ -64,31 +71,31 @@ public class UI{
     }catch(Exception e){}//go with default
     //init frame
     frame=new JFrame();
-    frame.setBounds(100,100,800,600);
+    frame.setBounds(100,100,506,504);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setTitle(FleenRasterCompositionGen.TITLE+" "+FleenRasterCompositionGen.VERSION);
+    frame.setTitle(FRCG.TITLE+" "+FRCG.VERSION);
     //init layout
     JPanel panControl = new JPanel();
-    JPanel panel = new JPanel();
-    panel.setBackground(Color.YELLOW);
+    panViewer = new Viewer();
+    panViewer.setBackground(Color.YELLOW);
     GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
-          .addComponent(panControl, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
+          .addComponent(panControl, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(panel, GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+          .addComponent(panViewer, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
           .addGap(10))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
           .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addComponent(panControl, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+            .addComponent(panControl, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
             .addGroup(groupLayout.createSequentialGroup()
               .addContainerGap()
-              .addComponent(panel, GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
+              .addComponent(panViewer, GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)))
           .addContainerGap())
     );
     
@@ -102,15 +109,17 @@ public class UI{
     txtGrammar.setColumns(10);
     //mouse click listener
     //set grammar. If success then update relevant stuff 
-    txtGrammar.addMouseListener(new MouseAdapter() {
+    txtGrammar.addMouseListener(new MouseAdapter(){
       public void mouseClicked(MouseEvent e){
-        Grammar g=FleenRasterCompositionGen.frcg_instance.params.getGrammar();
-        FleenRasterCompositionGen.frcg_instance.params.setGrammar();
-        if(g!=FleenRasterCompositionGen.frcg_instance.params.getGrammar()){
-          FleenRasterCompositionGen.frcg_instance.params.initUIComponent_Grammar();
-          FleenRasterCompositionGen.frcg_instance.params.invalidateRootBubbleModel();
-          FleenRasterCompositionGen.frcg_instance.params.initUIComponent_RootBubbleModelsList();
-          FleenRasterCompositionGen.frcg_instance.params.initUIComponent_RootBubbleModel();}}});
+        try{
+          Grammar g=FRCG.instance.params.getGrammar();
+          FRCG.instance.params.setGrammar();
+          if(g!=FRCG.instance.params.getGrammar()){
+            FRCG.instance.params.initUIComponent_Grammar();
+            FRCG.instance.params.invalidateRootBubbleModel();
+            FRCG.instance.params.initUIComponent_RootBubbleModelsList();
+            FRCG.instance.params.initUIComponent_RootBubbleModel();}
+        }catch(Exception x){}}});
     
     //COMBOBOX ROOTBUBBLEMODEL
     cmbRootBubbleModel = new JComboBox();
@@ -120,7 +129,7 @@ public class UI{
     //when we do it, update the params
     cmbRootBubbleModel.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e){
-        FleenRasterCompositionGen.frcg_instance.params.setRootBubbleModel(
+        FRCG.instance.params.setRootBubbleModel(
           (BubbleModel)cmbRootBubbleModel.getModel().getSelectedItem());}});
     
     //TEXTFIELD DETAILSIZELIMIT
@@ -134,9 +143,9 @@ public class UI{
     txtDetailSizeLimit.addFocusListener(new FocusAdapter() {
       @Override
       public void focusLost(FocusEvent e) {
-        FleenRasterCompositionGen.frcg_instance.params.setDetailSizeLimit(txtDetailSizeLimit.getText());
+        FRCG.instance.params.setDetailSizeLimit(txtDetailSizeLimit.getText());
         txtDetailSizeLimit.setText(
-          Double.toString(FleenRasterCompositionGen.frcg_instance.params.getDetailSizeLimit()));}});
+          Double.toString(FRCG.instance.params.getDetailSizeLimit()));}});
     
     //LABEL SYMMETRYCONTROLFUNCTION
     //this is a temporary dummy. We'll do this with some kind of graphical curve-drawing gadget later
@@ -145,16 +154,35 @@ public class UI{
     lblTxtSymmetryControlFunction.setToolTipText("Symmetry Control Function");
     lblTxtSymmetryControlFunction.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     
+    //COMBO RENDERER
     cmbRenderer = new JComboBox();
     cmbRenderer.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     cmbRenderer.setToolTipText("Renderer");
+    //selection changed listener
+    //when we do it, update the params
+    cmbRenderer.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        try{
+          FRCG.instance.params.setRenderer(
+            (Renderer_Abstract)cmbRenderer.getModel().getSelectedItem());
+        }catch(Exception x){}}});
     
+    //TEXTFIELD EXPORT IMAGE SCALE
     txtExportImageScale = new JTextField();
     txtExportImageScale.setToolTipText("Export Image Scale");
     txtExportImageScale.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     txtExportImageScale.setText("export image scale null");
     txtExportImageScale.setColumns(10);
+    //focus lost listener
+    //update and validate
+    txtExportImageScale.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusLost(FocusEvent e) {
+        FRCG.instance.params.setExportImageScale(txtExportImageScale.getText());
+        txtExportImageScale.setText(
+          Double.toString(FRCG.instance.params.getExportImageScale()));}});
     
+    //TEXTFIELD EXPORT DIR
     txtExportDir = new JTextField();
     txtExportDir.setBackground(new Color(135, 206, 250));
     txtExportDir.setEditable(false);
@@ -162,40 +190,94 @@ public class UI{
     txtExportDir.setToolTipText("Export Dir");
     txtExportDir.setText("export dir null");
     txtExportDir.setColumns(10);
+    //mouse click listener
+    //set export dir. 
+    txtExportDir.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e){
+        FRCG.instance.params.setExportDir();
+        FRCG.instance.params.initUIComponent_ExportDir();}});
     
+    //BUTTON GENERATE
     JButton btnGenerate = new JButton("Generate");
-    btnGenerate.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+    btnGenerate.setForeground(new Color(0, 0, 0));
+    btnGenerate.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+    btnGenerate.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          FRCG.instance.generate();
+        }catch(Exception x){
+          System.out.println("exception in generate");}}});
     
+    //BUTTON EXPORT
     JButton btnExport = new JButton("Export");
-    btnExport.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+    btnExport.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+    btnExport.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          FRCG.instance.export();
+        }catch(Exception x){
+          System.out.println("exception in export");}}});
     
-    JButton btnGenexp = new JButton("Gen & Exp");
-    btnGenexp.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+    //BUTTON GENERATE AND EXPORT
+    JButton btnGenExp = new JButton("Gen & Exp");
+    btnGenExp.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+    btnGenExp.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          FRCG.instance.generateAndExport();
+        }catch(Exception x){
+          System.out.println("exception in generate and export");}}});
     
+    //SPINNER GENEXP IMAGE COUNT
     spiGenExpImageCount = new JSpinner();
     spiGenExpImageCount.setModel(new SpinnerNumberModel(new Integer(3), new Integer(1), null, new Integer(1)));
     spiGenExpImageCount.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     spiGenExpImageCount.setToolTipText("Gen & Exp Image Count");
+    //update and validate param on state change
+    spiGenExpImageCount.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent e){
+        try{
+          FRCG.instance.params.setGenExpImageCount(
+          (Integer)spiGenExpImageCount.getModel().getValue());
+        }catch(Exception x){}
+        spiGenExpImageCount.getModel().setValue(
+          FRCG.instance.params.getGenExpImageCount());}});
+    
+    //BUTTON ABOUT
+    JButton btnAbout = new JButton("About");
+    btnAbout.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          FRCG.instance.post(FRCG.ABOUT_TEXT);
+        }catch(Exception x){
+          System.out.println("exception in about");}}});
+    
+    //MESSAGE TEXT PANE AND SCROLLPANE
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     
     GroupLayout gl_panControl = new GroupLayout(panControl);
     gl_panControl.setHorizontalGroup(
-      gl_panControl.createParallelGroup(Alignment.LEADING)
-        .addGroup(Alignment.TRAILING, gl_panControl.createSequentialGroup()
+      gl_panControl.createParallelGroup(Alignment.TRAILING)
+        .addGroup(gl_panControl.createSequentialGroup()
           .addContainerGap()
           .addGroup(gl_panControl.createParallelGroup(Alignment.TRAILING)
-            .addComponent(txtGrammar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(cmbRenderer, 0, 211, Short.MAX_VALUE)
-            .addComponent(txtExportImageScale, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(txtDetailSizeLimit, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(lblTxtSymmetryControlFunction, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(cmbRootBubbleModel, 0, 211, Short.MAX_VALUE)
-            .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(btnGenerate, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-            .addComponent(btnExport, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+            .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(txtGrammar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(cmbRenderer, 0, 228, Short.MAX_VALUE)
+            .addComponent(txtExportImageScale, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(txtDetailSizeLimit, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(lblTxtSymmetryControlFunction, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(cmbRootBubbleModel, 0, 228, Short.MAX_VALUE)
+            .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(btnGenerate, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+            .addComponent(btnExport, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
             .addGroup(gl_panControl.createSequentialGroup()
-              .addComponent(btnGenexp, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+              .addComponent(btnGenExp, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(spiGenExpImageCount, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)))
+              .addComponent(spiGenExpImageCount, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE))
+            .addComponent(btnAbout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
           .addContainerGap())
     );
     gl_panControl.setVerticalGroup(
@@ -221,10 +303,18 @@ public class UI{
           .addComponent(btnExport)
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(gl_panControl.createParallelGroup(Alignment.BASELINE)
-            .addComponent(btnGenexp)
+            .addComponent(btnGenExp)
             .addComponent(spiGenExpImageCount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-          .addContainerGap(248, Short.MAX_VALUE))
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(btnAbout))
     );
+    
+    txtMessage = new MessageTextPane();
+    txtMessage.setEditable(false);
+    txtMessage.setBackground(new Color(255, 165, 0));
+    scrollPane.setViewportView(txtMessage);
     panControl.setLayout(gl_panControl);
     frame.getContentPane().setLayout(groupLayout);
   }

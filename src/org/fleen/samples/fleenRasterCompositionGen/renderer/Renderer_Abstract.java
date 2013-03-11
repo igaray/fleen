@@ -4,7 +4,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import org.fleen.core.diamondGrammar.DGComposition;
+import org.fleen.samples.fleenRasterCompositionGen.Composition;
 
 public abstract class Renderer_Abstract{
   
@@ -27,10 +27,9 @@ public abstract class Renderer_Abstract{
       RENDERING_HINTS.put(
         RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_NORMALIZE);}
     
-  protected abstract BufferedImage render(DGComposition composition,double scale);
+  public abstract BufferedImage render(Composition composition,double scale);
   
   public String toString(){
-    return this.getClass().getSimpleName();
-  }
+    return this.getClass().getSimpleName();}
 
 }

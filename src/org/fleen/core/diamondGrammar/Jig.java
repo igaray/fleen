@@ -129,6 +129,7 @@ public class Jig implements Serializable{
     return newbubbles;}
   
   private List<Bubble> createForBoiler(Bubble target){
+    System.out.println("BOILING");
     //define grid
     Grid grid=new Grid(
       target,

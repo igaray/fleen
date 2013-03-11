@@ -3,38 +3,18 @@ package org.fleen.samples.fleenRasterCompositionGen.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.diamondCompositionInspector.Util;
+import org.fleen.samples.fleenRasterCompositionGen.Composition;
 
 
 public class Renderer_000 extends Renderer_Abstract{
-
-  private static HashMap<RenderingHints.Key,Object> RENDERING_HINTS=
-      new HashMap<RenderingHints.Key,Object>();
-    
-    static{
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_DITHERING,RenderingHints.VALUE_DITHER_ENABLE);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_ALPHA_INTERPOLATION,RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY); 
-      RENDERING_HINTS.put(
-        RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_NORMALIZE);}
   
   static final Color
     COLOR_POLYGONEDGE=new Color(128,128,128),
@@ -65,17 +45,16 @@ public class Renderer_000 extends Renderer_Abstract{
   static final Color[] FOAMCOLORS={
     new Color(0,0,0,ALPHA),
     new Color(255,255,255,ALPHA),
-    new Color(255,128,0,ALPHA)
+    new Color(128,128,128,ALPHA)
     };
 
   public static final float 
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   
-  protected BufferedImage render(DGComposition fleen,int width){
+  public BufferedImage render(Composition fleen,double scale){
     Rectangle2D.Double dgcb=getRootBubbleBounds(fleen);
     //transform
-    double 
-      scale=((double)width)/dgcb.getWidth(),
+    double
       offx=-dgcb.getMinX(),
       offy=-dgcb.getMinY();
     AffineTransform transform=new AffineTransform();

@@ -1,8 +1,5 @@
 package org.fleen.samples.fleenRasterCompositionGen;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +14,10 @@ import org.fleen.core.diamondGrammar.Grammar;
 import org.fleen.core.diamondGrammar.Grid;
 import org.fleen.core.diamondGrammar.Jig;
 
-public class DGC0 extends DGComposition{
+public class Composition extends DGComposition{
   
-  DGC0(double detaillimit){
-    this.detaillimit=detaillimit;
+  public Composition(){
+    detaillimit=FRCG.instance.params.getDetailSizeLimit();
     init();}
 
   double detaillimit;
@@ -28,14 +25,15 @@ public class DGC0 extends DGComposition{
   private void init(){
     Grid grid=new Grid();
     setRootGrid(grid);
-    Grammar grammar=importGrammar();
-    BubbleModel bubblemodel=grammar.getBubbleModels().get(0);
+    Grammar grammar=FRCG.instance.params.getGrammar();
+    BubbleModel bubblemodel=FRCG.instance.params.getRootBubbleModel();
     new Bubble(
       grid,
       bubblemodel);
     boolean cultivationhappened=true;
-    while(cultivationhappened)
-      cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}
+    while(cultivationhappened){
+      FRCG.instance.post("cultivating");
+      cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}}
   
   //returns true if cultivation happened
   private boolean doDSLimitedChorussedRandomJigSelectionCultivationCycle(Grammar grammar,double dslimit){
@@ -50,17 +48,7 @@ public class DGC0 extends DGComposition{
           cultivationhappened=true;
           j.create(bubble);}}}
     return cultivationhappened;}
-  
-//  private Jig getJig(Bubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
-//    List<Jig> jigs;
-//    Jig j=sigjigs.get(bubble.getSignature());
-//    if(j==null){
-//      jigs=grammar.getJigs(bubble.model.id);
-//      if(jigs.isEmpty())return null;
-//      j=jigs.get(random.nextInt(jigs.size()));
-//      sigjigs.put(bubble.getSignature(),j);}
-//    return j;}
-  
+
   private Jig getJig(Bubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
     Jig j=sigjigs.get(bubble.getSignature());
     if(j==null){
@@ -107,19 +95,4 @@ public class DGC0 extends DGComposition{
     j=jigs.get(random.nextInt(jigs.size()));
     return j;}
   
-  private Grammar importGrammar(){
-    File selectedfile=new File("/home/john/projects/FleenCore_2.0/src/org/fleen/grammars/nicecomposition.g");
-    FileInputStream fis;
-    ObjectInputStream ois;
-    Grammar g=null;
-    try{
-      fis=new FileInputStream(selectedfile);
-      ois=new ObjectInputStream(fis);
-      g=(Grammar)ois.readObject();
-      ois.close();
-    }catch(Exception e){
-      System.out.println("#^#^# EXCEPTION IN LOAD GRAMMAR #^#^#");
-      e.printStackTrace();}
-    return g;}
-
 }

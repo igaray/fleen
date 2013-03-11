@@ -43,7 +43,7 @@ public class FRCGParams{
    * ################################
    */
   
-  private static final String PATH_TO_DEFAULT_GRAMMAR="/org/fleen/samples/fleenRasterCompositionGen/nicecomposition.g";
+  private static final String PATH_TO_DEFAULT_GRAMMAR="/org/fleen/samples/fleenRasterCompositionGen/testgrammar_0002.g";
   private Grammar grammar=null;
   private String grammarname;
   
@@ -60,7 +60,7 @@ public class FRCGParams{
   public void setGrammar(){
     JFileChooser fc=new JFileChooser("Select Grammar");
     fc.setCurrentDirectory(getLocalDir());
-    int r=fc.showOpenDialog(FleenRasterCompositionGen.frcg_instance.ui.frame);
+    int r=fc.showOpenDialog(FRCG.instance.ui.frame);
     if(r!=JFileChooser.APPROVE_OPTION)
       return;
     File f=fc.getSelectedFile();
@@ -74,7 +74,7 @@ public class FRCGParams{
     setGrammar(new File(getLocalDir()+PATH_TO_DEFAULT_GRAMMAR));}
   
   public void initUIComponent_Grammar(){
-    FleenRasterCompositionGen.frcg_instance.ui.txtGrammar.setText(getGrammarName());}
+    FRCG.instance.ui.txtGrammar.setText(getGrammarName());}
   
   /*
    * ################################
@@ -102,11 +102,11 @@ public class FRCGParams{
   
   public void initUIComponent_RootBubbleModelsList(){
     List<BubbleModel> m=getGrammar().getBubbleModels();
-    FleenRasterCompositionGen.frcg_instance.ui.cmbRootBubbleModel.setModel(
+    FRCG.instance.ui.cmbRootBubbleModel.setModel(
       new DefaultComboBoxModel(m.toArray(new BubbleModel[m.size()])));}
   
   public void initUIComponent_RootBubbleModel(){
-    FleenRasterCompositionGen.frcg_instance.ui.cmbRootBubbleModel.getModel().setSelectedItem(getRootBubbleModel());}
+    FRCG.instance.ui.cmbRootBubbleModel.getModel().setSelectedItem(getRootBubbleModel());}
   
   /*
    * ################################
@@ -134,7 +134,7 @@ public class FRCGParams{
       detailsizelimit=d;}
   
   public void initUIComponent_DetailSizeLimit(){
-    FleenRasterCompositionGen.frcg_instance.ui.txtDetailSizeLimit.setText(
+    FRCG.instance.ui.txtDetailSizeLimit.setText(
       Double.toString(getDetailSizeLimit()));}
   
   /*
@@ -161,7 +161,7 @@ public class FRCGParams{
     symmetrycontrolfunction=scf;}
   
   public void initUIComponent_SymmetryControlFunction(){
-    FleenRasterCompositionGen.frcg_instance.ui.lblTxtSymmetryControlFunction.setText(
+    FRCG.instance.ui.lblTxtSymmetryControlFunction.setText(
       getSymmetryControlFunction().toString());}
   
   /*
@@ -187,10 +187,10 @@ public class FRCGParams{
     renderer=r;}
   
   public void initUIComponent_RendererList(){
-    FleenRasterCompositionGen.frcg_instance.ui.cmbRenderer.setModel(new DefaultComboBoxModel(RENDERERS));}
+    FRCG.instance.ui.cmbRenderer.setModel(new DefaultComboBoxModel(RENDERERS));}
   
   public void initUIComponent_Renderer(){
-    FleenRasterCompositionGen.frcg_instance.ui.cmbRenderer.getModel().setSelectedItem(getRenderer());}
+    FRCG.instance.ui.cmbRenderer.getModel().setSelectedItem(getRenderer());}
   
   /*
    * ################################
@@ -221,7 +221,7 @@ public class FRCGParams{
     exportimagescale=d;}
   
   public void initUIComponent_ExportImageScale(){
-    FleenRasterCompositionGen.frcg_instance.ui.txtExportImageScale.setText(
+    FRCG.instance.ui.txtExportImageScale.setText(
       Double.toString(getExportImageScale()));}
   
   /*
@@ -249,8 +249,9 @@ public class FRCGParams{
   
   public void setExportDir(){
     JFileChooser fc=new JFileChooser();
+    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setCurrentDirectory(getLocalDir());
-    int r=fc.showOpenDialog(FleenRasterCompositionGen.frcg_instance.ui.frame);
+    int r=fc.showOpenDialog(FRCG.instance.ui.frame);
     if(r!=JFileChooser.APPROVE_OPTION)
       return;
     File f=fc.getSelectedFile();
@@ -261,7 +262,9 @@ public class FRCGParams{
       exportdir=f;}
   
   public void initUIComponent_ExportDir(){
-    FleenRasterCompositionGen.frcg_instance.ui.txtExportDir.setText(getExportDir().toString());}
+    String s=getExportDir().toString();
+    FRCG.instance.ui.txtExportDir.setText(s);
+    FRCG.instance.ui.txtExportDir.setToolTipText("Export Dir : "+s);}
   
   /*
    * ################################
@@ -285,7 +288,7 @@ public class FRCGParams{
       genexpimagecount=i;}
   
   public void initUIComponent_GenExpImageCount(){
-    FleenRasterCompositionGen.frcg_instance.ui.spiGenExpImageCount.setValue(getGenExpImageCount());}
+    FRCG.instance.ui.spiGenExpImageCount.setValue(getGenExpImageCount());}
 
   /*
    * ################################
@@ -294,7 +297,7 @@ public class FRCGParams{
    */
   
   private File getLocalDir(){
-    String path=FleenRasterCompositionGen.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    String path=FRCG.class.getProtectionDomain().getCodeSource().getLocation().getPath();
     String decodedpath;
     try{
       decodedpath=URLDecoder.decode(path,"UTF-8");

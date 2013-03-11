@@ -3,16 +3,15 @@ package org.fleen.samples.fleenRasterCompositionGen.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.diamondCompositionInspector.Util;
+import org.fleen.samples.fleenRasterCompositionGen.Composition;
 
 
 public class Renderer_001 extends Renderer_Abstract{
@@ -46,11 +45,10 @@ public class Renderer_001 extends Renderer_Abstract{
   public static final float 
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   
-  protected BufferedImage render(DGComposition fleen,int width){
+  public BufferedImage render(Composition fleen,double scale){
     Rectangle2D.Double dgcb=getRootBubbleBounds(fleen);
     //transform
-    double 
-      scale=((double)width)/dgcb.getWidth(),
+    double
       offx=-dgcb.getMinX(),
       offy=-dgcb.getMinY();
     AffineTransform transform=new AffineTransform();
