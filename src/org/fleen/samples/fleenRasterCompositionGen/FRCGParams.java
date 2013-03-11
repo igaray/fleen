@@ -42,7 +42,8 @@ public class FRCGParams{
    * ################################
    */
   
-  private static final String PATH_TO_DEFAULT_GRAMMAR="/org/fleen/samples/fleenRasterCompositionGen/testgrammar_0002.g";
+  //this is an offset from the default working directory
+  private static final String PATH_TO_DEFAULT_GRAMMAR="/testgrammar_0002.g";
   private Grammar grammar=null;
   private String grammarname;
   
@@ -55,6 +56,9 @@ public class FRCGParams{
   if(grammar==null)
     initGrammar();
   return grammarname;}
+  
+  private void initGrammar(){
+    setGrammar(new File(getLocalDir()+PATH_TO_DEFAULT_GRAMMAR));}
   
   public void setGrammar(){
     JFileChooser fc=new JFileChooser("Select Grammar");
@@ -69,9 +73,6 @@ public class FRCGParams{
     grammar=extractGrammarFromFile(f);
     grammarname=f.getName();}
 
-  private void initGrammar(){
-    setGrammar(new File(getLocalDir()+PATH_TO_DEFAULT_GRAMMAR));}
-  
   public void initUIComponent_Grammar(){
     FRCG.instance.ui.txtGrammar.setText(getGrammarName());}
   
@@ -228,11 +229,10 @@ public class FRCGParams{
    * ################################
    * EXPORT DIR
    * path to the directory to which we export our generated fleen raster composition PNG files
+   * init to default working directory
    * ################################
    */
   
-  //created at the directory where this app is run if necessary
-  private static final String EXPORT_DIR_DEFAULT="/FRCGExport";
   private File exportdir=null;
   
   public File getExportDir(){
@@ -241,11 +241,7 @@ public class FRCGParams{
     return exportdir;}
   
   private void initExportDir(){
-    File a=getLocalDir();
-    String exportdirpath=a.getPath()+EXPORT_DIR_DEFAULT;
-    exportdir=new File(exportdirpath);
-    if(!exportdir.isDirectory())
-      exportdir.mkdir();}
+    exportdir=getLocalDir();}
   
   public void setExportDir(){
     JFileChooser fc=new JFileChooser();
@@ -301,8 +297,8 @@ public class FRCGParams{
     String decodedpath;
     try{
       decodedpath=URLDecoder.decode(path,"UTF-8");
-    }catch(Exception e){
-      throw new IllegalArgumentException(e);}
+    }catch(Exception x){
+      throw new IllegalArgumentException(x);}
     File f=new File(decodedpath);
     if(!f.isDirectory())f=f.getParentFile();
     return f;}
@@ -316,10 +312,8 @@ public class FRCGParams{
       ois=new ObjectInputStream(fis);
       grammar=(Grammar)ois.readObject();
       ois.close();
-    }catch(Exception e){
-      System.out.println("#^#^# EXCEPTION IN EXTRACT GRAMMAR FROM FILE #^#^#");
-      e.printStackTrace();
-      return null;}
+    }catch(Exception x){
+      throw new IllegalArgumentException(x);}
     return grammar;}
   
 }

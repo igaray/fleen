@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import org.fleen.samples.fleenRasterCompositionGen.gre.GRECommandManager;
-import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 /*
  * create a diamond composition
