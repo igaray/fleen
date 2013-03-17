@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.fleen.samples.fleenRasterCompositionGen.FRCG;
+import org.fleen.samples.fleenRasterCompositionGen.Log;
 
 /*
  * We have 3 classes for handling generate, render and export commands
@@ -40,9 +40,7 @@ public class GRECommandManager{
       if(!commands.isEmpty()){
         command=commands.removeFirst();
         try{
-          FRCG.instance.postMessage("Begin : "+command.getDescription());
           command.execute();
-          FRCG.instance.postMessage("End : "+command.getDescription());
         }catch(Throwable e){
           e.printStackTrace();}}}}
   

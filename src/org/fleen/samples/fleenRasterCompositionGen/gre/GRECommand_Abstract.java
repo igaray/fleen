@@ -1,6 +1,6 @@
 package org.fleen.samples.fleenRasterCompositionGen.gre;
 
-import org.fleen.samples.fleenRasterCompositionGen.FRCG;
+import org.fleen.samples.fleenRasterCompositionGen.Log;
 
 public abstract class GRECommand_Abstract{
   
@@ -20,7 +20,7 @@ public abstract class GRECommand_Abstract{
    */
   
   public final void execute(){
-    FRCG.instance.postMessage(getDescription());
+    Log.m1(getDescription());
     run();}
   
   protected abstract void run();

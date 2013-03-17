@@ -1,6 +1,8 @@
 package org.fleen.samples.fleenRasterCompositionGen;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -27,7 +29,29 @@ public class FRCG{
     TITLE="Fleen Raster Composition Gen",
     VERSION="0.1 alpha";
   
+  //public static final String ABOUT_TEXT=
+  //TITLE+" "+VERSION+"\n"+
+  //"By John Greene\n"+
+  //"john@fleen.org\n"+
+  //"http://fleen.org\n"+
+  //"==VIEWER CONTROLS==\n"+
+  //"ZOOM : Ctrl+Mouse1+Drag\n"+
+  //"PAN : Shift+Mouse1+Drag\n";
+  
+  public static final String INFO_TEXT=
+    TITLE+" "+VERSION+"\n"+
+    "By John Greene\n"+
+    "john@fleen.org\n"+
+    "http://fleen.org\n";
+  
   public static FRCG instance=null;
+  public static boolean debug=true;
+  
+  public static final int LOGBOX_MAX_CHARS=2000;
+  public static final Color 
+    LOGBOX_BACKGROUND=new Color(128,128,128),
+    LOGBOX_FOREGROUND=new Color(255,255,255);
+  public static final Font LOGBOX_FONT=new Font("DejaVu Sans Mono", Font.PLAIN, 14);
   
   public static final void main(String[] a){
     instance=new FRCG();}
@@ -56,10 +80,9 @@ public class FRCG{
         ui=new UI();
         ui.frame.setVisible(true);
         ui.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //init the params after the ui is done initializing
-        //so we have some ui components to update
+        Log.init(ui.txtLogBox);
         params=new FRCGParams();
-        postMessage(ABOUT_TEXT);
+        Log.m0(INFO_TEXT);
       }catch(Exception e){
         e.printStackTrace();}}});}
   
@@ -74,29 +97,5 @@ public class FRCG{
     //make sure all exports are finished writing
     //terminate command queue
   }
-  
-  /*
-   * ################################
-   * MESSAGES
-   * ################################
-   */
-  
-//  public static final String ABOUT_TEXT=
-//    TITLE+" "+VERSION+"\n"+
-//    "By John Greene\n"+
-//    "john@fleen.org\n"+
-//    "http://fleen.org\n"+
-//    "==VIEWER CONTROLS==\n"+
-//    "ZOOM : Ctrl+Mouse1+Drag\n"+
-//    "PAN : Shift+Mouse1+Drag\n";
-  
-  public static final String ABOUT_TEXT=
-      TITLE+" "+VERSION+"\n"+
-      "By John Greene\n"+
-      "john@fleen.org\n"+
-      "http://fleen.org\n";
-  
-  public void postMessage(String m){
-    ui.txtMessage.postMessage("["+System.currentTimeMillis()+"]\n"+m);}
   
 }

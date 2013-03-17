@@ -45,7 +45,7 @@ public class UI{
   public JTextField txtExportImageScale;
   public  JTextField txtExportDir;
   public  JSpinner spiGenExpImageCount;
-  public MessageTextPane txtMessage;
+  public LogBoxTextArea txtLogBox;
   
   /**
    * TEST
@@ -207,7 +207,7 @@ public class UI{
         try{
           GRECommandManager.generate();
         }catch(Exception x){
-          System.out.println("exception in generate");}}});
+          x.printStackTrace();}}});
     
     //BUTTON EXPORT
     JButton btnExport = new JButton("Export");
@@ -218,7 +218,7 @@ public class UI{
           GRECommandManager.renderForExport();
           GRECommandManager.export();
         }catch(Exception x){
-          System.out.println("exception in export");}}});
+          x.printStackTrace();}}});
     
     //BUTTON GENERATE AND EXPORT
     JButton btnGenExp = new JButton("Gen & Exp");
@@ -228,7 +228,7 @@ public class UI{
         try{
           GRECommandManager.generateAndExport();
         }catch(Exception x){
-          System.out.println("exception in generate and export");}}});
+          x.printStackTrace();}}});
     
     //SPINNER GENEXP IMAGE COUNT
     spiGenExpImageCount = new JSpinner();
@@ -245,15 +245,15 @@ public class UI{
         spiGenExpImageCount.getModel().setValue(
           FRCG.instance.params.getGenExpImageCount());}});
     
-    //BUTTON ABOUT
+    //BUTTON INFO
     JButton btnInfo = new JButton("Info");
     btnInfo.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
     btnInfo.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          FRCG.instance.postMessage(FRCG.ABOUT_TEXT);
+          Log.m0(FRCG.INFO_TEXT);
         }catch(Exception x){
-          System.out.println("exception in about");}}});
+          x.printStackTrace();}}});
     
     //MESSAGE TEXT PANE AND SCROLLPANE
     JScrollPane scrollPane = new JScrollPane();
@@ -314,12 +314,8 @@ public class UI{
           .addComponent(btnInfo))
     );
     
-    txtMessage = new MessageTextPane();
-    txtMessage.setForeground(Color.WHITE);
-    txtMessage.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
-    txtMessage.setEditable(false);
-    txtMessage.setBackground(Color.GRAY);
-    scrollPane.setViewportView(txtMessage);
+    txtLogBox = new LogBoxTextArea();
+    scrollPane.setViewportView(txtLogBox);
     panControl.setLayout(gl_panControl);
     frame.getContentPane().setLayout(groupLayout);
   }

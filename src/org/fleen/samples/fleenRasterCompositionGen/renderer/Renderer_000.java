@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.samples.diamondCompositionInspector.Util;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
+import org.fleen.samples.fleenRasterCompositionGen.Log;
 
 
 public class Renderer_000 extends Renderer_Abstract{
@@ -61,7 +62,10 @@ public class Renderer_000 extends Renderer_Abstract{
     //render bubbles
     Path2D path;
     Color c;
+    int bcount=0;
     for(Bubble bubble:fleen.getBubbles()){
+      bcount++;
+      if(bcount%512==0)Log.mp();
       path=Util.getBubbleData(bubble).getPath2D();
       //FILL POLYGON
       if(path!=null){

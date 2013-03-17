@@ -1,0 +1,15 @@
+Make more renderers
+  Make a renderer that can take a user palette
+    2..n colors. Optional stroke color
+  Smart renderer that uses random but smart HSV color space
+    navigated/assembled thing
+
+Do better exception handling. Wrap it all up. Do it with nice error messages etc.
+
+Put icons in the root bubble model combo list
+
+Do some symmetry control functions
+
+Make another nice grammar
+
+Do mouse zoom/pan in composition view.

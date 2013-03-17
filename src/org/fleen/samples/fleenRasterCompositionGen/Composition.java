@@ -32,7 +32,7 @@ public class Composition extends DGComposition{
       bubblemodel);
     boolean cultivationhappened=true;
     while(cultivationhappened){
-      FRCG.instance.postMessage("cultivating");
+      Log.m1("Cultivating");
       cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}}
   
   //returns true if cultivation happened
@@ -41,7 +41,12 @@ public class Composition extends DGComposition{
     Jig j;
     Random random=new Random();
     Map<BubbleSignature,Jig> sigjigs=new Hashtable<BubbleSignature,Jig>();
+    int bcount=0;
     for(Bubble bubble:getLeaves()){
+      //progress feed
+      bcount++;
+      if(bcount%512==0)Log.mp();
+      //
       if(bubble.getDetailSize()>dslimit){
         j=getJig(bubble,grammar,sigjigs,random);
         if(j!=null){
