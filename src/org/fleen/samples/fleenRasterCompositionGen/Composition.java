@@ -17,7 +17,7 @@ import org.fleen.core.diamondGrammar.Jig;
 public class Composition extends DGComposition{
   
   public Composition(){
-    detaillimit=FRCG.instance.params.getDetailSizeLimit();
+    detaillimit=FRCG.instance.config.getDetailSizeLimit();
     init();}
 
   double detaillimit;
@@ -25,8 +25,8 @@ public class Composition extends DGComposition{
   private void init(){
     Grid grid=new Grid();
     setRootGrid(grid);
-    Grammar grammar=FRCG.instance.params.getGrammar();
-    BubbleModel bubblemodel=FRCG.instance.params.getRootBubbleModel();
+    Grammar grammar=FRCG.instance.config.getGrammar();
+    BubbleModel bubblemodel=FRCG.instance.config.getRootBubbleModel();
     new Bubble(
       grid,
       bubblemodel);

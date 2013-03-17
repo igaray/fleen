@@ -1,8 +1,8 @@
-package org.fleen.samples.fleenRasterCompositionGen.gre;
+package org.fleen.samples.fleenRasterCompositionGen.command;
 
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 
-public abstract class GRECommand_Abstract{
+public abstract class Command_Abstract{
   
   /*
    * ################################

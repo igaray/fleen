@@ -12,9 +12,8 @@ public class Log{
   
   public static final void init(LogBox b){
     logbox=b;
-//    if(!FRCG.debug)
-      redirectSystemStreams();
-    }
+    if(!FRCG.debug)
+      redirectSystemStreams();}
   
   private static final void redirectSystemStreams() {
     final OutputStream out = new OutputStream(){

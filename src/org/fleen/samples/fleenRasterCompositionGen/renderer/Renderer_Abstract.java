@@ -4,6 +4,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.fleen.core.diamondGrammar.Bubble;
@@ -11,8 +12,10 @@ import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Viewer;
 
-public abstract class Renderer_Abstract{
-      
+public abstract class Renderer_Abstract implements Serializable{
+
+  private static final long serialVersionUID=6677960572910285947L;
+  
   /*
    * ################################
    * RENDER

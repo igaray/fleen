@@ -9,6 +9,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -30,7 +32,7 @@ import javax.swing.event.ChangeListener;
 
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.core.diamondGrammar.Grammar;
-import org.fleen.samples.fleenRasterCompositionGen.gre.GRECommandManager;
+import org.fleen.samples.fleenRasterCompositionGen.command.Command;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 public class UI{
@@ -73,7 +75,10 @@ public class UI{
     //init frame
     frame=new JFrame();
     frame.setBounds(100,100,506,504);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    frame.addWindowListener(new WindowAdapter(){
+      public void windowClosing(WindowEvent e){
+        FRCG.terminateInstance();}});
     frame.setTitle(FRCG.TITLE+" "+FRCG.VERSION);
     //init layout
     JPanel panControl = new JPanel();
@@ -113,13 +118,13 @@ public class UI{
     txtGrammar.addMouseListener(new MouseAdapter(){
       public void mouseClicked(MouseEvent e){
         try{
-          Grammar g=FRCG.instance.params.getGrammar();
-          FRCG.instance.params.setGrammar();
-          if(g!=FRCG.instance.params.getGrammar()){
-            FRCG.instance.params.initUIComponent_Grammar();
-            FRCG.instance.params.invalidateRootBubbleModel();
-            FRCG.instance.params.initUIComponent_RootBubbleModelsList();
-            FRCG.instance.params.initUIComponent_RootBubbleModel();}
+          Grammar g=FRCG.instance.config.getGrammar();
+          FRCG.instance.config.setGrammarFile();
+          if(g!=FRCG.instance.config.getGrammar()){
+            FRCG.instance.config.initUIComponent_Grammar();
+            FRCG.instance.config.invalidateRootBubbleModel();
+            FRCG.instance.config.initUIComponent_RootBubbleModelsList();
+            FRCG.instance.config.initUIComponent_RootBubbleModel();}
         }catch(Exception x){}}});
     
     //COMBOBOX ROOTBUBBLEMODEL
@@ -130,7 +135,7 @@ public class UI{
     //when we do it, update the params
     cmbRootBubbleModel.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e){
-        FRCG.instance.params.setRootBubbleModel(
+        FRCG.instance.config.setRootBubbleModel(
           (BubbleModel)cmbRootBubbleModel.getModel().getSelectedItem());}});
     
     //TEXTFIELD DETAILSIZELIMIT
@@ -144,9 +149,9 @@ public class UI{
     txtDetailSizeLimit.addFocusListener(new FocusAdapter() {
       @Override
       public void focusLost(FocusEvent e) {
-        FRCG.instance.params.setDetailSizeLimit(txtDetailSizeLimit.getText());
+        FRCG.instance.config.setDetailSizeLimit(txtDetailSizeLimit.getText());
         txtDetailSizeLimit.setText(
-          Double.toString(FRCG.instance.params.getDetailSizeLimit()));}});
+          Double.toString(FRCG.instance.config.getDetailSizeLimit()));}});
     
     //LABEL SYMMETRYCONTROLFUNCTION
     //this is a temporary dummy. We'll do this with some kind of graphical curve-drawing gadget later
@@ -164,7 +169,7 @@ public class UI{
     cmbRenderer.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e){
         try{
-          FRCG.instance.params.setRenderer(
+          FRCG.instance.config.setRenderer(
             (Renderer_Abstract)cmbRenderer.getModel().getSelectedItem());
         }catch(Exception x){}}});
     
@@ -179,9 +184,9 @@ public class UI{
     txtExportImageScale.addFocusListener(new FocusAdapter() {
       @Override
       public void focusLost(FocusEvent e) {
-        FRCG.instance.params.setExportImageScale(txtExportImageScale.getText());
+        FRCG.instance.config.setExportImageScale(txtExportImageScale.getText());
         txtExportImageScale.setText(
-          Double.toString(FRCG.instance.params.getExportImageScale()));}});
+          Double.toString(FRCG.instance.config.getExportImageScale()));}});
     
     //TEXTFIELD EXPORT DIR
     txtExportDir = new JTextField();
@@ -195,8 +200,8 @@ public class UI{
     //set export dir. 
     txtExportDir.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e){
-        FRCG.instance.params.setExportDir();
-        FRCG.instance.params.initUIComponent_ExportDir();}});
+        FRCG.instance.config.setExportDir();
+        FRCG.instance.config.initUIComponent_ExportDir();}});
     
     //BUTTON GENERATE
     JButton btnGenerate = new JButton("Generate");
@@ -205,7 +210,7 @@ public class UI{
     btnGenerate.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          GRECommandManager.generate();
+          Command.generate();
         }catch(Exception x){
           x.printStackTrace();}}});
     
@@ -215,8 +220,8 @@ public class UI{
     btnExport.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          GRECommandManager.renderForExport();
-          GRECommandManager.export();
+          Command.renderForExport();
+          Command.export();
         }catch(Exception x){
           x.printStackTrace();}}});
     
@@ -226,7 +231,7 @@ public class UI{
     btnGenExp.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         try{
-          GRECommandManager.generateAndExport();
+          Command.generateAndExport();
         }catch(Exception x){
           x.printStackTrace();}}});
     
@@ -239,11 +244,11 @@ public class UI{
     spiGenExpImageCount.addChangeListener(new ChangeListener() {
       public void stateChanged(ChangeEvent e){
         try{
-          FRCG.instance.params.setGenExpImageCount(
+          FRCG.instance.config.setGenExpImageCount(
           (Integer)spiGenExpImageCount.getModel().getValue());
         }catch(Exception x){}
         spiGenExpImageCount.getModel().setValue(
-          FRCG.instance.params.getGenExpImageCount());}});
+          FRCG.instance.config.getGenExpImageCount());}});
     
     //BUTTON INFO
     JButton btnInfo = new JButton("Info");

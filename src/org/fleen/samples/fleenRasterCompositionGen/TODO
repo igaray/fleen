@@ -13,3 +13,5 @@ Do some symmetry control functions
 Make another nice grammar
 
 Do mouse zoom/pan in composition view.
+
+Put app params in a serializable file. Store it in working dir. Create on init or absence.

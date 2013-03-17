@@ -1,9 +1,10 @@
 package org.fleen.samples.fleenRasterCompositionGen;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.net.URLDecoder;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -16,65 +17,107 @@ import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SCF_Default;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SymmetryControlFunction_Abstract;
 
-public class FRCGParams{
-    
-  /*
-   * ################################
-   * CONSTRUCTOR
-   * ################################
-   */
+/*
+ * Configuration for Fleen Raster Composition Generator
+ * get the local directory
+ * look there for the config object file
+ *   if it's there then load it
+ *   if it isn't then create a new one
+ * init the various ui to reflect the new config
+ *  
+ * 
+ */
+public class FRCGConfig implements Serializable{
   
-  public FRCGParams(){
-    initUIComponent_Grammar();
-    initUIComponent_RootBubbleModelsList();
-    initUIComponent_RootBubbleModel();
-    initUIComponent_DetailSizeLimit();
-    initUIComponent_SymmetryControlFunction();
-    initUIComponent_RendererList();
-    initUIComponent_Renderer();
-    initUIComponent_ExportImageScale();
-    initUIComponent_ExportDir();
-    initUIComponent_GenExpImageCount();}
-  
+  private static final long serialVersionUID=8345027552779619871L;
+
   /*
    * ################################
    * GRAMMAR
+   * We store the grammar file. Extract as necessary.
    * ################################
    */
   
-  //this is an offset from the default working directory
-  private static final String PATH_TO_DEFAULT_GRAMMAR="/testgrammar_0002.g";
-  private Grammar grammar=null;
-  private String grammarname;
+  private static final String 
+    DEFAULT_GRAMMAR_FILE_NAME="defaultgrammar.g",
+    DEFAULT_GRAMMAR_FILE_SUFFIX=".g";
+  
+  private File grammarfile;
   
   public Grammar getGrammar(){
-  if(grammar==null)
-    initGrammar();
-  return grammar;}
+  if(grammarfile==null)
+    initGrammarFile();
+  return extractGrammarFromFile(grammarfile);}
   
   public String getGrammarName(){
-  if(grammar==null)
-    initGrammar();
-  return grammarname;}
+  if(grammarfile==null)
+    initGrammarFile();
+  return grammarfile.getName();}
   
-  private void initGrammar(){
-    setGrammar(new File(getLocalDir()+PATH_TO_DEFAULT_GRAMMAR));}
+  /*
+   * get defaultgrammar.g from the local directory
+   * if it isn't there then try every .g file in the local directory
+   * if that fails then throw exception
+   */
+  private void initGrammarFile(){
+    setGrammarFile(getDefaultGrammarFile());}
   
-  public void setGrammar(){
+  private File getDefaultGrammarFile(){
+    File localdir=FRCG.getLocalDir();
+    File grammarfile=null;
+    Grammar testgrammar=null;
+    //try to get the default grammar file from the local directory
+    File[] localfiles=localdir.listFiles(new FileFilter(){
+      public boolean accept(File a){
+        return a.getName().equals(DEFAULT_GRAMMAR_FILE_NAME);}});
+    if(localfiles.length>0){
+      grammarfile=localfiles[0];
+      try{
+        testgrammar=extractGrammarFromFile(grammarfile);
+      }catch(Exception x){}}
+    //if that didn't work then try to get any grammar file from the local directory
+    if(testgrammar==null){
+      localfiles=localdir.listFiles(new FileFilter(){
+        public boolean accept(File a){
+          return a.getName().endsWith(DEFAULT_GRAMMAR_FILE_SUFFIX);}});
+      for(File b:localfiles){
+        grammarfile=b;
+        try{
+          testgrammar=extractGrammarFromFile(grammarfile);
+        }catch(Exception x){}
+        if(testgrammar!=null)break;}}
+    //if we have a working grammar then return that file, otherwise we have a null grammar file.
+    if(testgrammar==null)
+      Log.m2("We appear to be missing a default grammar file in the local directory. Grammar set to null.");
+    return grammarfile;}
+  
+  public void setGrammarFile(){
     JFileChooser fc=new JFileChooser("Select Grammar");
-    fc.setCurrentDirectory(getLocalDir());
+    fc.setCurrentDirectory(FRCG.getLocalDir());
     int r=fc.showOpenDialog(FRCG.instance.ui.frame);
     if(r!=JFileChooser.APPROVE_OPTION)
       return;
     File f=fc.getSelectedFile();
-    setGrammar(f);}
+    setGrammarFile(f);}
   
-  public void setGrammar(File f){
-    grammar=extractGrammarFromFile(f);
-    grammarname=f.getName();}
+  public void setGrammarFile(File f){
+    grammarfile=f;}
 
   public void initUIComponent_Grammar(){
     FRCG.instance.ui.txtGrammar.setText(getGrammarName());}
+  
+  private Grammar extractGrammarFromFile(File file){
+    FileInputStream fis;
+    ObjectInputStream ois;
+    Grammar grammar=null;
+    try{
+      fis=new FileInputStream(file);
+      ois=new ObjectInputStream(fis);
+      grammar=(Grammar)ois.readObject();
+      ois.close();
+    }catch(Exception x){
+      throw new IllegalArgumentException(x);}
+    return grammar;}
   
   /*
    * ################################
@@ -167,6 +210,9 @@ public class FRCGParams{
   /*
    * ################################
    * RENDERER
+   * We'll have a few of these
+   * A simple one that we can create multiple versions of and set the colors for
+   * A couple of fancy ones. A smart colorspace thing. A curve smoothing thing.
    * ################################
    */
   
@@ -241,12 +287,12 @@ public class FRCGParams{
     return exportdir;}
   
   private void initExportDir(){
-    exportdir=getLocalDir();}
+    exportdir=FRCG.getLocalDir();}
   
   public void setExportDir(){
     JFileChooser fc=new JFileChooser();
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    fc.setCurrentDirectory(getLocalDir());
+    fc.setCurrentDirectory(FRCG.getLocalDir());
     int r=fc.showOpenDialog(FRCG.instance.ui.frame);
     if(r!=JFileChooser.APPROVE_OPTION)
       return;
@@ -285,35 +331,24 @@ public class FRCGParams{
   
   public void initUIComponent_GenExpImageCount(){
     FRCG.instance.ui.spiGenExpImageCount.setValue(getGenExpImageCount());}
-
+  
   /*
    * ################################
    * UTIL
    * ################################
    */
   
-  private File getLocalDir(){
-    String path=FRCG.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-    String decodedpath;
-    try{
-      decodedpath=URLDecoder.decode(path,"UTF-8");
-    }catch(Exception x){
-      throw new IllegalArgumentException(x);}
-    File f=new File(decodedpath);
-    if(!f.isDirectory())f=f.getParentFile();
-    return f;}
-  
-  private Grammar extractGrammarFromFile(File file){
-    FileInputStream fis;
-    ObjectInputStream ois;
-    Grammar grammar=null;
-    try{
-      fis=new FileInputStream(file);
-      ois=new ObjectInputStream(fis);
-      grammar=(Grammar)ois.readObject();
-      ois.close();
-    }catch(Exception x){
-      throw new IllegalArgumentException(x);}
-    return grammar;}
-  
+  public void initUIComponents(){
+    Log.m1("Initializing ui components.");
+    initUIComponent_Grammar();
+    initUIComponent_RootBubbleModelsList();
+    initUIComponent_RootBubbleModel();
+    initUIComponent_DetailSizeLimit();
+    initUIComponent_SymmetryControlFunction();
+    initUIComponent_RendererList();
+    initUIComponent_Renderer();
+    initUIComponent_ExportImageScale();
+    initUIComponent_ExportDir();
+    initUIComponent_GenExpImageCount();}
+
 }

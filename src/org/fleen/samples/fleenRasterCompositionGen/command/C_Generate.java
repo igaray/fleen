@@ -1,13 +1,13 @@
-package org.fleen.samples.fleenRasterCompositionGen.gre;
+package org.fleen.samples.fleenRasterCompositionGen.command;
 
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
-public class C_Generate extends GRECommand_Abstract{
+public class C_Generate extends Command_Abstract{
 
   protected void run(){
     FRCG.instance.composition=new Composition();
-    GRECommandManager.renderForViewer();}
+    Command.renderForViewer();}
 
   protected String getDescription(){
     return "Generate";}

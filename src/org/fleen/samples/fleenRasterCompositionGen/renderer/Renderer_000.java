@@ -16,6 +16,8 @@ import org.fleen.samples.fleenRasterCompositionGen.Log;
 
 public class Renderer_000 extends Renderer_Abstract{
   
+  private static final long serialVersionUID=-8294845813561601629L;
+
   static final Color
     COLOR_POLYGONEDGE=new Color(128,128,128),
     COLOR_POLYGONFILL_SHARDFOAM=new Color(238,238,238,192),
