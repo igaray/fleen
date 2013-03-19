@@ -265,6 +265,7 @@ public class UI{
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     
+    //LAYOUT
     GroupLayout gl_panControl = new GroupLayout(panControl);
     gl_panControl.setHorizontalGroup(
       gl_panControl.createParallelGroup(Alignment.TRAILING)

@@ -44,10 +44,13 @@ public class FRCGConfig implements Serializable{
   
   private File grammarfile;
   
+  public File getGrammarFile(){
+    if(grammarfile==null)
+      initGrammarFile();
+    return grammarfile;}
+  
   public Grammar getGrammar(){
-  if(grammarfile==null)
-    initGrammarFile();
-  return extractGrammarFromFile(grammarfile);}
+  return extractGrammarFromFile(getGrammarFile());}
   
   public String getGrammarName(){
   if(grammarfile==null)
