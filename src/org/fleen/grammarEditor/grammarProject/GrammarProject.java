@@ -205,7 +205,7 @@ public class GrammarProject implements Serializable{
   
   private static final File getGrammarFileForImport(){
     JFileChooser fc=new JFileChooser();
-    fc.setCurrentDirectory(new File(GE.TESTGRAMMARDIR));
+    fc.setCurrentDirectory(GE.getLocalDir());
     int r=fc.showOpenDialog(GE.uimain);
     if(r!=JFileChooser.APPROVE_OPTION)
       return null;

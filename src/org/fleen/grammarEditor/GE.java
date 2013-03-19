@@ -1,6 +1,8 @@
 package org.fleen.grammarEditor;
 
 import java.awt.EventQueue;
+import java.io.File;
+import java.net.URLDecoder;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
@@ -16,6 +18,7 @@ import org.fleen.grammarEditor.jigEditor.JigEditor;
 import org.fleen.grammarEditor.overview.C_OverviewRefreshAll;
 import org.fleen.grammarEditor.overview.Overview;
 import org.fleen.grammarEditor.util.Command_Abstract;
+import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
 /*
  * This is the main class for the Grammar Editor
@@ -31,8 +34,7 @@ public class GE{
    * ################################
    */
   
-  public static final String APPNAME="Grammar Editor 0.2";
-  public static final String TESTGRAMMARDIR="/home/john/Desktop/grammars";
+  public static final String APPNAME="Fleen Grammar Editor 0.2 pre-alpha";
   
   public static boolean runmain=true;
   public static UIMain uimain=null;
@@ -132,5 +134,25 @@ public class GE{
           command.execute();
         }catch(Throwable e){
           e.printStackTrace();}}}}
+  
+  /*
+   * ################################
+   * UTIL
+   * ################################
+   */
+  
+  /*
+   * returns the directory containing the FRCG binary
+   */
+  public static final File getLocalDir(){
+    String path=FRCG.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    String decodedpath;
+    try{
+      decodedpath=URLDecoder.decode(path,"UTF-8");
+    }catch(Exception x){
+      throw new IllegalArgumentException(x);}
+    File f=new File(decodedpath);
+    if(!f.isDirectory())f=f.getParentFile();
+    return f;}
 
 }
