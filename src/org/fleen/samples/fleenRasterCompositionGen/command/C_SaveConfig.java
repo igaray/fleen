@@ -2,12 +2,12 @@ package org.fleen.samples.fleenRasterCompositionGen.command;
 
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
-public class C_SaveConfig extends Command_Abstract{
+public class C_SaveConfig implements Command{
 
-  protected void run(){
+  public void execute(){
     FRCG.saveConfig();}
 
-  protected String getDescription(){
+  public String getDescription(){
     return "Save Config.";}
 
 }

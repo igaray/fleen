@@ -3,6 +3,10 @@ package org.fleen.samples.fleenRasterCompositionGen;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -21,19 +25,26 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.fleen.core.diamondGrammar.BubbleModel;
+import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
 public class UINew{
 
   public JFrame frame;
-  public JPanel panView;
+  public Viewer panView;
   public JLabel lblStatus;//TODO
-  public JComboBox cmbBubbleModel;
+  public JComboBox cmbRootBubbleModel;
   public JTextField txtGrammarPath;
-  public JTextField lblExportPath;
+  public JTextField txtExportDir;
   public JTextField txtDetailLimit;
   public JComboBox cmbSymConFun;
   public JComboBox cmbRenderer;
   public JTextField txtExpScale;
+  public JSpinner spiGenExpCount;
 
   /**
    * Launch the application.
@@ -48,14 +59,15 @@ public class UINew{
           e.printStackTrace();}}});}
 
   public UINew(){
-    //set l&f
+    //LOOK AND FEEL
     try{
       for(LookAndFeelInfo info:UIManager.getInstalledLookAndFeels()){
         if("Nimbus".equals(info.getName())){
           UIManager.setLookAndFeel(info.getClassName());
           break;}}
     }catch(Exception e){}//go with default
-    //init frame
+    
+    //FRAME
     frame=new JFrame();
     frame.setBounds(100,100,506,504);
     frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -63,22 +75,19 @@ public class UINew{
       public void windowClosing(WindowEvent e){
         FRCG.terminateInstance();}});
     frame.setTitle(FRCG.TITLE+" "+FRCG.VERSION);
-    frame=new JFrame();
-    frame.setBounds(100,100,654,490);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     //TOP
     JPanel panTop = new JPanel();
     
     //VIEW
-    panView = new JPanel();
+    panView = new Viewer();
     panView.setBackground(new Color(255, 0, 255));
     
     //STATUS 
     lblStatus = new JLabel("status status ...+... foo foo");
     lblStatus.setFont(new Font("Dialog", Font.BOLD, 16));
     
-    //CONTENTPANE LAYOUT
+    //FRAME CONTENTPANE LAYOUT
     GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -104,8 +113,14 @@ public class UINew{
           .addContainerGap())
     );
     
-    //BUBBLE MODEL
-    cmbBubbleModel = new JComboBox();
+    //ROOT BUBBLE MODEL
+    cmbRootBubbleModel = new JComboBox();
+    //selection changed listener
+    //when we do it, update the params
+    cmbRootBubbleModel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        FRCG.instance.config.setRootBubbleModel(
+          (BubbleModel)cmbRootBubbleModel.getModel().getSelectedItem());}});
     
     //GRAMMAR FILE
     txtGrammarPath = new JTextField("~/foo/bar/null/grammarfoo.g");
@@ -127,43 +142,104 @@ public class UINew{
         }catch(Exception x){}}});
     
     //EXPORT DIR
-    lblExportPath = new JTextField("~/foo/bar/null/frcgexport");
-    lblExportPath.setBackground(new Color(255, 182, 193));
-    lblExportPath.setEditable(false);
-    lblExportPath.setFont(new Font("Dialog", Font.BOLD, 14));
+    txtExportDir = new JTextField("~/foo/bar/null/frcgexport");
+    txtExportDir.setBackground(new Color(255, 182, 193));
+    txtExportDir.setEditable(false);
+    txtExportDir.setFont(new Font("Dialog", Font.BOLD, 14));
+    //mouse click listener
+    //set export dir. 
+    txtExportDir.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e){
+        FRCG.instance.config.setExportDir();
+        FRCG.instance.config.initUIComponent_ExportDir();}});
     
     //DETAIL LIMIT
     txtDetailLimit = new JTextField();
     txtDetailLimit.setFont(new Font("Dialog", Font.BOLD, 14));
     txtDetailLimit.setText("0.123");
     txtDetailLimit.setColumns(10);
+    //focus lost listener
+    //update and validate
+    txtDetailLimit.addFocusListener(new FocusAdapter() {
+      public void focusLost(FocusEvent e) {
+        FRCG.instance.config.setDetailSizeLimit(txtDetailLimit.getText());
+        txtDetailLimit.setText(
+          Double.toString(FRCG.instance.config.getDetailSizeLimit()));}});
     
     //SYMMETRY CONTROL FUNCTION
+    //TODO
     cmbSymConFun = new JComboBox();
     
     //RENDERER
     cmbRenderer = new JComboBox();
+    //selection changed listener
+    //when we do it, update the params
+    cmbRenderer.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        try{
+          FRCG.instance.config.setRenderer(
+            (Renderer_Abstract)cmbRenderer.getModel().getSelectedItem());
+        }catch(Exception x){}}});
     
     //EXPORT SCALE
     txtExpScale = new JTextField();
     txtExpScale.setFont(new Font("Dialog", Font.BOLD, 14));
     txtExpScale.setColumns(10);
+    //focus lost listener
+    //update and validate
+    txtExpScale.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusLost(FocusEvent e) {
+        FRCG.instance.config.setExportImageScale(txtExpScale.getText());
+        txtExpScale.setText(
+          Double.toString(FRCG.instance.config.getExportImageScale()));}});
     
     //GENERATE AND EXPORT COUNT
-    JSpinner spiGenExpCount = new JSpinner();
+    spiGenExpCount = new JSpinner();
     spiGenExpCount.setFont(new Font("Dialog", Font.BOLD, 14));
+    //update and validate param on state change
+    spiGenExpCount.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent e){
+        try{
+          FRCG.instance.config.setGenExpImageCount(
+          (Integer)spiGenExpCount.getModel().getValue());
+        }catch(Exception x){}
+        spiGenExpCount.getModel().setValue(
+          FRCG.instance.config.getGenExpImageCount());}});
     
     //GENERATE
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.setFont(new Font("Dialog", Font.BOLD, 14));
+    //mouse click listener
+    btnGenerate.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          CQ.generate();
+        }catch(Exception x){
+          x.printStackTrace();}}});
     
     //EXPORT
     JButton btnExp = new JButton("Export");
     btnExp.setFont(new Font("Dialog", Font.BOLD, 14));
+    //mouse click listener
+    btnExp.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          CQ.renderForExport();
+          CQ.export();
+        }catch(Exception x){
+          x.printStackTrace();}}});
     
     //GENERATE AND EXPORT
     JButton btnGenAndExp = new JButton("G&E");
     btnGenAndExp.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+    //mouse click listener
+    btnGenAndExp.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        try{
+          CQ.generateAndExport();
+        }catch(Exception x){
+          x.printStackTrace();}}});
     
     //TOP LAYOUT
     GroupLayout gl_panTop = new GroupLayout(panTop);
@@ -188,20 +264,20 @@ public class UINew{
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
             .addComponent(txtGrammarPath, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
-            .addComponent(lblExportPath, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
+            .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(cmbBubbleModel, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+          .addComponent(cmbRootBubbleModel, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
     );
     gl_panTop.setVerticalGroup(
       gl_panTop.createParallelGroup(Alignment.LEADING)
         .addGroup(gl_panTop.createSequentialGroup()
           .addContainerGap()
           .addGroup(gl_panTop.createParallelGroup(Alignment.LEADING)
-            .addComponent(cmbBubbleModel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(cmbRootBubbleModel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
             .addGroup(gl_panTop.createSequentialGroup()
               .addComponent(txtGrammarPath)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(lblExportPath)
+              .addComponent(txtExportDir)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(gl_panTop.createParallelGroup(Alignment.BASELINE)
                 .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)

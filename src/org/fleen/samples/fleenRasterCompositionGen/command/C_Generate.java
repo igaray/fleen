@@ -3,13 +3,13 @@ package org.fleen.samples.fleenRasterCompositionGen.command;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
-public class C_Generate extends Command_Abstract{
+public class C_Generate implements Command{
 
-  protected void run(){
+  public void execute(){
     FRCG.instance.composition=new Composition();
-    Command.renderForViewer();}
+    CQ.renderForViewer();}
 
-  protected String getDescription(){
+  public String getDescription(){
     return "Generate";}
 
 }

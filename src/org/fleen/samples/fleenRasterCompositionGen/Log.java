@@ -7,11 +7,11 @@ import java.io.PrintStream;
 public class Log{
   
   private static final String PROGRESSCHAR=".";
-  private static LogBox logbox=null;
+//  private static LogBox logbox=null;
   private static boolean lastlogwasprogressincrement=false;
   
   public static final void init(LogBox b){
-    logbox=b;
+//    logbox=b;
     if(!FRCG.debug)
       redirectSystemStreams();}
   
@@ -38,9 +38,10 @@ public class Log{
    */
   public static final void mp(){
     if(!lastlogwasprogressincrement){
-      logbox.appendText("\n"+PROGRESSCHAR);
+//      logbox.appendText("\n"+PROGRESSCHAR);
     }else{
-      logbox.appendText(PROGRESSCHAR);}
+//      logbox.appendText(PROGRESSCHAR);
+      }
     lastlogwasprogressincrement=true;}
   
   /*
@@ -50,7 +51,7 @@ public class Log{
   public static final void m0(String s){
     //append color info TODO
     if(lastlogwasprogressincrement)s="\n"+s;
-    logbox.appendText(s+"\n");
+//    logbox.appendText(s+"\n");
     lastlogwasprogressincrement=false;}
   
   /*
@@ -58,9 +59,10 @@ public class Log{
    * Relevent to whatever process we're in the midst of
    */
   public static final void m1(String s){
+    System.out.println(s);
     //append color info TODO
     if(lastlogwasprogressincrement)s="\n"+s;
-    logbox.appendText(s+"\n");
+//    logbox.appendText(s+"\n");
     lastlogwasprogressincrement=false;}
   
   /*
@@ -71,7 +73,7 @@ public class Log{
   public static final void m2(String s){
     //append color info TODO
     if(lastlogwasprogressincrement)s="\n"+s;
-    logbox.appendText("########\n"+s+"\n########\n");
+//    logbox.appendText("########\n"+s+"\n########\n");
     lastlogwasprogressincrement=false;}
   
   

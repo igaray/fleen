@@ -107,7 +107,7 @@ public class FRCGConfig implements Serializable{
     grammarfile=f;}
 
   public void initUIComponent_Grammar(){
-    FRCG.instance.ui.txtGrammar.setText(getGrammarName());}
+    FRCG.instance.ui.txtGrammarPath.setText(getGrammarFile().getPath());}
   
   private Grammar extractGrammarFromFile(File file){
     FileInputStream fis;
@@ -180,7 +180,7 @@ public class FRCGConfig implements Serializable{
       detailsizelimit=d;}
   
   public void initUIComponent_DetailSizeLimit(){
-    FRCG.instance.ui.txtDetailSizeLimit.setText(
+    FRCG.instance.ui.txtDetailLimit.setText(
       Double.toString(getDetailSizeLimit()));}
   
   /*
@@ -207,8 +207,9 @@ public class FRCGConfig implements Serializable{
     symmetrycontrolfunction=scf;}
   
   public void initUIComponent_SymmetryControlFunction(){
-    FRCG.instance.ui.lblTxtSymmetryControlFunction.setText(
-      getSymmetryControlFunction().toString());}
+//    FRCG.instance.ui.lblTxtSymmetryControlFunction.setText(
+//      getSymmetryControlFunction().toString());
+    }
   
   /*
    * ################################
@@ -271,7 +272,7 @@ public class FRCGConfig implements Serializable{
     exportimagescale=d;}
   
   public void initUIComponent_ExportImageScale(){
-    FRCG.instance.ui.txtExportImageScale.setText(
+    FRCG.instance.ui.txtExpScale.setText(
       Double.toString(getExportImageScale()));}
   
   /*
@@ -333,7 +334,7 @@ public class FRCGConfig implements Serializable{
       genexpimagecount=i;}
   
   public void initUIComponent_GenExpImageCount(){
-    FRCG.instance.ui.spiGenExpImageCount.setValue(getGenExpImageCount());}
+    FRCG.instance.ui.spiGenExpCount.setValue(getGenExpImageCount());}
   
   /*
    * ################################
