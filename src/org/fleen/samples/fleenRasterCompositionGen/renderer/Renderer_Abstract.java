@@ -3,6 +3,7 @@ package org.fleen.samples.fleenRasterCompositionGen.renderer;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -93,6 +94,16 @@ public abstract class Renderer_Abstract implements Serializable{
       if(maxx<vp[i][0])maxx=vp[i][0];
       if(maxy<vp[i][1])maxy=vp[i][1];}
     return new Rectangle2D.Double(minx,miny,maxx-minx,maxy-miny);}
+  
+  public static final Path2D.Double getPath2D(Bubble bubble){
+    Path2D.Double path2d=new Path2D.Double();
+    double[][] lp=bubble.getVertexPoints2D();
+    path2d.moveTo(lp[0][0],lp[0][1]);
+    //
+    for(int i=1;i<lp.length;i++)
+      path2d.lineTo(lp[i][0],lp[i][1]);
+    path2d.closePath();
+    return path2d;}
   
   /*
    * ################################

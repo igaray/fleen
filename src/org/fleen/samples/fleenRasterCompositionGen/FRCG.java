@@ -2,7 +2,6 @@ package org.fleen.samples.fleenRasterCompositionGen;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileFilter;
@@ -15,7 +14,6 @@ import java.net.URLDecoder;
 
 import javax.swing.JFrame;
 
-import org.fleen.grammarEditor.C;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
 import org.fleen.samples.fleenRasterCompositionGen.ui.UI;
 

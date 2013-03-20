@@ -7,7 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 
 import org.fleen.core.diamondGrammar.Bubble;
-import org.fleen.samples.diamondCompositionInspector.Util;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 
@@ -60,7 +59,7 @@ public class Renderer_000 extends Renderer_Abstract{
     for(Bubble bubble:fleen.getBubbles()){
       bcount++;
       if(bcount%4096==0)Log.m1(".");
-      path=Util.getBubbleData(bubble).getPath2D();
+      path=getPath2D(bubble);
       //FILL POLYGON
       if(path!=null){
         c=FOAMCOLORS[bubble.foam.getLevel()%FOAMCOLORS.length];
