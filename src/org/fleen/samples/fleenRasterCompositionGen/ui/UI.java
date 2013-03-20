@@ -242,6 +242,8 @@ public class UI{
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
     lstRootBubbleModel = new JList();
+    lstRootBubbleModel.setBackground(FRCG.BMLIST_COLOR_DEFAULT);
+    lstRootBubbleModel.setForeground(FRCG.BMLIST_COLOR_TEXT);
     lstRootBubbleModel.setCellRenderer(new RootBMListCellRenderer());
     lstRootBubbleModel.setLayoutOrientation(JList.HORIZONTAL_WRAP);
     lstRootBubbleModel.setVisibleRowCount(1);  

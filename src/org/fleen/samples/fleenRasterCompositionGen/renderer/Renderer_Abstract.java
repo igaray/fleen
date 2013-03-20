@@ -24,7 +24,7 @@ public abstract class Renderer_Abstract implements Serializable{
    * ################################
    */
   
-  protected static HashMap<RenderingHints.Key,Object> RENDERING_HINTS=
+  public static HashMap<RenderingHints.Key,Object> RENDERING_HINTS=
     new HashMap<RenderingHints.Key,Object>();
     
   static{

@@ -13,6 +13,6 @@ public class C_GenerateAndExport implements Command{
       CQ.export();}}
 
   public String getDescription(){
-    return "generating and exporting : "+FRCG.instance.config.getGenExpImageCount();}
+    return "generating & exporting : "+FRCG.instance.config.getGenExpImageCount();}
 
 }

@@ -15,6 +15,7 @@ import java.net.URLDecoder;
 
 import javax.swing.JFrame;
 
+import org.fleen.grammarEditor.C;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
 import org.fleen.samples.fleenRasterCompositionGen.ui.UI;
 
@@ -44,12 +45,16 @@ public class FRCG{
   public static FRCG instance=null;
   public static boolean debug=true;
   
-  public static final int LOGBOX_MAX_CHARS=2000;
-  public static final Color 
-    LOGBOX_BACKGROUND=new Color(128,128,128),
-    LOGBOX_FOREGROUND=new Color(255,255,255);
-  public static final Font LOGBOX_FONT=new Font("DejaVu Sans Mono", Font.PLAIN, 14);
-  
+  public static final int 
+    BMLIST_CELLSPAN=91,//109,
+    BMLIST_ICONPADDING=5;
+  public static final Color
+    BMLIST_COLOR_BUBBLEMODELIMAGEFILL=Color.orange,
+    BMLIST_COLOR_BUBBLEMODELIMAGESTROKE=Color.lightGray,
+    BMLIST_COLOR_DEFAULT=Color.black,
+    BMLIST_COLOR_SELECTED=Color.yellow,
+    BMLIST_COLOR_TEXT=Color.lightGray;
+    
   public static final void main(String[] a){
     instance=new FRCG();}
   

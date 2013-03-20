@@ -50,6 +50,7 @@ public class Renderer_000 extends Renderer_Abstract{
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   
   protected void render(Composition fleen,Graphics2D graphics,AffineTransform transform){
+    if(fleen==null)return;
     //get scaled metrics
     float polygonstrokewidth=(float)(POLYGON_LINE_STROKE_WIDTH/transform.getScaleX());
     //render bubbles

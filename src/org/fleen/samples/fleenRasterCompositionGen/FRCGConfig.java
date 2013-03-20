@@ -168,7 +168,7 @@ public class FRCGConfig implements Serializable{
   
   public void initUIComponent_RootBubbleModel(){
     FRCG.instance.ui.lstRootBubbleModel.setModel(new RootBMListModel());
-    FRCG.instance.ui.lstRootBubbleModel.setSelectedIndex(getRootBubbleModelIndex());}
+    FRCG.instance.ui.lstRootBubbleModel.setSelectedValue(getRootBubbleModel(),true);}
   
   /*
    * ################################
