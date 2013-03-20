@@ -107,7 +107,9 @@ public class FRCGConfig implements Serializable{
     grammarfile=f;}
 
   public void initUIComponent_Grammar(){
-    FRCG.instance.ui.txtGrammarPath.setText(getGrammarFile().getPath());}
+    String p=getGrammarFile().getPath();
+    FRCG.instance.ui.txtGrammarPath.setText(p);
+    FRCG.instance.ui.txtGrammarPath.setToolTipText("Grammar File : "+p);}
   
   private Grammar extractGrammarFromFile(File file){
     FileInputStream fis;
@@ -343,7 +345,6 @@ public class FRCGConfig implements Serializable{
    */
   
   public void initUIComponents(){
-    Log.m1("Initializing ui components.");
     initUIComponent_Grammar();
     initUIComponent_RootBubbleModelsList();
     initUIComponent_RootBubbleModel();

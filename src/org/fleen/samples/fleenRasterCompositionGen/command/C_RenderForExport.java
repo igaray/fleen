@@ -11,6 +11,6 @@ public class C_RenderForExport implements Command{
       r.renderForExport(FRCG.instance.composition,FRCG.instance.config.getExportImageScale());}
 
   public String getDescription(){
-    return "Render for export";}
+    return "rendering for export";}
 
 }

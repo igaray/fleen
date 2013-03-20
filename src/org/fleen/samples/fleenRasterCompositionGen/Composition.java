@@ -32,7 +32,7 @@ public class Composition extends DGComposition{
       bubblemodel);
     boolean cultivationhappened=true;
     while(cultivationhappened){
-      Log.m1("Cultivating");
+      Log.m1("[cultivating]");
       cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}}
   
   //returns true if cultivation happened
@@ -45,7 +45,8 @@ public class Composition extends DGComposition{
     for(Bubble bubble:getLeaves()){
       //progress feed
       bcount++;
-      if(bcount%512==0)Log.mp();
+      if(bcount%4096==0)
+        Log.m1(".");
       //
       if(bubble.getDetailSize()>dslimit){
         j=getJig(bubble,grammar,sigjigs,random);

@@ -1,4 +1,4 @@
-package org.fleen.samples.fleenRasterCompositionGen;
+package org.fleen.samples.fleenRasterCompositionGen.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -18,7 +18,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -29,14 +28,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.fleen.core.diamondGrammar.BubbleModel;
+import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 
-public class UINew{
+public class UI{
 
   public JFrame frame;
   public Viewer panView;
-  public JLabel lblStatus;//TODO
+  public StatusView statusview;
   public JComboBox cmbRootBubbleModel;
   public JTextField txtGrammarPath;
   public JTextField txtExportDir;
@@ -53,12 +53,12 @@ public class UINew{
     EventQueue.invokeLater(new Runnable(){
       public void run(){
         try{
-          UINew window=new UINew();
+          UI window=new UI();
           window.frame.setVisible(true);
         }catch(Exception e){
           e.printStackTrace();}}});}
 
-  public UINew(){
+  public UI(){
     //LOOK AND FEEL
     try{
       for(LookAndFeelInfo info:UIManager.getInstalledLookAndFeels()){
@@ -69,7 +69,7 @@ public class UINew{
     
     //FRAME
     frame=new JFrame();
-    frame.setBounds(100,100,506,504);
+    frame.setBounds(100,100,727,568);
     frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     frame.addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e){
@@ -84,37 +84,34 @@ public class UINew{
     panView.setBackground(new Color(255, 0, 255));
     
     //STATUS 
-    lblStatus = new JLabel("status status ...+... foo foo");
-    lblStatus.setFont(new Font("Dialog", Font.BOLD, 16));
+    statusview = new StatusView();
     
     //FRAME CONTENTPANE LAYOUT
     GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
-        .addGroup(groupLayout.createSequentialGroup()
-          .addContainerGap()
-          .addComponent(lblStatus, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
-          .addGap(2))
-        .addGroup(groupLayout.createSequentialGroup()
+        .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
           .addGap(21)
-          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addComponent(panView, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
-            .addComponent(panTop, Alignment.LEADING, 0, 0, Short.MAX_VALUE))
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addComponent(panView, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+            .addComponent(panTop, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+            .addComponent(statusview, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE))
           .addGap(18))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
-          .addComponent(panTop, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+          .addComponent(panTop, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(panView, GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+          .addComponent(panView, GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(lblStatus)
+          .addComponent(statusview, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
           .addContainerGap())
     );
     
     //ROOT BUBBLE MODEL
     cmbRootBubbleModel = new JComboBox();
+    cmbRootBubbleModel.setToolTipText("Root BubbleModel");
     //selection changed listener
     //when we do it, update the params
     cmbRootBubbleModel.addActionListener(new ActionListener() {
@@ -155,6 +152,7 @@ public class UINew{
     
     //DETAIL LIMIT
     txtDetailLimit = new JTextField();
+    txtDetailLimit.setToolTipText("Detail Size Limit");
     txtDetailLimit.setFont(new Font("Dialog", Font.BOLD, 14));
     txtDetailLimit.setText("0.123");
     txtDetailLimit.setColumns(10);
@@ -169,9 +167,11 @@ public class UINew{
     //SYMMETRY CONTROL FUNCTION
     //TODO
     cmbSymConFun = new JComboBox();
+    cmbSymConFun.setToolTipText("Symmetry Control Function");
     
     //RENDERER
     cmbRenderer = new JComboBox();
+    cmbRenderer.setToolTipText("Renderer");
     //selection changed listener
     //when we do it, update the params
     cmbRenderer.addActionListener(new ActionListener() {
@@ -183,6 +183,7 @@ public class UINew{
     
     //EXPORT SCALE
     txtExpScale = new JTextField();
+    txtExpScale.setToolTipText("Export Image Scale");
     txtExpScale.setFont(new Font("Dialog", Font.BOLD, 14));
     txtExpScale.setColumns(10);
     //focus lost listener
@@ -196,6 +197,7 @@ public class UINew{
     
     //GENERATE AND EXPORT COUNT
     spiGenExpCount = new JSpinner();
+    spiGenExpCount.setToolTipText("Export Image Count");
     spiGenExpCount.setFont(new Font("Dialog", Font.BOLD, 14));
     //update and validate param on state change
     spiGenExpCount.addChangeListener(new ChangeListener() {
@@ -262,34 +264,35 @@ public class UINew{
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(btnGenAndExp)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
-            .addComponent(txtGrammarPath, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
-            .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
+              .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(cmbRootBubbleModel, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+          .addComponent(cmbRootBubbleModel, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+          .addContainerGap(26, Short.MAX_VALUE))
+        .addComponent(txtGrammarPath, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+        .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
     );
     gl_panTop.setVerticalGroup(
       gl_panTop.createParallelGroup(Alignment.LEADING)
         .addGroup(gl_panTop.createSequentialGroup()
           .addContainerGap()
+          .addComponent(txtGrammarPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+          .addPreferredGap(ComponentPlacement.RELATED)
+          .addComponent(txtExportDir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+          .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(gl_panTop.createParallelGroup(Alignment.LEADING)
-            .addComponent(cmbRootBubbleModel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
             .addGroup(gl_panTop.createSequentialGroup()
-              .addComponent(txtGrammarPath)
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(txtExportDir)
-              .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(gl_panTop.createParallelGroup(Alignment.BASELINE)
-                .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-                .addComponent(cmbSymConFun, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addComponent(cmbRenderer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbSymConFun, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbRenderer, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
               .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(gl_panTop.createParallelGroup(Alignment.BASELINE)
                 .addComponent(btnGenerate)
                 .addComponent(btnExp)
                 .addComponent(btnGenAndExp)
-                .addComponent(txtExpScale, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-                .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))))
+                .addComponent(txtExpScale, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+                .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
+            .addComponent(cmbRootBubbleModel, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
           .addContainerGap())
     );
     panTop.setLayout(gl_panTop);

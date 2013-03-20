@@ -12,6 +12,6 @@ public class C_RenderForViewer implements Command{
     FRCG.instance.ui.panView.update();}
 
   public String getDescription(){
-    return "Render for viewer";}
+    return "rendering for viewer";}
 
 }

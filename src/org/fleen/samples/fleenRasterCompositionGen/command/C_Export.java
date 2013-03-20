@@ -9,6 +9,6 @@ public class C_Export implements Command{
     new Exporter().export(FRCG.instance.exportimage,FRCG.instance.config.getExportDir());}
 
   public String getDescription(){
-    return "Export";}
+    return "exporting";}
 
 }

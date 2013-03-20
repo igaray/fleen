@@ -1,9 +1,11 @@
-package org.fleen.samples.fleenRasterCompositionGen;
+package org.fleen.samples.fleenRasterCompositionGen.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
+import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
 @SuppressWarnings("serial")
 public class Viewer extends JPanel{

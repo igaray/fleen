@@ -8,6 +8,6 @@ public class C_SaveConfig implements Command{
     FRCG.saveConfig();}
 
   public String getDescription(){
-    return "Save Config.";}
+    return "saving config";}
 
 }

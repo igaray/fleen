@@ -15,8 +15,8 @@ import java.net.URLDecoder;
 
 import javax.swing.JFrame;
 
-import org.fleen.grammarEditor.GE;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
+import org.fleen.samples.fleenRasterCompositionGen.ui.UI;
 
 /*
  * create a diamond composition
@@ -71,7 +71,7 @@ public class FRCG{
    * ################################
    */
   
-  public UINew ui=null;
+  public UI ui=null;
   public FRCGConfig config=null;
   public Composition composition=null;
   public BufferedImage viewerimage=null,exportimage=null;
@@ -86,10 +86,10 @@ public class FRCG{
     public void run(){
       try{
         CQ.init();
-        ui=new UINew();
+        ui=new UI();
         ui.frame.setVisible(true);
         ui.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        Log.init(ui.txtLogBox);
+        ui.statusview.start();
         Log.m0(INFO_TEXT);
         config=initConfig();
         config.initUIComponents();
@@ -105,6 +105,7 @@ public class FRCG{
   public static final void terminateInstance(){
     CQ.saveConfig();
     while(!CQ.idle()){};
+    instance.ui.statusview.stop();
     instance.ui.frame.setVisible(false);
     System.exit(0);}
   
@@ -128,11 +129,7 @@ public class FRCG{
         return a.getName().equals(CONFIG_FILE_NAME);}});
     if(localfiles.length>0)
       c=extractConfigFromFile(localfiles[0]);
-    if(c!=null){
-      Log.m1("load config");
-    }else{
-      Log.m1("create config");
-      c=new FRCGConfig();}
+    if(c==null)c=new FRCGConfig();
     return c;}
   
   //get config from local file

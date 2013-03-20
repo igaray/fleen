@@ -34,13 +34,13 @@ public class CQ{
       COMMAND_QUEUE_MANAGER_PERIODIC_DELAY, 
       TimeUnit.MILLISECONDS);}
   
-  private static class CommandExecutor extends Thread{
+  public static class CommandExecutor extends Thread{
     public void run(){
       if(!commands.isEmpty()){
         command=commands.removeFirst();
         try{
           commandrunning=true;
-          Log.m1(command.getDescription());
+          Log.m1("["+command.getDescription()+"]");
           command.execute();
           commandrunning=false;
         }catch(Throwable x){

@@ -67,7 +67,7 @@ public class Renderer_000 extends Renderer_Abstract{
     int bcount=0;
     for(Bubble bubble:fleen.getBubbles()){
       bcount++;
-      if(bcount%512==0)Log.mp();
+      if(bcount%4096==0)Log.m1(".");
       path=Util.getBubbleData(bubble).getPath2D();
       //FILL POLYGON
       if(path!=null){

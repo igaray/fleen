@@ -10,7 +10,8 @@ import java.util.HashMap;
 import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
-import org.fleen.samples.fleenRasterCompositionGen.Viewer;
+import org.fleen.samples.fleenRasterCompositionGen.Log;
+import org.fleen.samples.fleenRasterCompositionGen.ui.Viewer;
 
 public abstract class Renderer_Abstract implements Serializable{
 
@@ -49,7 +50,9 @@ public abstract class Renderer_Abstract implements Serializable{
     AffineTransform transform=new AffineTransform();
     transform.scale(scale,scale);
     transform.translate(offx,offy);
-    return getImage(composition,bounds,transform);}
+    BufferedImage i=getImage(composition,bounds,transform);
+    Log.m1("[finished rendering]");
+    return i;}
   
   public BufferedImage renderForViewer(Composition composition,Viewer viewer){
     Rectangle2D.Double bounds=getRootBubbleBounds(composition);
@@ -60,7 +63,9 @@ public abstract class Renderer_Abstract implements Serializable{
     AffineTransform transform=new AffineTransform();
     transform.scale(scale,scale);
     transform.translate(offx,offy);
-    return getImage(composition,bounds,transform);}
+    BufferedImage i=getImage(composition,bounds,transform);
+    Log.m1("[finished rendering]");
+    return i;}
   
   protected abstract BufferedImage getImage(
     Composition composition,Rectangle2D.Double bounds,AffineTransform transform);

@@ -10,6 +10,6 @@ public class C_Generate implements Command{
     CQ.renderForViewer();}
 
   public String getDescription(){
-    return "Generate";}
+    return "GENERATING";}
 
 }

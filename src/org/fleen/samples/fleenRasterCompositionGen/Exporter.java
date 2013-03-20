@@ -8,6 +8,7 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriter;
+import javax.imageio.event.IIOWriteProgressListener;
 import javax.imageio.stream.ImageOutputStream;
 
 import com.sun.imageio.plugins.png.PNGMetadata;
@@ -47,6 +48,7 @@ public class Exporter{
   void write(){
     Iterator<ImageWriter> i=ImageIO.getImageWritersBySuffix("png");
     ImageWriter writer=(ImageWriter)i.next();
+    writer.addIIOWriteProgressListener(new WriterListener());
     ImageOutputStream imageOutputstream=null;
     try{
       imageOutputstream=ImageIO.createImageOutputStream(file);
@@ -65,5 +67,29 @@ public class Exporter{
       imageOutputstream.close();
     }catch(Exception e){
       e.printStackTrace();}}
+  
+  private class WriterListener implements IIOWriteProgressListener{
+
+    static final float PROGRESSINCREMENT=10f;
+    float previousprogress=0f;
+    
+    public void imageStarted(ImageWriter source,int imageIndex){}
+
+    public void imageProgress(ImageWriter source,float percentageDone){
+      if(percentageDone>(previousprogress+PROGRESSINCREMENT)){
+        Log.m1(".");
+        previousprogress+=PROGRESSINCREMENT;}}
+
+    public void imageComplete(ImageWriter source){
+      Log.m1("[finished exporting]");}
+
+    public void thumbnailStarted(ImageWriter source,int imageIndex,
+        int thumbnailIndex){}
+
+    public void thumbnailProgress(ImageWriter source,float percentageDone){}
+
+    public void thumbnailComplete(ImageWriter source){}
+
+    public void writeAborted(ImageWriter source){}}
 
 }
