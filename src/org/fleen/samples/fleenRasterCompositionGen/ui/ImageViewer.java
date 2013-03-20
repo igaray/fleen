@@ -42,9 +42,7 @@ public class ImageViewer extends JPanel{
   public void centerAndFit(){
     Rectangle2D.Double bounds=Renderer_Abstract.getRootBubbleBounds(FRCG.instance.composition);
     setScaleForFit(bounds);
-    setDeltasForCenter(bounds);
-    Renderer_Abstract r=FRCG.instance.config.getRenderer();
-    CQ.renderForViewer();}
+    setDeltasForCenter(bounds);}
   
   private void setScaleForFit(Rectangle2D.Double rbbounds){
     double 

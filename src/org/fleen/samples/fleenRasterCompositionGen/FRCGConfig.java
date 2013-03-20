@@ -104,7 +104,9 @@ public class FRCGConfig implements Serializable{
     setGrammarFile(f);}
   
   public void setGrammarFile(File f){
-    grammarfile=f;}
+    grammarfile=f;
+    initRootBubbleModel();
+    initUIComponent_RootBubbleModel();}
 
   public void initUIComponent_Grammar(){
     String p=getGrammarFile().getPath();
@@ -150,11 +152,11 @@ public class FRCGConfig implements Serializable{
   
   public void initUIComponent_RootBubbleModelsList(){
     List<BubbleModel> m=getGrammar().getBubbleModels();
-    FRCG.instance.ui.cmbRootBubbleModel.setModel(
+    FRCG.instance.ui.lstRootBubbleModel.setModel(
       new DefaultComboBoxModel(m.toArray(new BubbleModel[m.size()])));}
   
   public void initUIComponent_RootBubbleModel(){
-    FRCG.instance.ui.cmbRootBubbleModel.getModel().setSelectedItem(getRootBubbleModel());}
+    FRCG.instance.ui.lstRootBubbleModel.setSelectedValue(getRootBubbleModel(),true);}
   
   /*
    * ################################

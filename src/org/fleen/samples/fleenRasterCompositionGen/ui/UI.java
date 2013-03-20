@@ -3,7 +3,6 @@ package org.fleen.samples.fleenRasterCompositionGen.ui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -18,16 +17,21 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
@@ -39,7 +43,7 @@ public class UI{
   public JFrame frame;
   public ImageViewer panView;
   public StatusViewer statusview;
-  public JComboBox cmbRootBubbleModel;
+  public JList lstRootBubbleModel;
   public JTextField txtGrammarPath;
   public JTextField txtExportDir;
   public JTextField txtDetailLimit;
@@ -68,18 +72,6 @@ public class UI{
           UIManager.setLookAndFeel(info.getClassName());
           break;}}
     }catch(Exception e){}//go with default
-    
-//    Toolkit.getDefaultToolkit().setDynamicLayout(true);
-//    System.setProperty("sun.awt.noerasebackground", "true");
-//    JFrame.setDefaultLookAndFeelDecorated(true);
-//    JDialog.setDefaultLookAndFeelDecorated(true);
-//
-//    try {
-//        UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
-//    } catch(Exception ex) {
-//        ex.printStackTrace();
-//    }
-    
     
     //FRAME
     frame=new JFrame();
@@ -122,16 +114,6 @@ public class UI{
           .addComponent(statusview, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
           .addContainerGap())
     );
-    
-    //ROOT BUBBLE MODEL
-    cmbRootBubbleModel = new JComboBox();
-    cmbRootBubbleModel.setToolTipText("Root BubbleModel");
-    //selection changed listener
-    //when we do it, update the params
-    cmbRootBubbleModel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e){
-        FRCG.instance.config.setRootBubbleModel(
-          (BubbleModel)cmbRootBubbleModel.getModel().getSelectedItem());}});
     
     //GRAMMAR FILE
     txtGrammarPath = new JTextField("~/foo/bar/null/grammarfoo.g");
@@ -255,6 +237,23 @@ public class UI{
         }catch(Exception x){
           x.printStackTrace();}}});
     
+    //ROOT BUBBLE MODEL
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    lstRootBubbleModel = new JList();
+    lstRootBubbleModel.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    lstRootBubbleModel.setVisibleRowCount(1);  
+    lstRootBubbleModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    scrollPane.setViewportView(lstRootBubbleModel);
+    lstRootBubbleModel.setToolTipText("Root BubbleModel");
+    //selection changed listener
+    //when we do it, update the params
+    lstRootBubbleModel.addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e){
+        FRCG.instance.config.setRootBubbleModel(
+            (BubbleModel)lstRootBubbleModel.getSelectedValue());}});
+    
     //TOP LAYOUT
     GroupLayout gl_panTop = new GroupLayout(panTop);
     gl_panTop.setHorizontalGroup(
@@ -278,8 +277,7 @@ public class UI{
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(cmbRootBubbleModel, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
-          .addContainerGap(26, Short.MAX_VALUE))
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
         .addComponent(txtGrammarPath, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
         .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
     );
@@ -304,9 +302,10 @@ public class UI{
                 .addComponent(btnGenAndExp)
                 .addComponent(txtExpScale, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
                 .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
-            .addComponent(cmbRootBubbleModel, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+            .addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
           .addContainerGap())
     );
+    
     panTop.setLayout(gl_panTop);
     frame.getContentPane().setLayout(groupLayout);
   }
