@@ -1,6 +1,7 @@
 package org.fleen.samples.fleenRasterCompositionGen.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -312,5 +313,8 @@ public class UI{
     
     panTop.setLayout(gl_panTop);
     frame.getContentPane().setLayout(groupLayout);
+    //avoid textbox grow
+    txtGrammarPath.setMaximumSize(new Dimension(568,28));
+    txtExportDir.setMaximumSize(new Dimension(568,28));
   }
 }
