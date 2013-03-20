@@ -16,6 +16,7 @@ import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_000;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SCF_Default;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SymmetryControlFunction_Abstract;
+import org.fleen.samples.fleenRasterCompositionGen.ui.RootBMListModel;
 
 /*
  * Configuration for Fleen Raster Composition Generator
@@ -43,6 +44,7 @@ public class FRCGConfig implements Serializable{
     DEFAULT_GRAMMAR_FILE_SUFFIX=".g";
   
   private File grammarfile;
+  private volatile Grammar grammar=null;
   
   public File getGrammarFile(){
     if(grammarfile==null)
@@ -50,7 +52,9 @@ public class FRCGConfig implements Serializable{
     return grammarfile;}
   
   public Grammar getGrammar(){
-  return extractGrammarFromFile(getGrammarFile());}
+    if(grammar==null)
+      grammar=extractGrammarFromFile(getGrammarFile());
+  return grammar;}
   
   public String getGrammarName(){
   if(grammarfile==null)
@@ -96,7 +100,10 @@ public class FRCGConfig implements Serializable{
   
   public void setGrammarFile(){
     JFileChooser fc=new JFileChooser("Select Grammar");
-    fc.setCurrentDirectory(FRCG.getLocalDir());
+    if(grammarfile!=null){
+      fc.setCurrentDirectory(grammarfile);
+    }else{
+      fc.setCurrentDirectory(FRCG.getLocalDir());}
     int r=fc.showOpenDialog(FRCG.instance.ui.frame);
     if(r!=JFileChooser.APPROVE_OPTION)
       return;
@@ -104,9 +111,9 @@ public class FRCGConfig implements Serializable{
     setGrammarFile(f);}
   
   public void setGrammarFile(File f){
+    grammar=null;
     grammarfile=f;
-    initRootBubbleModel();
-    initUIComponent_RootBubbleModel();}
+    invalidateRootBubbleModel();}
 
   public void initUIComponent_Grammar(){
     String p=getGrammarFile().getPath();
@@ -132,23 +139,27 @@ public class FRCGConfig implements Serializable{
    * ################################
    */
   
-  private BubbleModel rootbubblemodel=null;
+  //an index within the grammar's bubblemodels list
+  private static final int ROOTBUBBLEMODELINDEX_DEFAULT=0;
+  private int rootbubblemodelindex=-1;
+  
+  public int getRootBubbleModelIndex(){
+    if(rootbubblemodelindex==-1)
+      initRootBubbleModel();
+    return rootbubblemodelindex;}
   
   public BubbleModel getRootBubbleModel(){
-    if(rootbubblemodel==null)
-      initRootBubbleModel();
-    return rootbubblemodel;}
+    return getGrammar().getBubbleModels().get(getRootBubbleModelIndex());}
   
   public void setRootBubbleModel(BubbleModel m){
-    rootbubblemodel=m;}
+    rootbubblemodelindex=getGrammar().getBubbleModels().indexOf(m);}
   
   private void initRootBubbleModel(){
-    Grammar g=getGrammar();
-    BubbleModel m=g.getBubbleModels().get(0);
-    setRootBubbleModel(m);}
+    rootbubblemodelindex=ROOTBUBBLEMODELINDEX_DEFAULT;
+    initUIComponent_RootBubbleModel();}
   
   public void invalidateRootBubbleModel(){
-    rootbubblemodel=null;}
+    rootbubblemodelindex=-1;}
   
   public void initUIComponent_RootBubbleModelsList(){
     List<BubbleModel> m=getGrammar().getBubbleModels();
@@ -156,7 +167,8 @@ public class FRCGConfig implements Serializable{
       new DefaultComboBoxModel(m.toArray(new BubbleModel[m.size()])));}
   
   public void initUIComponent_RootBubbleModel(){
-    FRCG.instance.ui.lstRootBubbleModel.setSelectedValue(getRootBubbleModel(),true);}
+    FRCG.instance.ui.lstRootBubbleModel.setModel(new RootBMListModel());
+    FRCG.instance.ui.lstRootBubbleModel.setSelectedIndex(getRootBubbleModelIndex());}
   
   /*
    * ################################
@@ -228,6 +240,7 @@ public class FRCGConfig implements Serializable{
     new Renderer_000(),
 //    new Renderer_001()
     };
+  
   private Renderer_Abstract renderer=null;
   
   public Renderer_Abstract getRenderer(){

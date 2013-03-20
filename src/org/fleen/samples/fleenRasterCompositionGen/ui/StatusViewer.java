@@ -68,7 +68,7 @@ public class StatusViewer extends JPanel{
   
   private static final long 
     INITIAL_DELAY=1000,
-    PERIODIC_DELAY=50;
+    PERIODIC_DELAY=30;
   
   public void start(){
     sched.scheduleWithFixedDelay(

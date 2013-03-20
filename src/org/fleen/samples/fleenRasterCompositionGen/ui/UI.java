@@ -242,6 +242,7 @@ public class UI{
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
     lstRootBubbleModel = new JList();
+    lstRootBubbleModel.setCellRenderer(new RootBMListCellRenderer());
     lstRootBubbleModel.setLayoutOrientation(JList.HORIZONTAL_WRAP);
     lstRootBubbleModel.setVisibleRowCount(1);  
     lstRootBubbleModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -261,36 +262,38 @@ public class UI{
         .addGroup(gl_panTop.createSequentialGroup()
           .addGroup(gl_panTop.createParallelGroup(Alignment.LEADING)
             .addGroup(gl_panTop.createSequentialGroup()
-              .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+              .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(cmbSymConFun, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(cmbRenderer, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
-            .addGroup(gl_panTop.createSequentialGroup()
-              .addComponent(btnGenerate)
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(btnExp)
+              .addComponent(btnExp, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(txtExpScale, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(btnGenAndExp)
+              .addComponent(btnGenAndExp, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))
+              .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+            .addGroup(gl_panTop.createParallelGroup(Alignment.TRAILING, false)
+              .addComponent(txtExportDir, Alignment.LEADING)
+              .addGroup(Alignment.LEADING, gl_panTop.createSequentialGroup()
+                .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(cmbSymConFun, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(cmbRenderer, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE))
+              .addComponent(txtGrammarPath, Alignment.LEADING)))
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
-        .addComponent(txtGrammarPath, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
-        .addComponent(txtExportDir, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
     );
     gl_panTop.setVerticalGroup(
       gl_panTop.createParallelGroup(Alignment.LEADING)
         .addGroup(gl_panTop.createSequentialGroup()
           .addContainerGap()
-          .addComponent(txtGrammarPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(txtExportDir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(gl_panTop.createParallelGroup(Alignment.LEADING)
+            .addComponent(scrollPane, Alignment.TRAILING)
             .addGroup(gl_panTop.createSequentialGroup()
+              .addComponent(txtGrammarPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(txtExportDir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(gl_panTop.createParallelGroup(Alignment.BASELINE)
                 .addComponent(txtDetailLimit, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
                 .addComponent(cmbSymConFun, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
@@ -301,8 +304,7 @@ public class UI{
                 .addComponent(btnExp)
                 .addComponent(btnGenAndExp)
                 .addComponent(txtExpScale, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)))
-            .addComponent(scrollPane, 0, 0, Short.MAX_VALUE))
+                .addComponent(spiGenExpCount, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))))
           .addContainerGap())
     );
     
