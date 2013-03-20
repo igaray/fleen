@@ -38,20 +38,8 @@ public class FRCG{
     TITLE="Fleen Raster Composition Gen",
     VERSION="0.1 alpha";
   
-  //public static final String ABOUT_TEXT=
-  //TITLE+" "+VERSION+"\n"+
-  //"By John Greene\n"+
-  //"john@fleen.org\n"+
-  //"http://fleen.org\n"+
-  //"==VIEWER CONTROLS==\n"+
-  //"ZOOM : Ctrl+Mouse1+Drag\n"+
-  //"PAN : Shift+Mouse1+Drag\n";
-  
-  public static final String INFO_TEXT=
-    TITLE+" "+VERSION+"\n"+
-    "By John Greene\n"+
-    "john@fleen.org\n"+
-    "http://fleen.org\n";
+  public static final String WELCOME_TEXT=
+    TITLE+" "+VERSION+" By John Greene john@fleen.org http://fleen.org";
   
   public static FRCG instance=null;
   public static boolean debug=true;
@@ -90,7 +78,7 @@ public class FRCG{
         ui.frame.setVisible(true);
         ui.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         ui.statusview.start();
-        Log.m0(INFO_TEXT);
+        Log.m0(WELCOME_TEXT);
         config=initConfig();
         config.initUIComponents();
       }catch(Exception e){

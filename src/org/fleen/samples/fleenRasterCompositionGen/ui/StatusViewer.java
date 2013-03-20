@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  * and then copy the indicated string to the text display
  */
 @SuppressWarnings("serial")
-public class StatusView extends JPanel{
+public class StatusViewer extends JPanel{
   
   /*
    * ################################
@@ -28,7 +28,7 @@ public class StatusView extends JPanel{
    * ################################
    */
   
-  StatusView(){
+  StatusViewer(){
     super();
     setBackground(COLOR_DEFAULT_BACKGROUND);
     setForeground(COLOR_DEFAULT_FOREGROUND);

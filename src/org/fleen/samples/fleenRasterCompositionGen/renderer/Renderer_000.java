@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.samples.diamondCompositionInspector.Util;
@@ -51,16 +49,9 @@ public class Renderer_000 extends Renderer_Abstract{
   public static final float 
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   
-  public BufferedImage getImage(Composition fleen,Rectangle2D.Double bounds,AffineTransform transform){
-    //init image
-    double scale=transform.getScaleX();
-    int w=(int)(bounds.getWidth()*scale),h=(int)(bounds.getHeight()*scale);
-    BufferedImage image=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics=image.createGraphics();
-    graphics.addRenderingHints(RENDERING_HINTS);
-    graphics.setTransform(transform);
+  protected void render(Composition fleen,Graphics2D graphics,AffineTransform transform){
     //get scaled metrics
-    float polygonstrokewidth=(float)(POLYGON_LINE_STROKE_WIDTH/scale);
+    float polygonstrokewidth=(float)(POLYGON_LINE_STROKE_WIDTH/transform.getScaleX());
     //render bubbles
     Path2D path;
     Color c;
@@ -79,8 +70,6 @@ public class Renderer_000 extends Renderer_Abstract{
       if(path!=null){
         graphics.setPaint(COLOR_POLYGONEDGE);
         graphics.setStroke(new BasicStroke(polygonstrokewidth));
-        graphics.draw(path);}
-      }
-    return image;}
+        graphics.draw(path);}}}
 
 }

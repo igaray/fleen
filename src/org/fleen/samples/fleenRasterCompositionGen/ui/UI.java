@@ -3,6 +3,7 @@ package org.fleen.samples.fleenRasterCompositionGen.ui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -17,6 +18,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -35,8 +37,8 @@ import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 public class UI{
 
   public JFrame frame;
-  public Viewer panView;
-  public StatusView statusview;
+  public ImageViewer panView;
+  public StatusViewer statusview;
   public JComboBox cmbRootBubbleModel;
   public JTextField txtGrammarPath;
   public JTextField txtExportDir;
@@ -67,6 +69,18 @@ public class UI{
           break;}}
     }catch(Exception e){}//go with default
     
+//    Toolkit.getDefaultToolkit().setDynamicLayout(true);
+//    System.setProperty("sun.awt.noerasebackground", "true");
+//    JFrame.setDefaultLookAndFeelDecorated(true);
+//    JDialog.setDefaultLookAndFeelDecorated(true);
+//
+//    try {
+//        UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
+//    } catch(Exception ex) {
+//        ex.printStackTrace();
+//    }
+    
+    
     //FRAME
     frame=new JFrame();
     frame.setBounds(100,100,727,568);
@@ -80,11 +94,11 @@ public class UI{
     JPanel panTop = new JPanel();
     
     //VIEW
-    panView = new Viewer();
+    panView = new ImageViewer();
     panView.setBackground(new Color(255, 0, 255));
     
     //STATUS 
-    statusview = new StatusView();
+    statusview = new StatusViewer();
     
     //FRAME CONTENTPANE LAYOUT
     GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
@@ -122,7 +136,6 @@ public class UI{
     //GRAMMAR FILE
     txtGrammarPath = new JTextField("~/foo/bar/null/grammarfoo.g");
     txtGrammarPath.setEditable(false);
-    txtGrammarPath.setBackground(new Color(154, 205, 50));
     txtGrammarPath.setFont(new Font("Dialog", Font.BOLD, 14));
     //mouse click listener
     //set grammar. If success then update relevant stuff 
@@ -140,7 +153,6 @@ public class UI{
     
     //EXPORT DIR
     txtExportDir = new JTextField("~/foo/bar/null/frcgexport");
-    txtExportDir.setBackground(new Color(255, 182, 193));
     txtExportDir.setEditable(false);
     txtExportDir.setFont(new Font("Dialog", Font.BOLD, 14));
     //mouse click listener

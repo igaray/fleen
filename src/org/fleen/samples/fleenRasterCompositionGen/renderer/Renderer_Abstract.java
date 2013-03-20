@@ -1,5 +1,6 @@
 package org.fleen.samples.fleenRasterCompositionGen.renderer;
 
+import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -11,7 +12,7 @@ import org.fleen.core.diamondGrammar.Bubble;
 import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
-import org.fleen.samples.fleenRasterCompositionGen.ui.Viewer;
+import org.fleen.samples.fleenRasterCompositionGen.ui.ImageViewer;
 
 public abstract class Renderer_Abstract implements Serializable{
 
@@ -42,37 +43,49 @@ public abstract class Renderer_Abstract implements Serializable{
     RENDERING_HINTS.put(
       RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_NORMALIZE);}
   
+  private static final int EXPORT_IMAGE_MARGIN=12;
+  
   public BufferedImage renderForExport(Composition composition,double scale){
     Rectangle2D.Double bounds=getRootBubbleBounds(composition);
-    double
-      offx=-bounds.getMinX(),
-      offy=-bounds.getMinY();
+    int 
+      w=((int)(scale*bounds.getWidth()))+EXPORT_IMAGE_MARGIN*2,
+      h=((int)(scale*bounds.getHeight()))+EXPORT_IMAGE_MARGIN*2;
+    BufferedImage image=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics=image.createGraphics();
+    graphics.addRenderingHints(RENDERING_HINTS);
     AffineTransform transform=new AffineTransform();
     transform.scale(scale,scale);
-    transform.translate(offx,offy);
-    BufferedImage i=getImage(composition,bounds,transform);
+    transform.translate(
+      -bounds.getMinX()+EXPORT_IMAGE_MARGIN/scale,
+      -bounds.getMinY()+EXPORT_IMAGE_MARGIN/scale);
+    graphics.setTransform(transform);
+    render(composition,graphics,transform);
     Log.m1("[finished rendering]");
-    return i;}
+    return image;}
   
-  public BufferedImage renderForViewer(Composition composition,Viewer viewer){
-    Rectangle2D.Double bounds=getRootBubbleBounds(composition);
-    double scale=viewer.getHeight()/bounds.getHeight();
-    double
-      offx=-bounds.getMinX(),
-      offy=-bounds.getMinY();
+  public BufferedImage renderForViewer(Composition composition,ImageViewer viewer){
+    BufferedImage image=new BufferedImage(viewer.getWidth(),viewer.getHeight(),BufferedImage.TYPE_INT_ARGB);
     AffineTransform transform=new AffineTransform();
-    transform.scale(scale,scale);
-    transform.translate(offx,offy);
-    BufferedImage i=getImage(composition,bounds,transform);
+    transform.scale(viewer.scale,viewer.scale);
+    transform.translate(viewer.dx,viewer.dy);
+    Graphics2D graphics=image.createGraphics();
+    graphics.addRenderingHints(RENDERING_HINTS);
+    graphics.setTransform(transform);
+    render(composition,graphics,transform);
     Log.m1("[finished rendering]");
-    return i;}
+    return image;}
   
-  protected abstract BufferedImage getImage(
-    Composition composition,Rectangle2D.Double bounds,AffineTransform transform);
+  protected abstract void render(Composition composition,Graphics2D graphics,AffineTransform transform);
   
-  private Rectangle2D.Double getRootBubbleBounds(DGComposition dgc){
-    Bubble a=dgc.getRootGrid().getChildBubbles().get(0);
-    double[][] vp=a.getVertexPoints2D();
+  /*
+   * ################################
+   * UTIL
+   * ################################
+   */
+  
+  public static final Rectangle2D.Double getRootBubbleBounds(DGComposition dgc){
+    Bubble rootbubble=dgc.getRootBubble();
+    double[][] vp=rootbubble.getVertexPoints2D();
     double maxx=Double.MIN_VALUE,maxy=maxx,minx=Double.MAX_VALUE,miny=minx;
     for(int i=0;i<vp.length;i++){
       if(minx>vp[i][0])minx=vp[i][0];
