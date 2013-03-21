@@ -35,7 +35,7 @@ public class FRCG{
   
   public static final String
     TITLE="Fleen Raster Composition Gen",
-    VERSION="0.1 alpha";
+    VERSION="0.2 alpha";
   
   public static final String WELCOME_TEXT=
     TITLE+" "+VERSION+" By John Greene john@fleen.org http://fleen.org";
