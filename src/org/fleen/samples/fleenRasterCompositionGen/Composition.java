@@ -13,30 +13,37 @@ import org.fleen.core.diamondGrammar.DGComposition;
 import org.fleen.core.diamondGrammar.Grammar;
 import org.fleen.core.diamondGrammar.Grid;
 import org.fleen.core.diamondGrammar.Jig;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SymmetryControlFunction_Abstract;
 
 public class Composition extends DGComposition{
   
+  double detaillimit;
+  SymmetryControlFunction_Abstract scf;
+  Grammar grammar;
+  
   public Composition(){
     detaillimit=FRCG.instance.config.getDetailSizeLimit();
-    init();}
+    scf=FRCG.instance.config.getSymmetryControlFunction();
+    grammar=FRCG.instance.config.getGrammar();
+    build();}
 
-  double detaillimit;
-
-  private void init(){
+  private void build(){
     Grid grid=new Grid();
     setRootGrid(grid);
-    Grammar grammar=FRCG.instance.config.getGrammar();
-    BubbleModel bubblemodel=FRCG.instance.config.getRootBubbleModel();
-    new Bubble(
+    BubbleModel rootbubblemodel=FRCG.instance.config.getRootBubbleModel();
+    Bubble rootbubble=new Bubble(
       grid,
-      bubblemodel);
+      rootbubblemodel);
+    scf.mindetailsize=detaillimit;
+    scf.maxdetailsize=rootbubble.getDetailSize();
     boolean cultivationhappened=true;
     while(cultivationhappened){
       Log.m1("[cultivating]");
-      cultivationhappened=doDSLimitedChorussedRandomJigSelectionCultivationCycle(grammar,detaillimit);}}
+      cultivationhappened=cultivate();}}
   
+  //DETAIL SIZE LIMITED CHORUSSED RANDOM JIG SELECTION CULTIVATION CYCLE
   //returns true if cultivation happened
-  private boolean doDSLimitedChorussedRandomJigSelectionCultivationCycle(Grammar grammar,double dslimit){
+  private boolean cultivate(){
     boolean cultivationhappened=false;
     Jig j;
     Random random=new Random();
@@ -48,7 +55,7 @@ public class Composition extends DGComposition{
       if(bcount%4096==0)
         Log.m1(".");
       //
-      if(bubble.getDetailSize()>dslimit){
+      if(bubble.getDetailSize()>detaillimit){
         j=getJig(bubble,grammar,sigjigs,random);
         if(j!=null){
           cultivationhappened=true;
@@ -56,18 +63,25 @@ public class Composition extends DGComposition{
     return cultivationhappened;}
 
   private Jig getJig(Bubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
-    Jig j=sigjigs.get(bubble.getSignature());
-    if(j==null){
+    Jig jig=null;
+    //if the symmetry control function says to do symmetry then attempt symmetry
+    if(scf.doSymmetry(bubble)){
+      //check the table to see if a bubble with this bubble's signature has already been addressed
+      //if so then we get a copy of the jig that was picked for that foregone bubble. Thus symmetric treatment.
+      jig=sigjigs.get(bubble.getSignature());}
+    //if we got a jig then we're done, otherwise get one this other way
+    if(jig==null){
       if(doABoiler(bubble)){
-        j=getBoilerJig(bubble,grammar,random);
-        if(j==null)j=getSplitterJig(bubble,grammar,random);
+        jig=getBoilerJig(bubble,grammar,random);
+        if(jig==null)jig=getSplitterJig(bubble,grammar,random);
       }else{
-        j=getSplitterJig(bubble,grammar,random);
-        if(j==null)j=getBoilerJig(bubble,grammar,random);}
-      if(j==null)return null;
-      sigjigs.put(bubble.getSignature(),j);}
-    return j;}
+        jig=getSplitterJig(bubble,grammar,random);
+        if(jig==null)jig=getBoilerJig(bubble,grammar,random);}
+      if(jig==null)return null;
+      sigjigs.put(bubble.getSignature(),jig);}
+    return jig;}
   
+  //our little logic for determining whether to do a boiler or a splitter. This could be a param of course.
   private boolean doABoiler(Bubble b){
     int cl=b.getRaftLevel();
     if(cl==0){

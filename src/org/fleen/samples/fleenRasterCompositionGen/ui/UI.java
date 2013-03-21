@@ -38,6 +38,7 @@ import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SymmetryControlFunction_Abstract;
 
 public class UI{
 
@@ -163,6 +164,14 @@ public class UI{
     //TODO
     cmbSymConFun = new JComboBox();
     cmbSymConFun.setToolTipText("Symmetry Control Function");
+    //selection changed listener
+    //when we do it, update the params
+    cmbSymConFun.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        try{
+          FRCG.instance.config.setSymmetryControlFunction(
+            (SymmetryControlFunction_Abstract)cmbSymConFun.getModel().getSelectedItem());
+        }catch(Exception x){}}});
     
     //RENDERER
     cmbRenderer = new JComboBox();

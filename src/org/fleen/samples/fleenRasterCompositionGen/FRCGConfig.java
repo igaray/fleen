@@ -20,8 +20,10 @@ import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_004;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_005;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_006;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
-import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SCF_Default;
-import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SymmetryControlFunction_Abstract;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SC_BigRandomSmallSymmetry;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SC_PureRandom;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SC_PureSymmetry;
+import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SymmetryControlFunction_Abstract;
 import org.fleen.samples.fleenRasterCompositionGen.ui.RootBMListModel;
 
 /*
@@ -215,6 +217,11 @@ public class FRCGConfig implements Serializable{
    * ################################
    */
   
+  private static final SymmetryControlFunction_Abstract[] SYMMETRYCONTROLFUNCTIONS={
+    new SC_PureSymmetry(),
+    new SC_PureRandom(),
+    new SC_BigRandomSmallSymmetry()};
+  
   private SymmetryControlFunction_Abstract symmetrycontrolfunction=null;
   
   public SymmetryControlFunction_Abstract getSymmetryControlFunction(){
@@ -223,15 +230,16 @@ public class FRCGConfig implements Serializable{
     return symmetrycontrolfunction;}
   
   private void initSymmetryControlFunction(){
-    symmetrycontrolfunction=new SCF_Default();}
+    symmetrycontrolfunction=new SC_PureSymmetry();}
   
   public void setSymmetryControlFunction(SymmetryControlFunction_Abstract scf){
     symmetrycontrolfunction=scf;}
   
+  public void initUIComponent_SymmetryControlFunctionList(){
+    FRCG.instance.ui.cmbSymConFun.setModel(new DefaultComboBoxModel(SYMMETRYCONTROLFUNCTIONS));}
+  
   public void initUIComponent_SymmetryControlFunction(){
-//    FRCG.instance.ui.lblTxtSymmetryControlFunction.setText(
-//      getSymmetryControlFunction().toString());
-    }
+    FRCG.instance.ui.cmbSymConFun.getModel().setSelectedItem(getSymmetryControlFunction());}
   
   /*
    * ################################
@@ -375,6 +383,7 @@ public class FRCGConfig implements Serializable{
     initUIComponent_RootBubbleModelsList();
     initUIComponent_RootBubbleModel();
     initUIComponent_DetailSizeLimit();
+    initUIComponent_SymmetryControlFunctionList();
     initUIComponent_SymmetryControlFunction();
     initUIComponent_RendererList();
     initUIComponent_Renderer();
