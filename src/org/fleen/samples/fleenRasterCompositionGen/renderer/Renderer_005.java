@@ -11,18 +11,19 @@ import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 
 
-public class Renderer_000 extends Renderer_Abstract{
+public class Renderer_005 extends Renderer_Abstract{
   
   private static final long serialVersionUID=-8294845813561601629L;
 
-  static final Color COLOR_POLYGONEDGE=new Color(128,128,128);
-  
   private static final int ALPHA=255;
   
+  static final Color COLOR_POLYGONEDGE=new Color(192,41,66,ALPHA);
   static final Color[] FOAMCOLORS={
-    new Color(0,0,0,ALPHA),
-    new Color(255,255,255,ALPHA)};
-
+    new Color(236,208,120,ALPHA),
+    new Color(217,91,67,ALPHA),
+    new Color(84,36,55,ALPHA),
+    new Color(83,119,122,ALPHA)};
+  
   public static final float 
     POLYGON_LINE_STROKE_WIDTH=1.0f;
   

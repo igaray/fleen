@@ -13,6 +13,12 @@ import javax.swing.JFileChooser;
 import org.fleen.core.diamondGrammar.BubbleModel;
 import org.fleen.core.diamondGrammar.Grammar;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_000;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_001;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_002;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_003;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_004;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_005;
+import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_006;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SCF_Default;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryControlFunction.SymmetryControlFunction_Abstract;
@@ -238,7 +244,12 @@ public class FRCGConfig implements Serializable{
   
   private static final Renderer_Abstract[] RENDERERS={
     new Renderer_000(),
-//    new Renderer_001()
+    new Renderer_001(),
+    new Renderer_002(),
+    new Renderer_003(),
+    new Renderer_004(),
+    new Renderer_005(),
+    new Renderer_006()
     };
   
   private Renderer_Abstract renderer=null;

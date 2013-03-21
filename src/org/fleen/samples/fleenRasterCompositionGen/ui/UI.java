@@ -174,6 +174,7 @@ public class UI{
         try{
           FRCG.instance.config.setRenderer(
             (Renderer_Abstract)cmbRenderer.getModel().getSelectedItem());
+          CQ.renderForViewer();
         }catch(Exception x){}}});
     
     //EXPORT SCALE
