@@ -7,9 +7,9 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import org.fleen.core.diamondGrammar.BubbleModel;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.DVertexPath;
+import org.fleen.core.grammar.BubbleModel;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.DVertexPath;
 import org.fleen.grammarEditor.C;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;

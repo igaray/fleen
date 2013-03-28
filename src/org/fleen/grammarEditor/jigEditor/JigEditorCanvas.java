@@ -7,10 +7,10 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-import org.fleen.core.diamondGrammar.DVectorRDPath;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.DVertexPath;
-import org.fleen.core.diamondGrammar.MathDiamond;
+import org.fleen.core.grammar.DVectorRDPath;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.DVertexPath;
+import org.fleen.core.grammar.MathDiamond;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPFocusBubbleModelTouchVertex;
 import org.fleen.grammarEditor.grammarProject.GPJigBubbleDef;

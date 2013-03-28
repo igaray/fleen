@@ -4,10 +4,10 @@ import java.awt.geom.Path2D;
 import java.io.Serializable;
 import java.util.List;
 
-import org.fleen.core.diamondGrammar.DVectorRDPath;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.DVertexPath;
-import org.fleen.core.diamondGrammar.MathDiamond;
+import org.fleen.core.grammar.DVectorRDPath;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.DVertexPath;
+import org.fleen.core.grammar.MathDiamond;
 
 public class GPJigBubbleDef implements Serializable{
 

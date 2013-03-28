@@ -12,10 +12,10 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
-import org.fleen.core.diamondGrammar.BubbleModel;
-import org.fleen.core.diamondGrammar.Grammar;
-import org.fleen.core.diamondGrammar.Jig;
-import org.fleen.core.diamondGrammar.JigBubbleDef;
+import org.fleen.core.grammar.BubbleModel;
+import org.fleen.core.grammar.Grammar;
+import org.fleen.core.grammar.Jig;
+import org.fleen.core.grammar.JigBubbleDef;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.overview.C_OverviewShow;
 

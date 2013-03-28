@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.fleen.core.diamondGrammar.DVectorRDPath;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.DVertexPath;
+import org.fleen.core.grammar.DVectorRDPath;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.DVertexPath;
 import org.fleen.grammarEditor.jigEditor.JigEditorBMListBubbleModelImage;
 import org.fleen.grammarEditor.overview.OverviewGridBubbleModelImage;
 import org.fleen.grammarEditor.overview.OverviewGridElement;

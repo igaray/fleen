@@ -1,6 +1,6 @@
 package org.fleen.grammarEditor.grammarProject;
 
-import org.fleen.core.diamondGrammar.DVertex;
+import org.fleen.core.grammar.DVertex;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.util.Command_Abstract;
 

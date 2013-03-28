@@ -10,8 +10,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 
-import org.fleen.core.diamondGrammar.BubbleModel;
-import org.fleen.core.diamondGrammar.Grammar;
+import org.fleen.core.grammar.BubbleModel;
+import org.fleen.core.grammar.Grammar;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_000;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_001;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_002;
@@ -185,7 +185,7 @@ public class FRCGConfig implements Serializable{
    * ################################
    */
   
-  private static final double DETAIL_SIZE_LIMIT_DEFAULT=0.07;
+  private static final double DETAIL_SIZE_LIMIT_DEFAULT=0.123;
   private double detailsizelimit=-1;
   
   public double getDetailSizeLimit(){
@@ -286,7 +286,7 @@ public class FRCGConfig implements Serializable{
    * ################################
    */
    
-  private static final double EXPORT_IMAGE_SCALE_DEFAULT=800.0;
+  private static final double EXPORT_IMAGE_SCALE_DEFAULT=150.0;
   private double exportimagescale=-1;
   
   public double getExportImageScale(){

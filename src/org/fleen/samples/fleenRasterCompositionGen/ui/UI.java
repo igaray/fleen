@@ -34,7 +34,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.fleen.core.diamondGrammar.BubbleModel;
+import org.fleen.core.grammar.BubbleModel;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 import org.fleen.samples.fleenRasterCompositionGen.command.CQ;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;

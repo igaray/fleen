@@ -1,0 +1,36 @@
+FLEEN TODO
+
+Do coordinate system so it's 3 coors rather than 4
+
+Do greeble gen 3d
+
+separate core into 
+    
+    kgeom
+    grammar
+    util
+    quilt
+
+do quilt
+
+do smart colorization
+
+do curve processing
+
+---
+
+Jigs
+remove splitter vs boiler flag
+determine this via analysis
+add tags
+
+---
+
+A better way to do foams
+
+when we want to have a new foam we create one and the foam is set for a bubble. References both ways. This bubble is the foam's "root bubble", this foam is the bubble's foam. A foam has 1 root bubble, a bubble has 1 foam which is either null or a foam.
+
+To get all of a foam's bubbles, get the foam's root bubble and traverse the tree down from there, gathering all bubbles for which foam is null, up to but not including the next nonnull foam bubble.
+
+To get the foam of a bubble, get the foam of that bubble. If it's null then go up the tree until a nonnull is found. That's the foam
+

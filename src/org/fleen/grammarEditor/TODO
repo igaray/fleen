@@ -14,3 +14,19 @@ draw a shape. Then the machine finds a matching bubblemodel. If no such bubblemo
 It won't even be a mode, it will be the new way that the jig editor works.
 
 So we're looking at 2 ways to create bubblemodels : out of context and in context.
+
+
+----------------
+2013 03 21
+
+We don't need the "splitter or boiler" parameter. Remove that and modify the jig logic accordingly.
+We can tell the diff by whether or not the jig has foams other than index=0.
+
+Create an EXPAND function for grammar.
+This will create a number of copies every jig. Copies will be every possible combination of section chorus indices.
+Maybe we should do this automatically.
+
+Do "clean geometry" automatically
+
+ 
+

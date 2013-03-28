@@ -1,6 +1,6 @@
 package org.fleen.grammarEditor.jigEditor;
 
-import org.fleen.core.diamondGrammar.Jig;
+import org.fleen.core.grammar.Jig;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.util.C_UIRefresh_Abstract;
 

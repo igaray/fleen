@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.fleen.core.diamondGrammar.Bubble;
-import org.fleen.core.diamondGrammar.DGComposition;
+import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.DGComposition;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 import org.fleen.samples.fleenRasterCompositionGen.ui.ImageViewer;

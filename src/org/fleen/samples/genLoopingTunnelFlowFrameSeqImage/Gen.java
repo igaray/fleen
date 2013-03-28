@@ -8,7 +8,7 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.fleen.core.diamondGrammar.Math2D;
+import org.fleen.core.grammar.Math2D;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameSequence;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.VFrame;
 

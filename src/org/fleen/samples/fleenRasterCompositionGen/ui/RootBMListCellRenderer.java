@@ -9,7 +9,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
-import org.fleen.core.diamondGrammar.BubbleModel;
+import org.fleen.core.grammar.BubbleModel;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 
 @SuppressWarnings("serial")

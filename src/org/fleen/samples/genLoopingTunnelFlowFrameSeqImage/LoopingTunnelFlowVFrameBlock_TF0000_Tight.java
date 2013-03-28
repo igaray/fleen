@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import org.fleen.core.diamondGrammar.Bubble;
-import org.fleen.core.diamondGrammar.BubbleModel;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.Foam;
-import org.fleen.core.diamondGrammar.Grammar;
-import org.fleen.core.diamondGrammar.Grid;
-import org.fleen.core.diamondGrammar.Jig;
-import org.fleen.core.diamondGrammar.Math2D;
+import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.BubbleModel;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.Foam;
+import org.fleen.core.grammar.Grammar;
+import org.fleen.core.grammar.Grid;
+import org.fleen.core.grammar.Jig;
+import org.fleen.core.grammar.Math2D;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameBlock_Abstract;
 
 /*

@@ -3,8 +3,8 @@ package org.fleen.samples.genRainbowTriumph;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 
-import org.fleen.core.diamondGrammar.DCell;
-import org.fleen.core.diamondGrammar.DVertex;
+import org.fleen.core.grammar.DCell;
+import org.fleen.core.grammar.DVertex;
 
 public class RTCell{
   

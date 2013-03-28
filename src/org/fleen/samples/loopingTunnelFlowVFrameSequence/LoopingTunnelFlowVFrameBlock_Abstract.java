@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.fleen.core.diamondGrammar.Bubble;
-import org.fleen.core.diamondGrammar.BubbleSignature;
-import org.fleen.core.diamondGrammar.DGComposition;
-import org.fleen.core.diamondGrammar.Grammar;
-import org.fleen.core.diamondGrammar.Grid;
-import org.fleen.core.diamondGrammar.Jig;
-import org.fleen.core.diamondGrammar.Math2D;
+import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.BubbleSignature;
+import org.fleen.core.grammar.DGComposition;
+import org.fleen.core.grammar.Grammar;
+import org.fleen.core.grammar.Grid;
+import org.fleen.core.grammar.Jig;
+import org.fleen.core.grammar.Math2D;
 
 /*
  * A LoopingTunnelFlowVFrameBlock is a special kind of fleen designed to give us nice tunnel flow frames

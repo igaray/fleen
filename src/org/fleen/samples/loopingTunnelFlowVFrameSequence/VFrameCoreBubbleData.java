@@ -1,6 +1,6 @@
 package org.fleen.samples.loopingTunnelFlowVFrameSequence;
 
-import org.fleen.core.diamondGrammar.Bubble;
+import org.fleen.core.grammar.Bubble;
 
 public class VFrameCoreBubbleData{
   

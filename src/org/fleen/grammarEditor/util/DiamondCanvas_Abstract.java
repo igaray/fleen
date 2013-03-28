@@ -22,9 +22,9 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.Math2D;
-import org.fleen.core.diamondGrammar.MathDiamond;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.Math2D;
+import org.fleen.core.grammar.MathDiamond;
 import org.fleen.grammarEditor.GE;
 
 /*

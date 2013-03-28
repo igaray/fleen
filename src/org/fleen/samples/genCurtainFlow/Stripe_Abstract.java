@@ -1,6 +1,6 @@
 package org.fleen.samples.genCurtainFlow;
 
-import org.fleen.core.diamondGrammar.DGComposition;
+import org.fleen.core.grammar.DGComposition;
 
 /*
  * Cultivate up a nice diamond composition with a root bubble that uses one of our base stripe bubblemodels.

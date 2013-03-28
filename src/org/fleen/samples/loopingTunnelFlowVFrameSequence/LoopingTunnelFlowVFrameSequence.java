@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.fleen.core.diamondGrammar.Bubble;
+import org.fleen.core.grammar.Bubble;
 
 /*
  * It's a sequence of VFrames giving us a smooth zoom through a LoopingTunnelFlowVFrameBlock.

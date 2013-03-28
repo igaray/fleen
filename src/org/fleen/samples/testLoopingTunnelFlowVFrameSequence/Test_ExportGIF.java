@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.fleen.core.diamondGrammar.Math2D;
+import org.fleen.core.grammar.Math2D;
 import org.fleen.grammarEditor.GE;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameSequence;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.VFrame;

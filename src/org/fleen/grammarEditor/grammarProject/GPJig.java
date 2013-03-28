@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fleen.core.diamondGrammar.DVectorRDPath;
-import org.fleen.core.diamondGrammar.DVertex;
-import org.fleen.core.diamondGrammar.DVertexPath;
-import org.fleen.core.diamondGrammar.Grammar;
-import org.fleen.core.diamondGrammar.Jig;
-import org.fleen.core.diamondGrammar.JigBubbleDef;
+import org.fleen.core.grammar.DVectorRDPath;
+import org.fleen.core.grammar.DVertex;
+import org.fleen.core.grammar.DVertexPath;
+import org.fleen.core.grammar.Grammar;
+import org.fleen.core.grammar.Jig;
+import org.fleen.core.grammar.JigBubbleDef;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.overview.OverviewGridElement;
 import org.fleen.grammarEditor.overview.OverviewGridJigImage;
