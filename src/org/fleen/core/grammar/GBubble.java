@@ -1,10 +1,20 @@
 package org.fleen.core.grammar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.tree.TreeNode;
+
+import org.fleen.core.bubbleTree.Bubble;
+import org.fleen.core.bubbleTree.Foam;
+import org.fleen.core.bubbleTree.Grid;
+import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.kGeom.DVectorRD;
+import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.kGeom.KGeom;
 
 /*
  * A loop of vertices in this bubble's parent grid
@@ -14,7 +24,7 @@ import javax.swing.tree.TreeNode;
  *   twist
  * it also has a parentgrid, childgrid, foam, chorusindex and multipurpose data object
  */
-public class Bubble implements DNode{
+public class GBubble extends Bubble implements Serializable{
   
   /*
    * ################################
@@ -50,7 +60,7 @@ public class Bubble implements DNode{
    * ################################
    */
 
-  public Bubble(
+  public GBubble(
     Grid parentgrid,
     BubbleModel model,
     int type,
@@ -79,7 +89,7 @@ public class Bubble implements DNode{
    * chorusindex is 0
    * we use this as a root bubble for testing
    */
-  public Bubble(
+  public GBubble(
     Grid parentgrid,
     BubbleModel model){
     this.parentgrid=parentgrid;
@@ -89,11 +99,11 @@ public class Bubble implements DNode{
     type=TYPE_RAFT;
     v0=p.get(0);
     v1=p.get(1);
-    twist=MathDiamond.TWIST_POSITIVE;
+    twist=KGeom.TWIST_POSITIVE;
     foam=new Foam();
     chorusindex=0;}
   
-  public Bubble(){}
+  public GBubble(){}
   
   /*
    * ################################
@@ -166,7 +176,7 @@ public class Bubble implements DNode{
    * Compounded twist is the twist at this bubble in absolute terms as derived from the twists of it's ancestors
    */
   public boolean getCompoundedTwist(){
-    if(twist==MathDiamond.TWIST_POSITIVE){
+    if(twist==KGeom.TWIST_POSITIVE){
       return parentgrid.getTwist();
     }else{
       return !parentgrid.getTwist();}}
@@ -180,7 +190,7 @@ public class Bubble implements DNode{
     double[] 
       p0=parentgrid.getPoint2D(v0),
       p1=parentgrid.getPoint2D(v1);
-    double a=Math2D.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);
+    double a=DGeom.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);
     double fish=a/model.getVector(0).distance;
     return fish;}
   
@@ -244,22 +254,11 @@ public class Bubble implements DNode{
         gds_v0=i;
         gds_v1=inext;}}}
   
-//  private void initIndicesOfClosestAdjacentVerticesForGetDetailSize(){
-//    DVertex[] v=getVertices();
-//    int inext;
-//    double dtest,dclosest=Double.MAX_VALUE;
-//    for(int i=0;i<v.length;i++){
-//      inext=i+1;
-//      if(inext==v.length)inext=0;
-//      dtest=v[i].getDistance(v[inext]);
-//      if(dtest<dclosest){
-//        dclosest=dtest;
-//        gds_v0=i;
-//        gds_v1=inext;}}}
-  
   /*
    * ++++++++++++++++++++++++++++++++
    * VERTICES
+   * In the basic form of Bubble we specify these in the constructor
+   * in the grammar form we use a BubbleModel
    * ++++++++++++++++++++++++++++++++
    */
   
@@ -279,18 +278,18 @@ public class Bubble implements DNode{
     int directiondelta;
     for(int i=1;i<vectorcount-1;i++){
       directiondelta=model.getVector(i).directiondelta;
-      if(twist==MathDiamond.TWIST_NEGATIVE)directiondelta*=-1;
+      if(twist==KGeom.TWIST_NEGATIVE)directiondelta*=-1;
       vector.directiondelta=(vector.directiondelta+directiondelta+12)%12;
       vector.distance=scale*model.getVector(i).distance;
-      vertices[i+1]=MathDiamond.getVertex_VertexVector(vertices[i],vector);
+      vertices[i+1]=KGeom.getVertex_VertexVector(vertices[i],vector);
       if(vertices[i+1]==null)
         throw new IllegalArgumentException("BAD GEOMETRY. "+vertices[i+1]+" , "+vector);}}
   
   private int getBaseForeward(){
-    int f=MathDiamond.getDirection_VertexVertex(
+    int f=KGeom.getDirection_VertexVertex(
       v0.getAnt(),v0.getBat(),v0.getCat(),v0.getDog(),
       v1.getAnt(),v1.getBat(),v1.getCat(),v1.getDog());
-    if(f==MathDiamond.DIRECTION_NULL)
+    if(f==KGeom.DIRECTION_NULL)
       throw new IllegalArgumentException("local foreward is direction null "+v0+" "+v1);
     return f;}
   
@@ -330,15 +329,15 @@ public class Bubble implements DNode{
    * ################################
    */
   
-  public Bubble getParentBubble(){
+  public GBubble getParentBubble(){
     return parentgrid.parentbubble;}
   
-  public List<Bubble> getChildBubbles(){
-    if(childgrid==null)return new ArrayList<Bubble>(0);
+  public List<GBubble> getChildBubbles(){
+    if(childgrid==null)return new ArrayList<GBubble>(0);
     return childgrid.childbubbles;}
   
-  public List<Bubble> getSiblingBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>(parentgrid.childbubbles);
+  public List<GBubble> getSiblingBubbles(){
+    List<GBubble> a=new ArrayList<GBubble>(parentgrid.childbubbles);
     a.remove(this);
     return a;}
   
@@ -411,8 +410,8 @@ public class Bubble implements DNode{
   public int getDepth(){
     return parentgrid.getDepth()+1;}
   
-  public List<Bubble> getBranchLeafBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
+  public List<GBubble> getBranchLeafBubbles(){
+    List<GBubble> a=new ArrayList<GBubble>();
     if(isLeaf()){
       a.add(this);
       return a;
@@ -420,8 +419,8 @@ public class Bubble implements DNode{
       a.addAll(childgrid.getBranchLeafBubbles());}
     return a;}
   
-  public List<Bubble> getBranchBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
+  public List<GBubble> getBranchBubbles(){
+    List<GBubble> a=new ArrayList<GBubble>();
     a.add(this);
     if(childgrid!=null)
       a.addAll(childgrid.getBranchBubbles());

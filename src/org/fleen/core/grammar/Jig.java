@@ -6,6 +6,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.fleen.core.bubbleTree.Foam;
+import org.fleen.core.bubbleTree.Grid;
+
 /*
  * create child grid for target bubble
  *   origin is arbitrary vertex on target bubble polygon specified by originindex
@@ -101,7 +104,7 @@ public class Jig implements Serializable{
    * ################################
    */
   
-  public List<Bubble> create(Bubble target){
+  public List<GBubble> create(GBubble target){
     if(type==TYPE_SPLITTER){
       return createForSplitter(target);
     }else if(type==TYPE_BOILER){
@@ -109,18 +112,18 @@ public class Jig implements Serializable{
     }else{
       throw new IllegalArgumentException("JIG TYPE UNDEFINED");}}
   
-  private List<Bubble> createForSplitter(Bubble target){
+  private List<GBubble> createForSplitter(GBubble target){
     //define grid
     Grid grid=new Grid(
       target,
       getFishFactor());
     //create bubbles from bubbledefs
-    List<Bubble> newbubbles=new ArrayList<Bubble>();
+    List<GBubble> newbubbles=new ArrayList<GBubble>();
     for(JigBubbleDef bd:bubbledefs){
-      newbubbles.add(new Bubble(
+      newbubbles.add(new GBubble(
         grid,
         grammar.getBubbleModel(bd.bubblemodelid),
-        Bubble.TYPE_SHARD,
+        GBubble.TYPE_SHARD,
         bd.v0,
         bd.v1,
         bd.twist,
@@ -128,7 +131,7 @@ public class Jig implements Serializable{
         bd.chorusindex));}
     return newbubbles;}
   
-  private List<Bubble> createForBoiler(Bubble target){
+  private List<GBubble> createForBoiler(GBubble target){
     //define grid
     Grid grid=new Grid(
       target,
@@ -139,7 +142,7 @@ public class Jig implements Serializable{
     foams.put(0,target.foam);
     //create bubbles from bubbledefs
     Foam foam;
-    List<Bubble> newbubbles=new ArrayList<Bubble>();
+    List<GBubble> newbubbles=new ArrayList<GBubble>();
     int btype;
     for(JigBubbleDef bd:bubbledefs){
       //get foam from foams table by foamindex
@@ -156,10 +159,10 @@ public class Jig implements Serializable{
         foam.parent=target.foam;}
       //
       if(foam.equals(target.foam)){
-        btype=Bubble.TYPE_SHARD;
+        btype=GBubble.TYPE_SHARD;
       }else{
-        btype=Bubble.TYPE_RAFT;}
-      newbubbles.add(new Bubble(
+        btype=GBubble.TYPE_RAFT;}
+      newbubbles.add(new GBubble(
         grid,
         grammar.getBubbleModel(bd.bubblemodelid),
         btype,

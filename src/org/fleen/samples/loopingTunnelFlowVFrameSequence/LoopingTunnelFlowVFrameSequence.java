@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.GBubble;
 
 /*
  * It's a sequence of VFrames giving us a smooth zoom through a LoopingTunnelFlowVFrameBlock.
@@ -102,7 +102,7 @@ public class LoopingTunnelFlowVFrameSequence{
     System.out.println("GETTING FRAME #"+index);
     double depth=((double)index)*zoomincrement;
     double scale=getScaleAtDepth(depth);
-    Bubble corebubble=getEnclosingCoreBubbleAtScale(frameblock,scale);
+    GBubble corebubble=getEnclosingCoreBubbleAtScale(frameblock,scale);
     VFrame f=getFrame(index,frameblock,corebubble,depth,detailfloor);
     return f;}
   
@@ -123,9 +123,9 @@ public class LoopingTunnelFlowVFrameSequence{
    * the core bubble at that scale is the core bubble for which the scaled inradius of the bubble is greater than the 
    * outermostradius of this sequence and the scaled inradius of the next core bubble is lesser than the outermostradius
    */
-  private Bubble getEnclosingCoreBubbleAtScale(
+  private GBubble getEnclosingCoreBubbleAtScale(
     LoopingTunnelFlowVFrameBlock_Abstract frameblock,double scale){
-    Bubble b0=frameblock.rootbubble;
+    GBubble b0=frameblock.rootbubble;
     VFrameCoreBubbleData bd0,bd1;
     boolean finished=false;
     while(!finished){
@@ -145,11 +145,11 @@ public class LoopingTunnelFlowVFrameSequence{
   private VFrame getFrame(
     int frameindex,
     LoopingTunnelFlowVFrameBlock_Abstract frameblock,
-    Bubble enclosingcorebubble,double viewradius,double smallestframedetail){
+    GBubble enclosingcorebubble,double viewradius,double smallestframedetail){
     double scale=getScaleAtDepth(viewradius);
     //gather visible core bubbles
-    Bubble b=enclosingcorebubble,bprior=null;
-    List<Bubble> visiblecorebubbles=new ArrayList<Bubble>();
+    GBubble b=enclosingcorebubble,bprior=null;
+    List<GBubble> visiblecorebubbles=new ArrayList<GBubble>();
     List<Double> visiblecorebubblescalefactors=new ArrayList<Double>();
     double scalefactor=1.0;
     while(b!=null){
@@ -172,7 +172,7 @@ public class LoopingTunnelFlowVFrameSequence{
     //TODO what about the mouth core bubble? What happens there?
     //it doesn't have children I think.
     ArrayList<VFrameBubble> vframebubbles=new ArrayList<VFrameBubble>();
-    List<Bubble> childbubbles;
+    List<GBubble> childbubbles;
     int s,coreindex;
     for(int j=0;j<visiblecorebubblecount;j++){
       b=visiblecorebubbles.get(j);
@@ -201,20 +201,20 @@ public class LoopingTunnelFlowVFrameSequence{
    * no, we handle that above. This isn't a core bubble, it's the immediate child of a core bubble
    */
   private List<VFrameBubble> getLocalBranchFBubbles(
-    Bubble bubble,double scale,double smallestframedetail,int coreindex){
-    List<Bubble> branchbubbles=bubble.getBranchBubbles();
+    GBubble bubble,double scale,double smallestframedetail,int coreindex){
+    List<GBubble> branchbubbles=bubble.getBranchBubbles();
     List<VFrameBubble> fbubbles=new ArrayList<VFrameBubble>();
-    for(Bubble b:branchbubbles)
+    for(GBubble b:branchbubbles)
       if(b.getDetailSize()*scale>smallestframedetail)
         fbubbles.add(new VFrameBubble(getScaledVertexPoints(b,scale),coreindex));
     return fbubbles;}
   
-  private boolean isVisibleCoreBubble(Bubble bubble,double scale,double smallestframedetail){
+  private boolean isVisibleCoreBubble(GBubble bubble,double scale,double smallestframedetail){
     double r=((VFrameCoreBubbleData)bubble.data).inradius;
     boolean v=scale*r>smallestframedetail;
     return v;}
   
-  private double[][] getScaledVertexPoints(Bubble bubble,double scale){
+  private double[][] getScaledVertexPoints(GBubble bubble,double scale){
     double[][] p=bubble.getVertexPoints2D();
     double[][] sp=new double[p.length][2];
     for(int i=0;i<p.length;i++)

@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.GBubble;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 
@@ -35,7 +35,7 @@ public class Renderer_002 extends Renderer_Abstract{
     Path2D path;
     Color c;
     int bcount=0;
-    for(Bubble bubble:fleen.getBubbles()){
+    for(GBubble bubble:fleen.getBubbles()){
       bcount++;
       if(bcount%4096==0)Log.m1(".");
       path=getPath2D(bubble);

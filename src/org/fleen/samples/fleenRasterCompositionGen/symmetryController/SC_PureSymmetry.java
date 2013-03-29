@@ -1,12 +1,12 @@
 package org.fleen.samples.fleenRasterCompositionGen.symmetryController;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.GBubble;
 
 public class SC_PureSymmetry extends SymmetryControlFunction_Abstract{
 
   private static final long serialVersionUID=-5227873591134750761L;
 
-  public boolean doSymmetry(Bubble bubble){
+  public boolean doSymmetry(GBubble bubble){
     return true;}
 
 }

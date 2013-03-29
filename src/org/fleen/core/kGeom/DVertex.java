@@ -1,6 +1,7 @@
-package org.fleen.core.grammar;
+package org.fleen.core.kGeom;
 
 import java.io.Serializable;
+
 
 
 /*
@@ -70,53 +71,53 @@ public class DVertex implements Serializable{
   
   public int getGeneralType(){
     switch(coors[3]){
-    case 0:return MathDiamond.VERTEX_GTYPE_12;
-    case 1:return MathDiamond.VERTEX_GTYPE_4;
-    case 2:return MathDiamond.VERTEX_GTYPE_6;
-    case 3:return MathDiamond.VERTEX_GTYPE_4;
-    case 4:return MathDiamond.VERTEX_GTYPE_6;
-    case 5:return MathDiamond.VERTEX_GTYPE_4;
+    case 0:return KGeom.VERTEX_GTYPE_12;
+    case 1:return KGeom.VERTEX_GTYPE_4;
+    case 2:return KGeom.VERTEX_GTYPE_6;
+    case 3:return KGeom.VERTEX_GTYPE_4;
+    case 4:return KGeom.VERTEX_GTYPE_6;
+    case 5:return KGeom.VERTEX_GTYPE_4;
     default:
       throw new IllegalArgumentException("VERTEX TYPE INVALID");}}
   
   //returns the direction from this vertex to v
   //returns DIRECTION_NULL if this vertex and v are not colinear
   public int getDirection(DVertex v){
-    return MathDiamond.getDirection_VertexVertex(
+    return KGeom.getDirection_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
   
   public double getDistance(DVertex v){
-    return MathDiamond.getDistance_VertexVertex(
+    return KGeom.getDistance_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
   
   //returns null if invalid
   public DVertex getVertexTransitionswise(int dir,int trans){
     int[] v1coor=new int[4];
-    MathDiamond.getVertex_Transitionswise(
+    KGeom.getVertex_Transitionswise(
       coors[0],coors[1],coors[2],coors[3],dir,trans,v1coor);
-    if(v1coor[3]==MathDiamond.DIRECTION_NULL)return null;
+    if(v1coor[3]==KGeom.DIRECTION_NULL)return null;
     return new DVertex(v1coor);}
   
   public DVertex getVertex_DirDis(int dir,double dis){
     int[] v1coor=new int[4];
-    MathDiamond.getVertex_VertexVector(coors[0],coors[1],coors[2],coors[3],dir,dis,v1coor);
-    if(v1coor[3]==MathDiamond.DIRECTION_NULL)return null;
+    KGeom.getVertex_VertexVector(coors[0],coors[1],coors[2],coors[3],dir,dis,v1coor);
+    if(v1coor[3]==KGeom.DIRECTION_NULL)return null;
     return new DVertex(v1coor);}
   
   /*
    * returns true if this vertex is colinear with the specified
    */
   public boolean isColinear(DVertex v){
-    return MathDiamond.getColinear_VertexVertex(
+    return KGeom.getColinear_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
   
   //returns point2d assuming a basic, unrotated, unscaled, unflipped grid
   public double[] getBasicPoint2D(){
     double[] c=new double[2];
-    MathDiamond.getBasicPoint2D_Vertex(coors[0],coors[1],coors[2],coors[3],c);
+    KGeom.getBasicPoint2D_Vertex(coors[0],coors[1],coors[2],coors[3],c);
     return c;}
   
   /*

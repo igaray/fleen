@@ -1,7 +1,9 @@
-package org.fleen.core.grammar;
+package org.fleen.core.kGeom;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+
+import org.fleen.core.dGeom.DGeom;
 
 /*
  * A cell in the diamond system
@@ -270,7 +272,7 @@ public class DCell{
    */
   public static final DCell getCell(double x,double y){
     //get min rect cartesian grid coordinates for lower-left corner dpoint of selected min rect
-    int mrx=(int)Math.floor(x/Math2D.SQRT3);
+    int mrx=(int)Math.floor(x/DGeom.SQRT3);
     int mry=(int)Math.floor(y/(3));
     //get cell by rectangle type
     //if px and py are identically even/odd then we use the lower-left corner dpoint of the
@@ -304,9 +306,9 @@ public class DCell{
     double 
       p0x=pr[0],p0y=pr[1]+2.0,
       p1x=pr[0],p1y=pr[1]+3.0,
-      p2x=pr[0]+Math2D.SQRT3,p2y=pr[1]+3.0,
-      p3x=pr[0]+Math2D.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
-      p4x=pr[0]+Math2D.SQRT3,p4y=pr[1]+1.0;
+      p2x=pr[0]+DGeom.SQRT3,p2y=pr[1]+3.0,
+      p3x=pr[0]+DGeom.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
+      p4x=pr[0]+DGeom.SQRT3,p4y=pr[1]+1.0;
 //      p5x=pr[0]+FM.SQRT3,p5y=pr[1];
     //
     //test (pr,p1,p2)
@@ -349,9 +351,9 @@ public class DCell{
     double 
       p0x=pr[0],p0y=pr[1]+2.0,
       p1x=pr[0],p1y=pr[1]+3.0,
-      p2x=pr[0]-Math2D.SQRT3,p2y=pr[1]+3.0,
-      p3x=pr[0]-Math2D.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
-      p4x=pr[0]-Math2D.SQRT3,p4y=pr[1]+1.0;
+      p2x=pr[0]-DGeom.SQRT3,p2y=pr[1]+3.0,
+      p3x=pr[0]-DGeom.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
+      p4x=pr[0]-DGeom.SQRT3,p4y=pr[1]+1.0;
 //      p5x=pr.x-FM.SQRT3,p5y=pr.y;
     //
     //test (pr,p1,p2)

@@ -7,7 +7,7 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-import org.fleen.core.grammar.DVertex;
+import org.fleen.core.kGeom.DVertex;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPAddVertexToFocusBubbleModel;
 import org.fleen.grammarEditor.util.DiamondCanvas_Abstract;

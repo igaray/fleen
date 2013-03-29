@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import org.fleen.core.grammar.Bubble;
-import org.fleen.core.grammar.DGComposition;
+import org.fleen.core.bubbleTree.BubbleTree;
+import org.fleen.core.grammar.GBubble;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 import org.fleen.samples.fleenRasterCompositionGen.ui.ImageViewer;
@@ -84,8 +84,8 @@ public abstract class Renderer_Abstract implements Serializable{
    * ################################
    */
   
-  public static final Rectangle2D.Double getRootBubbleBounds(DGComposition dgc){
-    Bubble rootbubble=dgc.getRootBubble();
+  public static final Rectangle2D.Double getRootBubbleBounds(BubbleTree dgc){
+    GBubble rootbubble=dgc.getRootBubble();
     double[][] vp=rootbubble.getVertexPoints2D();
     double maxx=Double.MIN_VALUE,maxy=maxx,minx=Double.MAX_VALUE,miny=minx;
     for(int i=0;i<vp.length;i++){
@@ -95,7 +95,7 @@ public abstract class Renderer_Abstract implements Serializable{
       if(maxy<vp[i][1])maxy=vp[i][1];}
     return new Rectangle2D.Double(minx,miny,maxx-minx,maxy-miny);}
   
-  public static final Path2D.Double getPath2D(Bubble bubble){
+  public static final Path2D.Double getPath2D(GBubble bubble){
     Path2D.Double path2d=new Path2D.Double();
     double[][] lp=bubble.getVertexPoints2D();
     path2d.moveTo(lp[0][0],lp[0][1]);

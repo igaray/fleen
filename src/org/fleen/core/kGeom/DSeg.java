@@ -1,4 +1,5 @@
-package org.fleen.core.grammar;
+package org.fleen.core.kGeom;
+
 
 /*
  * ordered : (v4,v6),(v6,v12) or (v12,v4)
@@ -14,22 +15,22 @@ public class DSeg{
   public DSeg(DVertex a,DVertex b){
     //put the vertices in the proper order
     int gta=a.getGeneralType(),gtb=b.getGeneralType();
-    if(gta==MathDiamond.VERTEX_GTYPE_4){
-      if(gtb==MathDiamond.VERTEX_GTYPE_6){
+    if(gta==KGeom.VERTEX_GTYPE_4){
+      if(gtb==KGeom.VERTEX_GTYPE_6){
         vertex0=a;
         vertex1=b;
       }else{//gtb==MathDiamond.VERTEX_GTYPE_12
         vertex0=b;
         vertex1=a;}
-    }else if(gta==MathDiamond.VERTEX_GTYPE_6){
-      if(gtb==MathDiamond.VERTEX_GTYPE_12){
+    }else if(gta==KGeom.VERTEX_GTYPE_6){
+      if(gtb==KGeom.VERTEX_GTYPE_12){
         vertex0=a;
         vertex1=b;
       }else{//gtb==MathDiamond.VERTEX_GTYPE_4
         vertex0=b;
         vertex1=a;}
     }else{//gta==MathDiamond.VERTEX_GTYPE_12
-      if(gtb==MathDiamond.VERTEX_GTYPE_4){
+      if(gtb==KGeom.VERTEX_GTYPE_4){
         vertex0=a;
         vertex1=b;
       }else{//gtb==MathDiamond.VERTEX_GTYPE_6

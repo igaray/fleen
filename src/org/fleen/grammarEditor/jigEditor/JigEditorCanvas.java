@@ -7,10 +7,10 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-import org.fleen.core.grammar.DVectorRDPath;
-import org.fleen.core.grammar.DVertex;
-import org.fleen.core.grammar.DVertexPath;
-import org.fleen.core.grammar.MathDiamond;
+import org.fleen.core.kGeom.DVectorRDPath;
+import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.kGeom.KGeom;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPFocusBubbleModelTouchVertex;
 import org.fleen.grammarEditor.grammarProject.GPJigBubbleDef;
@@ -186,7 +186,7 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
     try{
       DVertexPath p0=bd.bubblemodel.getVertexPath();
       DVectorRDPath p1=p0.getVectorPath();
-      if(bd.twist==MathDiamond.TWIST_NEGATIVE)
+      if(bd.twist==KGeom.TWIST_NEGATIVE)
         p1.reverseDeltas();
       p0=p1.getVertexPath(bd.v0,bd.v1);
       List<double[]> points=getPoint2Ds(p0);

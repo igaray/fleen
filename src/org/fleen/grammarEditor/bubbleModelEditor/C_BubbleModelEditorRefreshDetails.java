@@ -1,6 +1,6 @@
 package org.fleen.grammarEditor.bubbleModelEditor;
 
-import org.fleen.core.grammar.DVectorRDPath;
+import org.fleen.core.kGeom.DVectorRDPath;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.util.C_UIRefresh_Abstract;
 

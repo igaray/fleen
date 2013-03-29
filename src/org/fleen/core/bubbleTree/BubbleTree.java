@@ -1,13 +1,15 @@
-package org.fleen.core.grammar;
+package org.fleen.core.bubbleTree;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fleen.core.grammar.GBubble;
+
 /*
- * A root grid for a tree of grids, bubbles and foams
- * methods for accessing stuff in that tree
+ * Conveniently manages a tree of bubbles and grids
+ * various concrete and abstract methods for searching the tree, accessing grids and bubbles, cultivating.
  */
-public class DGComposition{
+public class BubbleTree{
   
   /*
    * ################################
@@ -39,12 +41,12 @@ public class DGComposition{
    * we usaually have just 1 bubble on the root grid, thus a root bubble
    * if we have more than 1 root bubble then probably isn't so useful
    */
-  public Bubble getRootBubble(){
+  public GBubble getRootBubble(){
     return rootgrid.getChildBubbles().get(0);}
   
-  public List<Bubble> getBubbles(){
-    List<Bubble> bubbles=new ArrayList<Bubble>();
-    for(Bubble b:rootgrid.childbubbles)
+  public List<GBubble> getBubbles(){
+    List<GBubble> bubbles=new ArrayList<GBubble>();
+    for(GBubble b:rootgrid.childbubbles)
       bubbles.addAll(b.getBranchBubbles());
     return bubbles;}
   
@@ -57,10 +59,10 @@ public class DGComposition{
 //      while(e.hasMoreElements())
 //        new BubbleCollector(e.nextElement(),bubbles);}}
   
-  public List<Bubble> getLeaves(){
-    List<Bubble> b=getBubbles();
-    List<Bubble> leaves=new ArrayList<Bubble>();
-    for(Bubble a:b)
+  public List<GBubble> getLeaves(){
+    List<GBubble> b=getBubbles();
+    List<GBubble> leaves=new ArrayList<GBubble>();
+    for(GBubble a:b)
       if(a.isLeaf())
         leaves.add(a);
     return leaves;}

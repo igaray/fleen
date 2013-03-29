@@ -4,10 +4,10 @@ import java.awt.geom.Path2D;
 import java.io.Serializable;
 import java.util.List;
 
-import org.fleen.core.grammar.DVectorRDPath;
-import org.fleen.core.grammar.DVertex;
-import org.fleen.core.grammar.DVertexPath;
-import org.fleen.core.grammar.MathDiamond;
+import org.fleen.core.kGeom.DVectorRDPath;
+import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.kGeom.KGeom;
 
 public class GPJigBubbleDef implements Serializable{
 
@@ -138,7 +138,7 @@ public class GPJigBubbleDef implements Serializable{
     try{
       DVertexPath p0=bubblemodel.getVertexPath();
       DVectorRDPath p1=p0.getVectorPath();
-      if(twist==MathDiamond.TWIST_NEGATIVE)
+      if(twist==KGeom.TWIST_NEGATIVE)
         p1.reverseDeltas();
       p0=p1.getVertexPath(v0,v1);
       List<double[]> points=p0.getBasicPoint2Ds();

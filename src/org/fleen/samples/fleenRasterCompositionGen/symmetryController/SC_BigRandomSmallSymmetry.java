@@ -1,6 +1,6 @@
 package org.fleen.samples.fleenRasterCompositionGen.symmetryController;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.grammar.GBubble;
 
 public class SC_BigRandomSmallSymmetry extends SymmetryControlFunction_Abstract{
 
@@ -8,7 +8,7 @@ public class SC_BigRandomSmallSymmetry extends SymmetryControlFunction_Abstract{
 
   private double median=-1;
   
-  public boolean doSymmetry(Bubble bubble){
+  public boolean doSymmetry(GBubble bubble){
     if(median==-1)initMedian();
     double s=bubble.getDetailSize();
     return s<median;}

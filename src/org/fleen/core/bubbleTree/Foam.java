@@ -1,20 +1,39 @@
-package org.fleen.core.grammar;
+package org.fleen.core.bubbleTree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
 
+import org.fleen.core.grammar.GBubble;
+
 
 /*
- * a contiguous system of bubbles
- * parents enclose children, and we can multiple levels of nesting of course
- * a foam is a node in a tree of foams
+ * A Foam is 1..n contiguous masses of bubbles. These masses may be pierced.
+ * parents enclose children, and we can have multiple levels of nesting
+ * a foam is a node in the bubbletree. It implements bubbletreeelement.
+ * 
+ * Every bubble has a foam. Is part of a foam. A Bubble's foam is the first nonnull Bubble.foam in it's ancestry.
+ * 
+ * A foam has 1..n Bubbles. Is composed of Bubbles. A Foam's Bubbles are all Bubbles in the branch/es rooted
+ * at the Foam's root Bubble/s - up to the Bubbles with nonnull Foams, then a new Foam starts. This new Foam
+ * is a child of this Foam. 
  */
-public class Foam implements DNode{
+public class Foam implements Serializable{
   
-  //serialization
   private static final long serialVersionUID=-128342895299754440L;
+  
+  public Foam(Bubble rootbubble){
+    this.rootbubble=rootbubble;
+    rootbubble.foam=this;}
+  
+  public Bubble rootbubble;
+  
+  public Foam getParent(){
+    
+  }
+  
   
   /*
    * ################################
@@ -52,7 +71,7 @@ public class Foam implements DNode{
   public int getIndex(TreeNode a){
     return children.indexOf(a);}
 
-  public Foam getParent(){
+  public Foam getParentBubble(){
     return parent;}
 
   public boolean isLeaf(){
@@ -76,30 +95,10 @@ public class Foam implements DNode{
    * ################################
    */
   
-  private ArrayList<Bubble> bubbles=new ArrayList<Bubble>(0);
+  private ArrayList<GBubble> bubbles=new ArrayList<GBubble>(0);
   
-  public void addBubble(Bubble b){
+  public void addBubble(GBubble b){
     bubbles.add(b);
     bubbles.trimToSize();}//TODO inefficient? do an array and copy thing?
-  
-  /*
-   * ################################
-   * TAGS
-   * Identified by key string.
-   * Either they're there or they're not
-   * totally mutable
-   * ################################
-   */
-  
-//  private List<String> tags=new ArrayList<String>();
-//  
-//  public void addTag(String tag){
-//    tags.add(tag);}
-//  
-//  public boolean removeTag(String tag){
-//    return tags.remove(tag);}
-//  
-//  public boolean hasTag(String tag){
-//    return tags.contains(tag);}
   
 }

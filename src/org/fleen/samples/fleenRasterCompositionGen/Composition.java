@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.bubbleTree.BubbleTree;
+import org.fleen.core.bubbleTree.Grid;
+import org.fleen.core.grammar.GBubble;
 import org.fleen.core.grammar.BubbleModel;
 import org.fleen.core.grammar.BubbleSignature;
-import org.fleen.core.grammar.DGComposition;
 import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Grid;
 import org.fleen.core.grammar.Jig;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SymmetryControlFunction_Abstract;
 
-public class Composition extends DGComposition{
+public class Composition extends BubbleTree{
   
   double detaillimit;
   SymmetryControlFunction_Abstract scf;
@@ -31,7 +31,7 @@ public class Composition extends DGComposition{
     Grid grid=new Grid();
     setRootGrid(grid);
     BubbleModel rootbubblemodel=FRCG.instance.config.getRootBubbleModel();
-    Bubble rootbubble=new Bubble(
+    GBubble rootbubble=new GBubble(
       grid,
       rootbubblemodel);
     scf.mindetailsize=detaillimit;
@@ -49,7 +49,7 @@ public class Composition extends DGComposition{
     Random random=new Random();
     Map<BubbleSignature,Jig> sigjigs=new Hashtable<BubbleSignature,Jig>();
     int bcount=0;
-    for(Bubble bubble:getLeaves()){
+    for(GBubble bubble:getLeaves()){
       //progress feed
       bcount++;
       if(bcount%4096==0)
@@ -62,7 +62,7 @@ public class Composition extends DGComposition{
           j.create(bubble);}}}
     return cultivationhappened;}
 
-  private Jig getJig(Bubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
+  private Jig getJig(GBubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
     Jig jig=null;
     //if the symmetry control function says to do symmetry then attempt symmetry
     if(scf.doSymmetry(bubble)){
@@ -82,7 +82,7 @@ public class Composition extends DGComposition{
     return jig;}
   
   //our little logic for determining whether to do a boiler or a splitter. This could be a param of course.
-  private boolean doABoiler(Bubble b){
+  private boolean doABoiler(GBubble b){
     int cl=b.getRaftLevel();
     if(cl==0){
       return false;
@@ -91,7 +91,7 @@ public class Composition extends DGComposition{
     }else{//>=2
       return true;}}
   
-  private Jig getBoilerJig(Bubble bubble,Grammar grammar,Random random){
+  private Jig getBoilerJig(GBubble bubble,Grammar grammar,Random random){
     List<Jig> jigs=grammar.getJigs(bubble.model.id);
     if(jigs.isEmpty())return null;
     Iterator<Jig> i=jigs.iterator();
@@ -103,7 +103,7 @@ public class Composition extends DGComposition{
     j=jigs.get(random.nextInt(jigs.size()));
     return j;}
   
-  private Jig getSplitterJig(Bubble bubble,Grammar grammar,Random random){
+  private Jig getSplitterJig(GBubble bubble,Grammar grammar,Random random){
     List<Jig> jigs=grammar.getJigs(bubble.model.id);
     if(jigs.isEmpty())return null;
     Iterator<Jig> i=jigs.iterator();

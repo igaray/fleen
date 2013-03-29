@@ -2,6 +2,10 @@ package org.fleen.core.grammar;
 
 import java.io.Serializable;
 
+import org.fleen.core.kGeom.DVectorRD;
+import org.fleen.core.kGeom.DVectorRDPath;
+import org.fleen.core.kGeom.DVertexPath;
+
 /*
  * A loop of vectors describing a loop of vertices in a diamond grid in a 
  *    location, scale and orientation independent way.

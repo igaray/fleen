@@ -1,9 +1,10 @@
-package org.fleen.core.grammar;
+package org.fleen.core.kGeom;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class DVertexPath extends ArrayList<DVertex> implements Serializable{
 
@@ -56,7 +57,7 @@ public class DVertexPath extends ArrayList<DVertex> implements Serializable{
       distance=v[i].getDistance(v[inext]);
       d0=v[iprior].getDirection(v[i]);
       d1=v[i].getDirection(v[inext]);
-      delta=MathDiamond.getDirectionDelta(d0,d1);
+      delta=KGeom.getDirectionDelta(d0,d1);
       bvr.add(new DVectorRD(delta,distance));}
     return bvr;}
   

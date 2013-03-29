@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.fleen.core.grammar.DVertex;
+import org.fleen.core.kGeom.DVertex;
 import org.fleen.samples.genRainbowTriumph.palette.Palette_Abstract;
 
 /*

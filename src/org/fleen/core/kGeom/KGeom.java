@@ -1,6 +1,8 @@
-package org.fleen.core.grammar;
+package org.fleen.core.kGeom;
 
 import java.util.Random;
+
+import org.fleen.core.dGeom.DGeom;
 
 /*
  * diamond math constants and methods.
@@ -23,7 +25,7 @@ import java.util.Random;
  *               fish
  * 
  */
-public class MathDiamond{
+public class KGeom{
 
   /*
    * ################################
@@ -109,18 +111,18 @@ public class MathDiamond{
    */
   
   public static final double[] DIRECTION_2D={
-    (0.0/12.0)*(Math2D.PI*2.0),
-    (1.0/12.0)*(Math2D.PI*2.0),
-    (2.0/12.0)*(Math2D.PI*2.0),
-    (3.0/12.0)*(Math2D.PI*2.0),
-    (4.0/12.0)*(Math2D.PI*2.0),
-    (5.0/12.0)*(Math2D.PI*2.0),
-    (6.0/12.0)*(Math2D.PI*2.0),
-    (7.0/12.0)*(Math2D.PI*2.0),
-    (8.0/12.0)*(Math2D.PI*2.0),
-    (9.0/12.0)*(Math2D.PI*2.0),
-    (10.0/12.0)*(Math2D.PI*2.0),
-    (11.0/12.0)*(Math2D.PI*2.0)};
+    (0.0/12.0)*(DGeom.PI*2.0),
+    (1.0/12.0)*(DGeom.PI*2.0),
+    (2.0/12.0)*(DGeom.PI*2.0),
+    (3.0/12.0)*(DGeom.PI*2.0),
+    (4.0/12.0)*(DGeom.PI*2.0),
+    (5.0/12.0)*(DGeom.PI*2.0),
+    (6.0/12.0)*(DGeom.PI*2.0),
+    (7.0/12.0)*(DGeom.PI*2.0),
+    (8.0/12.0)*(DGeom.PI*2.0),
+    (9.0/12.0)*(DGeom.PI*2.0),
+    (10.0/12.0)*(DGeom.PI*2.0),
+    (11.0/12.0)*(DGeom.PI*2.0)};
   
   /*
    * convert diamond direction to real 2d direciton
@@ -605,8 +607,8 @@ public class MathDiamond{
    */
   
   private static final double 
-    GETDIRVV_ERROR=1.0/(65596.0*2.0*Math2D.PI),
-    DIRECTION_2D_0_ALTERNATE=Math2D.PI*2.0;
+    GETDIRVV_ERROR=1.0/(65596.0*2.0*DGeom.PI),
+    DIRECTION_2D_0_ALTERNATE=DGeom.PI*2.0;
   private static final double[][] GETDIRVV_RANGES={
     {DIRECTION_2D_0_ALTERNATE-GETDIRVV_ERROR,GETDIRVV_ERROR},
     {DIRECTION_2D[1]-GETDIRVV_ERROR,DIRECTION_2D[1]+GETDIRVV_ERROR},
@@ -632,7 +634,7 @@ public class MathDiamond{
     double[] p0=new double[2],p1=new double[2];
     getBasicPoint2D_Vertex(v0a,v0b,v0c,v0d,p0);
     getBasicPoint2D_Vertex(v1a,v1b,v1c,v1d,p1);
-    double d2d=Math2D.getDirection_2Points(p0[0],p0[1],p1[0],p1[1]);
+    double d2d=DGeom.getDirection_2Points(p0[0],p0[1],p1[0],p1[1]);
     double[] range;
     //filter the 2d direction value for diamond direction 0
     if(d2d>GETDIRVV_RANGES[0][0]||d2d<GETDIRVV_RANGES[0][1])
@@ -670,7 +672,7 @@ public class MathDiamond{
     double[] p0=new double[2],p1=new double[2];
     getBasicPoint2D_Vertex(v0a,v0b,v0c,v0d,p0);
     getBasicPoint2D_Vertex(v1a,v1b,v1c,v1d,p1);
-    return Math2D.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);}
+    return DGeom.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);}
   
   /*
    * ++++++++++++++++++++++++++++++++

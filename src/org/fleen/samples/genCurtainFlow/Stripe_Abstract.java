@@ -1,6 +1,6 @@
 package org.fleen.samples.genCurtainFlow;
 
-import org.fleen.core.grammar.DGComposition;
+import org.fleen.core.bubbleTree.BubbleTree;
 
 /*
  * Cultivate up a nice diamond composition with a root bubble that uses one of our base stripe bubblemodels.
@@ -16,13 +16,13 @@ public abstract class Stripe_Abstract{
   Pixel[] pixels;
   
   Stripe_Abstract(){
-    DGComposition dgc=getDGComposition();
+    BubbleTree dgc=getDGComposition();
     initPixels(dgc);}
   
   //grid origin at 0,0
   //scaled by fish spec
   //assume the y is flipped
-  protected abstract DGComposition getDGComposition();
+  protected abstract BubbleTree getDGComposition();
   
   protected abstract int getLength();
   
@@ -35,7 +35,7 @@ public abstract class Stripe_Abstract{
    * gotta take scroll direction into account. this is prolly grid foreward.
    * 
    */
-  private void initPixels(DGComposition dgc){
+  private void initPixels(BubbleTree dgc){
     
   }
   

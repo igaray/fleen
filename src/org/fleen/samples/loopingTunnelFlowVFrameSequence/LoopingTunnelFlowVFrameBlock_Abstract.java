@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.bubbleTree.BubbleTree;
+import org.fleen.core.bubbleTree.Grid;
+import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.grammar.GBubble;
 import org.fleen.core.grammar.BubbleSignature;
-import org.fleen.core.grammar.DGComposition;
 import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Grid;
 import org.fleen.core.grammar.Jig;
-import org.fleen.core.grammar.Math2D;
 
 /*
  * A LoopingTunnelFlowVFrameBlock is a special kind of fleen designed to give us nice tunnel flow frames
@@ -22,7 +22,7 @@ import org.fleen.core.grammar.Math2D;
  * The core bubbles are all concentraic to the origin. So we have a simple tunnel going on.
  * Then we cultivate the tree, contraining by a detail size function.
  */
-public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGComposition{
+public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends BubbleTree{
   
   /*
    * ################################
@@ -30,7 +30,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
    * ################################
    */
   
-  public Bubble 
+  public GBubble 
     rootbubble,
     mouthbubble;
   
@@ -78,8 +78,8 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
     cultivate();
     System.out.println(" +++ FINISHED CONSTRUCTING FRAMEBLOCK");}
   
-  Comparator<Bubble> bubblecomparator=new Comparator<Bubble>(){
-    public int compare(Bubble b0,Bubble b1){
+  Comparator<GBubble> bubblecomparator=new Comparator<GBubble>(){
+    public int compare(GBubble b0,GBubble b1){
       double s0=b0.getDetailSize(),s1=b1.getDetailSize();
       if(s0==s1){
         return 0;
@@ -115,8 +115,8 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
    */
   private void doCoreBubbleData(){
     //get the core bubbles into a list
-    List<Bubble> corebubbles=new ArrayList<Bubble>();
-    Bubble b=rootbubble;
+    List<GBubble> corebubbles=new ArrayList<GBubble>();
+    GBubble b=rootbubble;
     while(b!=null){
       corebubbles.add(b);
       if(b.childgrid==null){
@@ -126,7 +126,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
     //set data
     int s=corebubbles.size();
     int inext;
-    Bubble bnext;
+    GBubble bnext;
     for(int i=0;i<s;i++){
       b=corebubbles.get(i);
       inext=i+1;
@@ -135,7 +135,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
       b.data=new VFrameCoreBubbleData(bnext,getIncircleRadius(b),i);}}
   
   public int getCoreBubbleCount(){
-    Bubble b=rootbubble;
+    GBubble b=rootbubble;
     int bc=0;
     while(b!=null){
       bc++;
@@ -155,7 +155,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
    * the length of this frameblock in terms of core bubble count
    */
   public int getSize(){
-    Bubble b=rootbubble;
+    GBubble b=rootbubble;
     int s=0;
     while(b!=null){
       s++;
@@ -175,7 +175,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
   /*
    * it's easier to special case the core bubble types than to do a general alg
    */
-  protected abstract double getIncircleRadius(Bubble bubble);
+  protected abstract double getIncircleRadius(GBubble bubble);
   
   /*
    * ################################
@@ -195,7 +195,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
     Jig j;
     Random random=new Random();
     Map<BubbleSignature,Jig> sigjigs=new Hashtable<BubbleSignature,Jig>();
-    for(Bubble bubble:rootbubble.getBranchLeafBubbles()){
+    for(GBubble bubble:rootbubble.getBranchLeafBubbles()){
       if((!bubble.isCapped())&&
         (!bubble.equals(mouthbubble))&&
         isBigEnoughToCultivate(bubble)){
@@ -211,11 +211,11 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
    * if bubble.detailsize>=smallestdetailsizeatradius then return true. yes, cultivate it.
    * otherwise return false. nope, this bubble may not be cultivated. 
    */
-  private boolean isBigEnoughToCultivate(Bubble bubble){
+  private boolean isBigEnoughToCultivate(GBubble bubble){
     double bubbledetailsize=bubble.getDetailSize();
     double[] bubblecentroid=bubble.getCentroid2D();
     double normalizedradiusatbubblecentroid=
-      (Math2D.getDistance_2Points(0,0,bubblecentroid[0],bubblecentroid[1])-mouthradius)/radiusrange;
+      (DGeom.getDistance_2Points(0,0,bubblecentroid[0],bubblecentroid[1])-mouthradius)/radiusrange;
     double smallestdetailatbubblecentroid=
       smallestdetailatinnerradius+normalizedradiusatbubblecentroid*smallestdetailrange;
     boolean bigenough=bubbledetailsize>smallestdetailatbubblecentroid;
@@ -225,7 +225,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
    * first check the table to see if there's a jig for a bubble with this bubble's signature
    * if not then get one from the grammer.
    */
-  private Jig getJig(Bubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
+  private Jig getJig(GBubble bubble,Grammar grammar,Map<BubbleSignature,Jig> sigjigs,Random random){
     Jig j=sigjigs.get(bubble.getSignature());
     if(j==null){
       if(doABoiler(bubble)){
@@ -238,7 +238,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
       sigjigs.put(bubble.getSignature(),j);}
     return j;}
   
-  private boolean doABoiler(Bubble b){
+  private boolean doABoiler(GBubble b){
     int cl=b.getRaftLevel();
     if(cl==0){
       return false;
@@ -247,7 +247,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
     }else{//>=2
       return true;}}
   
-  private Jig getBoilerJig(Bubble bubble,Grammar grammar,Random random){
+  private Jig getBoilerJig(GBubble bubble,Grammar grammar,Random random){
     List<Jig> jigs=grammar.getJigs(bubble.model.id);
     if(jigs.isEmpty())return null;
     Iterator<Jig> i=jigs.iterator();
@@ -259,7 +259,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends DGCompositio
     j=jigs.get(random.nextInt(jigs.size()));
     return j;}
   
-  private Jig getSplitterJig(Bubble bubble,Grammar grammar,Random random){
+  private Jig getSplitterJig(GBubble bubble,Grammar grammar,Random random){
     List<Jig> jigs=grammar.getJigs(bubble.model.id);
     if(jigs.isEmpty())return null;
     Iterator<Jig> i=jigs.iterator();

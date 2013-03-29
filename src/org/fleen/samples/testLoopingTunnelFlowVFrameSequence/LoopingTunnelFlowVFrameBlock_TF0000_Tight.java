@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import org.fleen.core.grammar.Bubble;
+import org.fleen.core.bubbleTree.Foam;
+import org.fleen.core.bubbleTree.Grid;
+import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.grammar.GBubble;
 import org.fleen.core.grammar.BubbleModel;
-import org.fleen.core.grammar.DVertex;
-import org.fleen.core.grammar.Foam;
 import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Grid;
 import org.fleen.core.grammar.Jig;
-import org.fleen.core.grammar.Math2D;
+import org.fleen.core.kGeom.DVertex;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameBlock_Abstract;
 
 /*
@@ -50,14 +50,14 @@ public class LoopingTunnelFlowVFrameBlock_TF0000_Tight extends LoopingTunnelFlow
   /*
    * we handle FC_hexagon,FC_triangle and FC_star, from the TF0000 grammar
    */
-  protected double getIncircleRadius(Bubble bubble){
+  protected double getIncircleRadius(GBubble bubble){
     double radius;
     double[][] vp=bubble.getVertexPoints2D();
     if(bubble.model.id.equals(IDSTAR)){
-      radius=Math2D.getDistance_2Points(0,0,vp[0][0],vp[0][1]);
+      radius=DGeom.getDistance_2Points(0,0,vp[0][0],vp[0][1]);
     }else{//model id == "FC_hexagon" or "FC_triangle"
-      double[] mp=Math2D.getPoint_Mid2Points(vp[0][0],vp[0][1],vp[1][0],vp[1][1]);
-      radius=Math2D.getDistance_2Points(0,0,mp[0],mp[1]);}
+      double[] mp=DGeom.getPoint_Mid2Points(vp[0][0],vp[0][1],vp[1][0],vp[1][1]);
+      radius=DGeom.getDistance_2Points(0,0,mp[0],mp[1]);}
     return radius;}
   
   /*
@@ -92,10 +92,10 @@ public class LoopingTunnelFlowVFrameBlock_TF0000_Tight extends LoopingTunnelFlow
     DVertex 
       v0=new DVertex(-1,-1,0,4),
       v1=new DVertex(0,0,0,2);
-    Bubble rootbubble=new Bubble(
+    GBubble rootbubble=new GBubble(
       rg,
       rootbubblemodel,
-      Bubble.TYPE_RAFT,
+      GBubble.TYPE_RAFT,
       v0,
       v1,
       true,

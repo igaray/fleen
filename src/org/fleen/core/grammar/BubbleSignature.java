@@ -18,8 +18,8 @@ public class BubbleSignature{
    * ################################
    */
   
-  public BubbleSignature(Bubble bubble){
-    Bubble pb=bubble.getParentBubble();
+  public BubbleSignature(GBubble bubble){
+    GBubble pb=bubble.getParentBubble();
     if(pb!=null){
       BubbleSignature s0=bubble.getParentBubble().getSignature();
       components.addAll(s0.components);}
@@ -44,7 +44,7 @@ public class BubbleSignature{
     String bubblemodelid;
     int chorusindex;
     
-    public SigComponent(Bubble b){
+    public SigComponent(GBubble b){
       bubblemodelid=b.model.id;
       chorusindex=b.chorusindex;}
     

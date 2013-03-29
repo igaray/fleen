@@ -2,6 +2,8 @@ package org.fleen.core.grammar;
 
 import java.io.Serializable;
 
+import org.fleen.core.kGeom.DVertex;
+
 public class JigBubbleDef implements Serializable{
   
   private static final long serialVersionUID=-7934141313458833281L;
