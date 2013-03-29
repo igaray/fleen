@@ -19,8 +19,10 @@ import org.fleen.core.kGeom.KGeom;
  * 
  */
 
-public class Grid{
+public class Grid extends BubbleTreeNode_Abstract{
   
+  private static final long serialVersionUID=-7272582675212521562L;
+
   /*
    * ################################
    * CONSTRUCTORS

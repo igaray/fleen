@@ -3,6 +3,8 @@ package org.fleen.core.grammar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fleen.core.bubbleTree.Bubble;
+
 
 /*
  * The ancestry of a bubble in terms of bubblemodel ids and chorus indices
@@ -19,7 +21,7 @@ public class BubbleSignature{
    */
   
   public BubbleSignature(GBubble bubble){
-    GBubble pb=bubble.getParentBubble();
+    Bubble pb=bubble.getParentBubble();
     if(pb!=null){
       BubbleSignature s0=bubble.getParentBubble().getSignature();
       components.addAll(s0.components);}

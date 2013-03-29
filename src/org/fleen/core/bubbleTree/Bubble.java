@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.tree.TreeNode;
 
 import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.grammar.BubbleSignature;
 import org.fleen.core.kGeom.DVectorRD;
 import org.fleen.core.kGeom.DVertex;
 import org.fleen.core.kGeom.DVertexPath;
@@ -14,21 +15,15 @@ import org.fleen.core.kGeom.KGeom;
 
 /*
  * A loop of vertices in this bubble's parent grid
+ * a node in a bubbletree
+ * it's parent or grandparent is a grid
+ * it's parent is either a foam or a grid
+ * it has 0 or 1 child, a grid 
+ * it is immutable, more or less
  */
-public class Bubble{
+public class Bubble extends BubbleTreeNode_Abstract{
   
-  /*
-   * ################################
-   * FIELDS
-   * ################################
-   */
-
-  public Grid parentgrid=null,childgrid=null;
-  //the foam to which this bubble belongs
-  public Foam foam=null;
-  //type
-  public static final int TYPE_UNDEFINED=-1,TYPE_SHARD=0,TYPE_RAFT=1;
-  public int type=TYPE_UNDEFINED;
+  private static final long serialVersionUID=7403675520824450721L;
   
   /*
    * ################################
@@ -36,106 +31,69 @@ public class Bubble{
    * ################################
    */
 
-  public Bubble(
-    Grid parentgrid,
-    int type,
-    DVertex[] vertices,
-    Foam foam){
-    this.parentgrid=parentgrid;
-    parentgrid.childbubbles.add(this);
-    this.type=type;
-    this.foam=foam;}
+  public Bubble(DVertex[] vertices,int chorusindex){
+    this.vertices=vertices;
+    this.chorusindex=chorusindex;}
   
   public Bubble(){}
   
   /*
    * ################################
-   * GEOMETRY
+   * BUBBLETREE
    * ################################
    */
   
-  double[] centroid2d=null;
-  Double area2d=null;
+  public Grid getParentGrid(){
+    return getFirstAncestorGrid();}
   
-  public double[] getCentroid2D(){
-    if(centroid2d==null)initCentroid2D();
-    return centroid2d;}
+  public Grid getChildGrid(){
+    return (Grid)getChild(0);}
   
-  private void initCentroid2D() {
-    double[][] vp=getVertexPoints2D();
-    double cx=0.0,cy=0.0;
-    int inext;
-    for(int i=0;i<vp.length;i++){
-      inext=i+1;
-      if(inext==vp.length)inext=0;
-      cx=cx+(vp[i][0]+vp[inext][0])*(vp[i][1]*vp[inext][0]-vp[i][0]*vp[inext][1]);
-      cy=cy+(vp[i][1]+vp[inext][1])*(vp[i][1]*vp[inext][0]-vp[i][0]*vp[inext][1]);}
-    double area=getArea2D();
-    cx/=(6.0* area);
-    cy/=(6.0*area);
-    centroid2d=new double[]{cx,cy};}
+  public Bubble getParentBubble(){
+    return getFirstAncestorBubble();}
   
-  public double getArea2D(){
-    if(area2d==null)initArea2D();
-    return area2d;}
+  public List<Bubble> getChildBubbles(){
+    Grid g=getChildGrid();
+    if(g==null)return new ArrayList<Bubble>(0);
+    return g.getChildBubbles();}
   
-  public void initArea2D(){
-    double[][] vp=getVertexPoints2D();
-    double sum=0.0;
-    int inext;
-    for(int i=0;i<vp.length;i++){
-      inext=i+1;
-      if(inext==vp.length)inext=0;
-      sum=sum+(vp[i][0]*vp[inext][1])-(vp[i][1]*vp[inext][0]);}
-    //discard the sign
-    area2d=Math.abs(0.5*sum);}
+  public List<Bubble> getSiblingBubbles(){
+    List<Bubble> a=new ArrayList<Bubble>(getParentGrid().getChildBubbles());
+    a.remove(this);
+    return a;}
   
   /*
-   * some geometry data is derived from ancestors in the tree
-   * when ancestor geometry changes (cuz we're doing an animation or something) the cached 
-   * data becomes invalid, so we flush it so it can be recalculated.
+   * ################################
+   * CHORUS INDEX
+   * a contextual signifier. groups bubbles
+   * ################################
    */
-  public void flushBranchRealGeometryCache(){
-    vertexpoints2d=null;
-    detailsize=null;
-    centroid2d=null;
-    area2d=null;
-    if(childgrid!=null)
-      childgrid.flushBranchRealGeometryCache();}
   
-  public void flushBranchDiamondGeometryCache(){
-    vertices=null;
-    if(childgrid!=null)
-      childgrid.flushBranchDiamondGeometryCache();}
+  protected int chorusindex=0;
   
-  /* 
-   * Twist is the direction of direction indexing in diamond
-   * positive means clockwise indexing, negative means counterclockwise. Thus we have mirror diamonds.
-   * we are working with nesting grids, however, so within a negative-twist grid negative is positive. 
-   * Mirror of mirror is nonmirror, and so on.
-   * negative is basically the reverse of whatever the twist of the present grid is
-   * If our bubble's twist is positive then we return the twist of it's parent grid
-   * If our bubble's twist is negative then we return the opposite of the parent grid twist
-   * Compounded twist is the twist at this bubble in absolute terms as derived from the twists of it's ancestors
-   */
-  public boolean getCompoundedTwist(){
-    if(twist==KGeom.TWIST_POSITIVE){
-      return parentgrid.getTwist();
-    }else{
-      return !parentgrid.getTwist();}}
+  public int getChorusIndex(){
+    return chorusindex;}
   
   /*
-   * fish is our local unit interval
-   * we derive it by comparing the v0 v1 of this bubble with that of it's bubblemodel
-   * it is scale, basically.
+   * ################################
+   * KGEOM
+   * ################################
    */
-  public double getFish(){
-    double[] 
-      p0=parentgrid.getPoint2D(v0),
-      p1=parentgrid.getPoint2D(v1);
-    double a=DGeom.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);
-    double fish=a/model.getVector(0).distance;
-    return fish;}
+  
+  private DVertex[] vertices=null;
+  
+  /*
+   * This is the most basic way to do this of course
+   * In the grammar we do it with bubblemodels
+   */
+  public DVertex[] getVertices(){
+    return vertices;}
+  
+  /*
+   * ################################
+   * DGEOM
+   * ################################
+   */
   
   /*
    * ++++++++++++++++++++++++++++++++
@@ -156,6 +114,7 @@ public class Bubble{
     DVertex[] v=getVertices();
     int s=v.length;
     vertexpoints2d=new double[s][2];
+    Grid parentgrid=getParentGrid();
     for(int i=0;i<s;i++)
       vertexpoints2d[i]=parentgrid.getPoint2D(v[i]);}
   
@@ -180,9 +139,7 @@ public class Bubble{
     if(gds_v0==-1)
       initIndicesOfFurthestAdjacentVerticesForGetDetailSize();
     DVertex[] v=getVertices();
-    detailsize=v[gds_v0].getDistance(v[gds_v1])*parentgrid.getFish();
-    
-  }
+    detailsize=v[gds_v0].getDistance(v[gds_v1])*getParentGrid().getFish();}
   
   private void initIndicesOfFurthestAdjacentVerticesForGetDetailSize(){
     DVertex[] v=getVertices();
@@ -196,162 +153,12 @@ public class Bubble{
         dfurthest=dtest;
         gds_v0=i;
         gds_v1=inext;}}}
-  
-  /*
-   * ++++++++++++++++++++++++++++++++
-   * VERTICES
-   * In the basic form of Bubble we specify these in the constructor
-   * in the grammar form we use a BubbleModel
-   * ++++++++++++++++++++++++++++++++
-   */
-  
-  private DVertex[] vertices=null;
-  
-  public DVertex[] getVertices(){
-    if(vertices==null)initVertices();
-    return vertices;}
-  
-  private void initVertices(){
-    DVectorRD vector=new DVectorRD(getBaseForeward(),0);
-    int vectorcount=model.getVectorCount();
-    double scale=v0.getDistance(v1)/model.getVector(0).distance;
-    vertices=new DVertex[vectorcount];
-    vertices[0]=v0;
-    vertices[1]=v1;
-    int directiondelta;
-    for(int i=1;i<vectorcount-1;i++){
-      directiondelta=model.getVector(i).directiondelta;
-      if(twist==KGeom.TWIST_NEGATIVE)directiondelta*=-1;
-      vector.directiondelta=(vector.directiondelta+directiondelta+12)%12;
-      vector.distance=scale*model.getVector(i).distance;
-      vertices[i+1]=KGeom.getVertex_VertexVector(vertices[i],vector);
-      if(vertices[i+1]==null)
-        throw new IllegalArgumentException("BAD GEOMETRY. "+vertices[i+1]+" , "+vector);}}
-  
-  private int getBaseForeward(){
-    int f=KGeom.getDirection_VertexVertex(
-      v0.getAnt(),v0.getBat(),v0.getCat(),v0.getDog(),
-      v1.getAnt(),v1.getBat(),v1.getCat(),v1.getDog());
-    if(f==KGeom.DIRECTION_NULL)
-      throw new IllegalArgumentException("local foreward is direction null "+v0+" "+v1);
-    return f;}
-  
-  /*
-   * ################################
-   * CULTIVATION
-   * ################################
-   */
-  
-  private boolean capped=false;
-  
-  /*
-   * when a bubble is capped it's a flag for the cultivation logic saying that this element should 
-   * not be cultivated anymore
-   */
-  public void capBranch(){
-    capped=true;
-    if(childgrid!=null)
-      childgrid.capBranch();}
-  
-  public void uncapBranch(){
-    capped=false;
-    if(childgrid!=null)
-      childgrid.uncapBranch();}
-  
-  public boolean isCapped(){
-    return capped;}
-  
-  /*
-   * ################################
-   * LOCAL BUBBLE FAMILY
-   * a bubble's immediate parent and child are grids
-   * just beyond these, in the tree, we have 0,1 parent and 0..n children, with
-   * whom this bubble has a geometric association 
-   * so those are the parent bubble and child bubbles
-   * we also access the sibling bubbles
-   * ################################
-   */
-  
-  public Bubble getParentBubble(){
-    return parentgrid.parentbubble;}
-  
-  public List<Bubble> getChildBubbles(){
-    if(childgrid==null)return new ArrayList<Bubble>(0);
-    return childgrid.childbubbles;}
-  
-  public List<Bubble> getSiblingBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>(parentgrid.childbubbles);
-    a.remove(this);
-    return a;}
-  
-  /*
-   * ################################
-   * SIGNATURE
-   * this is the composed of bubblemodel ids and chorusindices tracing back to the root
-   * a string of values. comparing these signatures we are guided in our symmetry control
-   * bubbles with matching signatures are locally and contextually isometric (we assume). 
-   * ################################
-   */
-  
-  private BubbleSignature signature=null;
-  
-  public BubbleSignature getSignature(){
-    if(signature==null)
-      signature=new BubbleSignature(this);
-    return signature;}
 
   /*
    * ################################
    * TREE NODE STUFF + IMPLEMENTATION OF TreeNode
    * ################################
    */
-  
-  public Enumeration<DNode> children(){
-    return new ChildEnumeration();}
-  
-  //START CHILD ENUMERATION CLASS
-  //a bubble has 0 or 1 child, a Grid
-  private class ChildEnumeration implements Enumeration<DNode>{
-
-    boolean hasmoreelements=childgrid!=null;
-    
-    public boolean hasMoreElements(){
-      return hasmoreelements;}
-
-    public DNode nextElement(){
-      hasmoreelements=false;
-      return childgrid;}
-    
-  }//END CHILD ENUMERATION CLASS
-
-  public boolean getAllowsChildren(){
-    return true;}
-
-  //a bubble has 0 or 1 children. The child is a Grid
-  public Grid getChildAt(int i){
-    if(i!=0)return null;
-    return childgrid;}
-
-  //if it has a child then 1, if it doesn't then 0
-  public int getChildCount(){
-    if(childgrid!=null)return 1;
-    return 0;}
-
-  //a bubble always has a parent grid (but a grid might not have a parent bubble)
-  public int getIndex(TreeNode arg0){
-    return parentgrid.childbubbles.indexOf(this);}
-
-  public Grid getParent(){
-    return parentgrid;}
-
-  public boolean isLeaf(){
-    return childgrid==null;}
-  
-  public boolean isRoot(){
-    return false;}//yes, a bubble can never be root
-  
-  public int getDepth(){
-    return parentgrid.getDepth()+1;}
   
   public List<Bubble> getBranchLeafBubbles(){
     List<Bubble> a=new ArrayList<Bubble>();
@@ -368,19 +175,6 @@ public class Bubble{
     if(childgrid!=null)
       a.addAll(childgrid.getBranchBubbles());
     return a;}
-  
-  /*
-   * ################################
-   * TYPE, RAFT, SHARD
-   * ################################
-   */
-  
-  //how many levels down do we have to go to get the prior raft
-  public int getRaftLevel(){
-   if(type==TYPE_RAFT||parentgrid.parentbubble==null){
-     return 0;
-   }else{
-     return getParentBubble().getRaftLevel()+1;}}
   
   /*
    * ################################

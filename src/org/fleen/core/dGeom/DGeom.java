@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * 2D MATH
+ * 2D GEOMETRY MATH
  * 
  * We use 2 basic geometry systems in this latest version of the fleen
  * --The first system is constrained to 24 directions. We call it D24
@@ -16,13 +16,6 @@ import java.util.List;
  * Herein are contained various constants and primitive functions for handling geometry in both of our systems. 
  */
 public class DGeom{
-  
-  ///////////////////////
-  //################---//
-  // STANDARD GEOMETRY //
-  //################---//
-  ///////////////////////
-  
   
   //################
   // CONSTANTS
@@ -506,15 +499,31 @@ public class DGeom{
     double i1y=p2y-ry;
     return new double[]{i0x,i0y,i1x,i1y};}
   
-  public static final double getSignedArea2D(double[][] p){
-    double signedarea2d=0.0;
-    int i0,s=p.length;
-    for(int i=0;i<s;i++){
-      i0=i+1;
-      if(i0==s)i0=0;
-      signedarea2d=signedarea2d+(p[i][0]*p[i0][1])-(p[i][1]*p[i0][0]);}
-    //
-    signedarea2d*=0.5;
+  public static final double[] getCentroid2D(double[][] vp){
+    double cx=0.0,cy=0.0;
+    int inext;
+    for(int i=0;i<vp.length;i++){
+      inext=i+1;
+      if(inext==vp.length)inext=0;
+      cx=cx+(vp[i][0]+vp[inext][0])*(vp[i][1]*vp[inext][0]-vp[i][0]*vp[inext][1]);
+      cy=cy+(vp[i][1]+vp[inext][1])*(vp[i][1]*vp[inext][0]-vp[i][0]*vp[inext][1]);}
+    double area=getAbsArea2D(vp);
+    cx/=(6.0* area);
+    cy/=(6.0*area);
+    double[] centroid2d=new double[]{cx,cy};
+    return centroid2d;}
+  
+  public static final double getAbsArea2D(double[][] vp){
+    return Math.abs(getSignedArea2D(vp));}
+  
+  public static final double getSignedArea2D(double[][] vp){
+    double sum=0.0;
+    int inext;
+    for(int i=0;i<vp.length;i++){
+      inext=i+1;
+      if(inext==vp.length)inext=0;
+      sum=sum+(vp[i][0]*vp[inext][1])-(vp[i][1]*vp[inext][0]);}
+    double signedarea2d=0.5*sum;
     return signedarea2d;}
   
   public static final double getArea_Triangle(double[] p0,double[] p1,double[] p2){

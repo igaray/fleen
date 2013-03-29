@@ -20,19 +20,11 @@ import org.fleen.core.grammar.GBubble;
  * at the Foam's root Bubble/s - up to the Bubbles with nonnull Foams, then a new Foam starts. This new Foam
  * is a child of this Foam. 
  */
-public class Foam implements Serializable{
+public class Foam extends BubbleTreeNode_Abstract{
   
   private static final long serialVersionUID=-128342895299754440L;
   
-  public Foam(Bubble rootbubble){
-    this.rootbubble=rootbubble;
-    rootbubble.foam=this;}
   
-  public Bubble rootbubble;
-  
-  public Foam getParent(){
-    
-  }
   
   
   /*
