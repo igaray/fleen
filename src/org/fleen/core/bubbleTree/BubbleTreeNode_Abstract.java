@@ -18,7 +18,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * ################################
    */
   
-  private BubbleTreeNode_Abstract parent=null;
+  BubbleTreeNode_Abstract parent=null;
   
   public BubbleTreeNode_Abstract getParent(){
     return parent;}
@@ -55,6 +55,8 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * ################################
    */
   
+  int childindex=-1;
+  
   public boolean isRoot(){
     return parent==null;}
   
@@ -62,44 +64,81 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
     return children.length==0;}
   
   /**
-   * @return The number of bubbles encountered when traversing the tree from this node to the root.
+   * @return The index of this node within it's parent's child array. 
+   *  Exception if this node has no parent (is root).
+   *  Exception if parent array does not hold a reference to this node.
    */
-  public int getBubbleLevel(){
+  public int getSiblingIndex(){
+    if(parent==null)
+      throw new IllegalArgumentException("This node has no parent");
+    //init. we cache. efficient.
+    if(childindex==-1){
+      SEEK:for(childindex=0;childindex<parent.children.length;childindex++)
+        if(parent.children[childindex].equals(this))
+          break SEEK;
+    throw new IllegalArgumentException("Parent's child array holds no reference to this node");}
+    return childindex;}
+  
+  /**
+   * @return The next child (ascending indexwise) in this node's parent's child array. 
+   * null if there is no next child. 
+   * Exception if this node has no parent.
+   */
+  public BubbleTreeNode_Abstract getNextSibling(){
+    if(parent==null)
+      throw new IllegalArgumentException("This node has no parent");
+    return parent.getChild(getSiblingIndex()+1);}
+  
+  public boolean isLastSibling(){
+    return getSiblingIndex()==getParent().getChildCount()-1;}
+  
+  /**
+   * @return This number of nodes encountered when traversing the tree from this node to the root.
+   */
+  public int getDepth(){
     int c=0;
     BubbleTreeNode_Abstract n=this;
     while(n!=null){
-      n=getFirstAncestorBubble();
+      n=n.getParent();
+      if(n!=null)c++;}
+    return c;}
+  
+  /**
+   * @return The number of bubbles encountered when traversing the tree from this node to the root.
+   */
+  public int getBubbleDepth(){
+    int c=0;
+    BubbleTreeNode_Abstract n=this;
+    while(n!=null){
+      n=n.getFirstAncestorBubble();
       if(n!=null)c++;}
     return c;}
   
   /**
    * @return The number of foams encountered when traversing the tree from this node to the root.
    */
-  public int getFoamLevel(){
+  public int getFoamDepth(){
     int c=0;
     BubbleTreeNode_Abstract n=this;
     while(n!=null){
-      n=getFirstAncestorFoam();
+      n=n.getFirstAncestorFoam();
       if(n!=null)c++;}
     return c;}
   
   /**
    * @return The number of grids encountered when traversing the tree from this node to the root.
    */
-  public int getGridLevel(){
+  public int getGridDepth(){
     int c=0;
     BubbleTreeNode_Abstract n=this;
     while(n!=null){
-      n=getFirstAncestorGrid();
+      n=n.getFirstAncestorGrid();
       if(n!=null)c++;}
     return c;}
   
   /*
    * ################################
-   * RELATIVE ACCESS
-   * for our convenience
-   * so far we just have these first ancestor methods
-   * maybe more later
+   * RELATIVE NODE ACCESS
    * ################################
    */
   
@@ -123,5 +162,42 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
       if(n==null)return null;
       n=n.getParent();}
     return (Grid)n;}
-
+  
+  /**
+   * @return Leaves of the branch rooted at this node
+   * The leaves in a bubbletree are, as a rule, bubbles
+   */
+  @SuppressWarnings("serial")
+  public List<? extends BubbleTreeNode_Abstract> getLeaves(){
+    return new NodeGatherer_Abstract(this){
+      protected boolean doGather(BubbleTreeNode_Abstract n){
+        return n.isLeaf();}};}
+  
+  /**
+   * @return Bubbles in the branch rooted at this node
+   */
+  @SuppressWarnings("serial")
+  public List<? extends BubbleTreeNode_Abstract> getBubbles(){
+    return new NodeGatherer_Abstract(this){
+      protected boolean doGather(BubbleTreeNode_Abstract n){
+        return n instanceof Bubble;}};}
+  
+  /**
+   * @return Foams in the branch rooted at this node
+   */
+  @SuppressWarnings("serial")
+  public List<? extends BubbleTreeNode_Abstract> getFoams(){
+    return new NodeGatherer_Abstract(this){
+      protected boolean doGather(BubbleTreeNode_Abstract n){
+        return n instanceof Foam;}};}
+  
+  /**
+   * @return Grids in the branch rooted at this node
+   */
+  @SuppressWarnings("serial")
+  public List<? extends BubbleTreeNode_Abstract> getGrids(){
+    return new NodeGatherer_Abstract(this){
+      protected boolean doGather(BubbleTreeNode_Abstract n){
+        return n instanceof Grid;}};}
+  
 }

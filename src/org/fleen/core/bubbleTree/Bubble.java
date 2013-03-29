@@ -1,17 +1,9 @@
 package org.fleen.core.bubbleTree;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.tree.TreeNode;
-
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.grammar.BubbleSignature;
-import org.fleen.core.kGeom.DVectorRD;
 import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
-import org.fleen.core.kGeom.KGeom;
 
 /*
  * A loop of vertices in this bubble's parent grid
@@ -80,7 +72,7 @@ public class Bubble extends BubbleTreeNode_Abstract{
    * ################################
    */
   
-  private DVertex[] vertices=null;
+  protected DVertex[] vertices=null;
   
   /*
    * This is the most basic way to do this of course
@@ -153,28 +145,6 @@ public class Bubble extends BubbleTreeNode_Abstract{
         dfurthest=dtest;
         gds_v0=i;
         gds_v1=inext;}}}
-
-  /*
-   * ################################
-   * TREE NODE STUFF + IMPLEMENTATION OF TreeNode
-   * ################################
-   */
-  
-  public List<Bubble> getBranchLeafBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
-    if(isLeaf()){
-      a.add(this);
-      return a;
-    }else{
-      a.addAll(childgrid.getBranchLeafBubbles());}
-    return a;}
-  
-  public List<Bubble> getBranchBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
-    a.add(this);
-    if(childgrid!=null)
-      a.addAll(childgrid.getBranchBubbles());
-    return a;}
   
   /*
    * ################################
