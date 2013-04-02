@@ -1,33 +1,53 @@
 package org.fleen.core.bubbleTree;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 /*
  * This is a crawler-collector for the bubbletree 
  * We address every node in the tree rooted at the specified root, conditionally gathering
  * our gathering logic is at the abstract method doGather(Node)
  */
-@SuppressWarnings("serial")
-public abstract class NodeGatherer_Abstract extends ArrayList<BubbleTreeNode_Abstract>{
+public abstract class NodeIterator_Abstract implements Iterator<BubbleTreeNode_Abstract>{
   
-  BubbleTreeNode_Abstract root,wormhead=null,wormtail=null;
+  BubbleTreeNode_Abstract 
+    root,
+    wormhead,
+    wormtail=null;
   
-  public NodeGatherer_Abstract(BubbleTreeNode_Abstract root){
+  public NodeIterator_Abstract(BubbleTreeNode_Abstract root){
     this.root=root;
-    //if root is a leaf
-    if(root.isLeaf()){
-      add(root);
-      return;}
-    //
     wormhead=root;
-    while(!finished()){
-      if(doGather(wormhead))add(wormhead);
-      advanceWorm();}}
+    if(!filter(wormhead))gleanNextNode();}
   
-  protected abstract boolean doGather(BubbleTreeNode_Abstract n);
+  public boolean hasNext(){
+    return wormhead!=null;}
+
+  public BubbleTreeNode_Abstract next(){
+    BubbleTreeNode_Abstract n=wormhead;
+    gleanNextNode();
+    return n;}
+
+  //nope
+  public void remove(){}
   
-  private boolean finished(){
-    return wormhead==root&&wormtail.getSiblingIndex()==root.getChildCount()-1;}
+  public void gleanNextNode(){
+    if(wormhead==null)return;
+    do{
+      advanceWorm();
+      testFinished();
+      if(filter(wormhead))return;
+    }while(wormhead!=null);}
+  
+  /**
+   * @param node The node getting filtered
+   * @return true if node passes the filter, false if it is rejected.
+   */
+  protected abstract boolean filter(BubbleTreeNode_Abstract node);
+  
+  //if we're finished then set wormhead to null
+  private void testFinished(){
+    if(wormhead==root&&wormtail.isLastSibling())
+      wormhead=null;}
   
   private void advanceWorm(){
     //if we just started

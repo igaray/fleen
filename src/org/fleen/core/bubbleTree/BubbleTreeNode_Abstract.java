@@ -2,6 +2,7 @@ package org.fleen.core.bubbleTree;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -167,37 +168,33 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * @return Leaves of the branch rooted at this node
    * The leaves in a bubbletree are, as a rule, bubbles
    */
-  @SuppressWarnings("serial")
-  public List<? extends BubbleTreeNode_Abstract> getLeaves(){
-    return new NodeGatherer_Abstract(this){
-      protected boolean doGather(BubbleTreeNode_Abstract n){
-        return n.isLeaf();}};}
+  public Iterator<? extends BubbleTreeNode_Abstract> getLeafIterator(){
+    return new NodeIterator_Abstract(this){
+      protected boolean filter(BubbleTreeNode_Abstract node){
+        return node.isLeaf();}};}
   
   /**
    * @return Bubbles in the branch rooted at this node
    */
-  @SuppressWarnings("serial")
-  public List<? extends BubbleTreeNode_Abstract> getBubbles(){
-    return new NodeGatherer_Abstract(this){
-      protected boolean doGather(BubbleTreeNode_Abstract n){
-        return n instanceof Bubble;}};}
+  public Iterator<? extends BubbleTreeNode_Abstract> getBubbleIterator(){
+    return new NodeIterator_Abstract(this){
+      protected boolean filter(BubbleTreeNode_Abstract node){
+        return node instanceof Bubble;}};}
   
   /**
    * @return Foams in the branch rooted at this node
    */
-  @SuppressWarnings("serial")
-  public List<? extends BubbleTreeNode_Abstract> getFoams(){
-    return new NodeGatherer_Abstract(this){
-      protected boolean doGather(BubbleTreeNode_Abstract n){
-        return n instanceof Foam;}};}
+  public Iterator<? extends BubbleTreeNode_Abstract> getFoamIterator(){
+    return new NodeIterator_Abstract(this){
+      protected boolean filter(BubbleTreeNode_Abstract node){
+        return node instanceof Foam;}};}
   
   /**
    * @return Grids in the branch rooted at this node
    */
-  @SuppressWarnings("serial")
-  public List<? extends BubbleTreeNode_Abstract> getGrids(){
-    return new NodeGatherer_Abstract(this){
-      protected boolean doGather(BubbleTreeNode_Abstract n){
-        return n instanceof Grid;}};}
+  public Iterator<? extends BubbleTreeNode_Abstract> getGridIterator(){
+    return new NodeIterator_Abstract(this){
+      protected boolean filter(BubbleTreeNode_Abstract node){
+        return node instanceof Grid;}};}
   
 }

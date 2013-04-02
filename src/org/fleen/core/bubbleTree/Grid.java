@@ -3,12 +3,12 @@ package org.fleen.core.bubbleTree;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.KGeom;
+import org.fleen.core.g2D.DGeom;
+import org.fleen.core.gKis.DVertex;
+import org.fleen.core.gKis.KGeom;
 
 /*
- * This is a diamond grid coordinate system (aka "Hextakis" or "Bisected Hexagonal")
+ * This is a kisrhombille grid coordinate system
  * it's parameters are :
  * twist : rotary direction of direction indexing
  * fish : basic interval
@@ -35,9 +35,7 @@ public class Grid extends BubbleTreeNode_Abstract{
    * specify origin in terms of grandparent grid
    * derive foreward,fish and twist from ancestry 
    */
-  public Grid(Bubble parentbubble,double fishfactor){
-    this.parentbubble=parentbubble;
-    parentbubble.childgrid=this;
+  public Grid(double fishfactor){
     this.fishfactor=fishfactor;}
 
   /*
@@ -60,12 +58,6 @@ public class Grid extends BubbleTreeNode_Abstract{
       DEFAULT_ROOT_FOREWARD,
       DEFAULT_ROOT_FISH,
       DEFAULT_ROOT_TWIST);}
-  
-  /*
-   * define grid in terms of just fishfactor
-   */
-  public Grid(double fishfactor){
-    this.fishfactor=fishfactor;}
   
   /*
    * ################################
@@ -108,14 +100,6 @@ public class Grid extends BubbleTreeNode_Abstract{
     }else{
       return parentbubble.getCompoundedTwist();}}
   
-  public void flushBranchRealGeometryCache(){
-    for(Bubble b:childbubbles)
-      b.flushBranchRealGeometryCache();}
-  
-  public void flushBranchDiamondGeometryCache(){
-    for(Bubble b:childbubbles)
-      b.flushBranchDiamondGeometryCache();}
-  
   /*
    * ++++++++++++++++++++++++++++++++
    * GEOMETRY 2D
@@ -148,7 +132,7 @@ public class Grid extends BubbleTreeNode_Abstract{
       return fishabs;
     }else{
       if(fishrelative==null){
-        fishrelative=parentbubble.getFish();
+        fishrelative=getParentBubble().getFish();
         fishrelative*=fishfactor;}
       return fishrelative;}}
   
@@ -222,50 +206,15 @@ public class Grid extends BubbleTreeNode_Abstract{
   
   /*
    * ################################
-   * BUBBLE TREE ELEMENT 
-   * a grid has 0 or 1 parent bubble and 0..n child bubbles
+   * BUBBLE TREE ELEMENT
    * ################################
    */
-
-  public Bubble parentbubble=null;
-  public List<Bubble> childbubbles=new ArrayList<Bubble>();
   
   public Bubble getParentBubble(){
-    return parentbubble;}
+    return getFirstAncestorBubble();}
   
-  public List<Bubble> getChildBubbles(){
-    return childbubbles;}
-
-  public int getChildCount(){
-    return childbubbles.size();}
-  
-  public boolean isRoot(){
-    return parentbubble==null;}
-  
-  /**
-   * @return The distance from this Grid to the root of the tree. 
-   */
-  public int getDepth(){
-    if(isRoot())return 0;
-    return parentbubble.getDepth()+1;}
-  
-  /**
-   * @return The leaf Bubbles in this Grid's branch. 
-   */
-  public List<Bubble> getBranchLeafBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
-    for(Bubble b:childbubbles)
-      a.addAll(b.getBranchLeafBubbles());
-    return a;}
-  
-  /**
-   * @return The Bubbles in this Grid's branch. 
-   */
-  public List<Bubble> getBranchBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>();
-    for(Bubble b:childbubbles)
-      a.addAll(b.getBranchBubbles());
-    return a;}
+//  public List<Bubble> getChildBubbles(){
+//    return childbubbles;}
   
   /*
    * ################################

@@ -1,9 +1,6 @@
 package org.fleen.core.bubbleTree;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.gKis.DVertex;
 
 /*
  * A loop of vertices in this bubble's parent grid
@@ -44,20 +41,20 @@ public class Bubble extends BubbleTreeNode_Abstract{
   public Bubble getParentBubble(){
     return getFirstAncestorBubble();}
   
-  public List<Bubble> getChildBubbles(){
-    Grid g=getChildGrid();
-    if(g==null)return new ArrayList<Bubble>(0);
-    return g.getChildBubbles();}
-  
-  public List<Bubble> getSiblingBubbles(){
-    List<Bubble> a=new ArrayList<Bubble>(getParentGrid().getChildBubbles());
-    a.remove(this);
-    return a;}
+//  public List<Bubble> getChildBubbles(){
+//    Grid g=getChildGrid();
+//    if(g==null)return new ArrayList<Bubble>(0);
+//    return g.getChildBubbles();}
+//  
+//  public List<Bubble> getSiblingBubbles(){
+//    List<Bubble> a=new ArrayList<Bubble>(getParentGrid().getChildBubbles());
+//    a.remove(this);
+//    return a;}
   
   /*
    * ################################
    * CHORUS INDEX
-   * a contextual signifier. groups bubbles
+   * a contextual signifier. groups bubbles into chorusses
    * ################################
    */
   

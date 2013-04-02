@@ -3,7 +3,7 @@ package org.fleen.core.bubbleTree;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fleen.core.grammar.GBubble;
+import org.fleen.core.pGrammatic.GBubble;
 
 /*
  * Conveniently manages a tree of bubbles and grids
