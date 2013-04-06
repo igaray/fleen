@@ -9,7 +9,7 @@ import java.util.List;
  * a treenode basically
  * implemented by Bubble, Grid and Foam
  */
-public abstract class BubbleTreeNode_Abstract implements Serializable{
+public class BubbleTreeNode implements Serializable{
 
   private static final long serialVersionUID=6049549726585045831L;
   
@@ -19,12 +19,12 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * ################################
    */
   
-  BubbleTreeNode_Abstract parent=null;
+  BubbleTreeNode parent=null;
   
-  public BubbleTreeNode_Abstract getParent(){
+  public BubbleTreeNode getParent(){
     return parent;}
   
-  public void setParent(BubbleTreeNode_Abstract n){
+  public void setParent(BubbleTreeNode n){
     parent=n;}
   
   /*
@@ -33,12 +33,12 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * ################################
    */
   
-  BubbleTreeNode_Abstract[] children=new BubbleTreeNode_Abstract[]{};
+  BubbleTreeNode[] children=new BubbleTreeNode[]{};
 
-  public List<BubbleTreeNode_Abstract> getChildren(){
+  public List<BubbleTreeNode> getChildren(){
     return Arrays.asList(children);}
   
-  public BubbleTreeNode_Abstract getChild(int index){
+  public BubbleTreeNode getChild(int index){
     if(index<children.length)
       return children[index];
     else 
@@ -47,8 +47,8 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
   public int getChildCount(){
     return children.length;}
   
-  public void setChildren(List<BubbleTreeNode_Abstract> c){
-    children=c.toArray(new BubbleTreeNode_Abstract[c.size()]);}
+  public void setChildren(List<BubbleTreeNode> c){
+    children=c.toArray(new BubbleTreeNode[c.size()]);}
   
   /*
    * ################################
@@ -85,7 +85,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * null if there is no next child. 
    * Exception if this node has no parent.
    */
-  public BubbleTreeNode_Abstract getNextSibling(){
+  public BubbleTreeNode getNextSibling(){
     if(parent==null)
       throw new IllegalArgumentException("This node has no parent");
     return parent.getChild(getSiblingIndex()+1);}
@@ -98,7 +98,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    */
   public int getDepth(){
     int c=0;
-    BubbleTreeNode_Abstract n=this;
+    BubbleTreeNode n=this;
     while(n!=null){
       n=n.getParent();
       if(n!=null)c++;}
@@ -109,7 +109,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    */
   public int getBubbleDepth(){
     int c=0;
-    BubbleTreeNode_Abstract n=this;
+    BubbleTreeNode n=this;
     while(n!=null){
       n=n.getFirstAncestorBubble();
       if(n!=null)c++;}
@@ -120,7 +120,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    */
   public int getFoamDepth(){
     int c=0;
-    BubbleTreeNode_Abstract n=this;
+    BubbleTreeNode n=this;
     while(n!=null){
       n=n.getFirstAncestorFoam();
       if(n!=null)c++;}
@@ -131,7 +131,7 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    */
   public int getGridDepth(){
     int c=0;
-    BubbleTreeNode_Abstract n=this;
+    BubbleTreeNode n=this;
     while(n!=null){
       n=n.getFirstAncestorGrid();
       if(n!=null)c++;}
@@ -143,22 +143,29 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * ################################
    */
   
-  public Bubble getFirstAncestorBubble(){
-    BubbleTreeNode_Abstract n=getParent();
-    while(!(n instanceof Bubble)){
+  public Bubble_Abstract getFirstAncestorGridStackElement(){
+    BubbleTreeNode n=getParent();
+    while(!(n instanceof GridStackElement)){
       if(n==null)return null;
       n=n.getParent();}
-    return (Bubble)n;}
+    return (Bubble_Abstract)n;}
+  
+  public Bubble_Abstract getFirstAncestorBubble(){
+    BubbleTreeNode n=getParent();
+    while(!(n instanceof Bubble_Abstract)){
+      if(n==null)return null;
+      n=n.getParent();}
+    return (Bubble_Abstract)n;}
   
   public Foam getFirstAncestorFoam(){
-    BubbleTreeNode_Abstract n=getParent();
+    BubbleTreeNode n=getParent();
     while(!(n instanceof Foam)){
       if(n==null)return null;
       n=n.getParent();}
     return (Foam)n;}
   
   public Grid getFirstAncestorGrid(){
-    BubbleTreeNode_Abstract n=getParent();
+    BubbleTreeNode n=getParent();
     while(!(n instanceof Grid)){
       if(n==null)return null;
       n=n.getParent();}
@@ -168,33 +175,33 @@ public abstract class BubbleTreeNode_Abstract implements Serializable{
    * @return Leaves of the branch rooted at this node
    * The leaves in a bubbletree are, as a rule, bubbles
    */
-  public Iterator<? extends BubbleTreeNode_Abstract> getLeafIterator(){
+  public Iterator<? extends BubbleTreeNode> getLeafIterator(){
     return new NodeIterator_Abstract(this){
-      protected boolean filter(BubbleTreeNode_Abstract node){
+      protected boolean filter(BubbleTreeNode node){
         return node.isLeaf();}};}
   
   /**
    * @return Bubbles in the branch rooted at this node
    */
-  public Iterator<? extends BubbleTreeNode_Abstract> getBubbleIterator(){
+  public Iterator<? extends BubbleTreeNode> getBubbleIterator(){
     return new NodeIterator_Abstract(this){
-      protected boolean filter(BubbleTreeNode_Abstract node){
-        return node instanceof Bubble;}};}
+      protected boolean filter(BubbleTreeNode node){
+        return node instanceof Bubble_Abstract;}};}
   
   /**
    * @return Foams in the branch rooted at this node
    */
-  public Iterator<? extends BubbleTreeNode_Abstract> getFoamIterator(){
+  public Iterator<? extends BubbleTreeNode> getFoamIterator(){
     return new NodeIterator_Abstract(this){
-      protected boolean filter(BubbleTreeNode_Abstract node){
+      protected boolean filter(BubbleTreeNode node){
         return node instanceof Foam;}};}
   
   /**
    * @return Grids in the branch rooted at this node
    */
-  public Iterator<? extends BubbleTreeNode_Abstract> getGridIterator(){
+  public Iterator<? extends BubbleTreeNode> getGridIterator(){
     return new NodeIterator_Abstract(this){
-      protected boolean filter(BubbleTreeNode_Abstract node){
+      protected boolean filter(BubbleTreeNode node){
         return node instanceof Grid;}};}
   
 }

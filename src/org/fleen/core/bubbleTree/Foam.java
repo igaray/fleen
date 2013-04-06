@@ -13,7 +13,7 @@ package org.fleen.core.bubbleTree;
  * 
  * It's really simple. It's basically just an abstract node (+ tags maybe)
  */
-public class Foam extends BubbleTreeNode_Abstract{
+public class Foam extends BubbleTreeNode{
   
   private static final long serialVersionUID=-128342895299754440L;
 

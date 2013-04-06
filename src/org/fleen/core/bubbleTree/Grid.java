@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fleen.core.g2D.DGeom;
-import org.fleen.core.gKis.DVertex;
+import org.fleen.core.gKis.KVertex;
 import org.fleen.core.gKis.KGeom;
 
 /*
@@ -19,7 +19,7 @@ import org.fleen.core.gKis.KGeom;
  * 
  */
 
-public class Grid extends BubbleTreeNode_Abstract{
+public class Grid extends BubbleTreeNode{
   
   private static final long serialVersionUID=-7272582675212521562L;
 
@@ -147,7 +147,7 @@ public class Grid extends BubbleTreeNode_Abstract{
   /*
    * return the point corrosponding to the specified vertex on this grid
    */
-  public double[] getPoint2D(DVertex v){
+  public double[] getPoint2D(KVertex v){
     int 
       ant=v.getAnt(),
       bat=v.getBat(),
@@ -210,7 +210,7 @@ public class Grid extends BubbleTreeNode_Abstract{
    * ################################
    */
   
-  public Bubble getParentBubble(){
+  public Bubble_Abstract getParentBubble(){
     return getFirstAncestorBubble();}
   
 //  public List<Bubble> getChildBubbles(){

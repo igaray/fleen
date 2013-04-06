@@ -7,14 +7,14 @@ import java.util.Iterator;
  * We address every node in the tree rooted at the specified root, conditionally gathering
  * our gathering logic is at the abstract method doGather(Node)
  */
-public abstract class NodeIterator_Abstract implements Iterator<BubbleTreeNode_Abstract>{
+public abstract class NodeIterator_Abstract implements Iterator<BubbleTreeNode>{
   
-  BubbleTreeNode_Abstract 
+  BubbleTreeNode 
     root,
     wormhead,
     wormtail=null;
   
-  public NodeIterator_Abstract(BubbleTreeNode_Abstract root){
+  public NodeIterator_Abstract(BubbleTreeNode root){
     this.root=root;
     wormhead=root;
     if(!filter(wormhead))gleanNextNode();}
@@ -22,8 +22,8 @@ public abstract class NodeIterator_Abstract implements Iterator<BubbleTreeNode_A
   public boolean hasNext(){
     return wormhead!=null;}
 
-  public BubbleTreeNode_Abstract next(){
-    BubbleTreeNode_Abstract n=wormhead;
+  public BubbleTreeNode next(){
+    BubbleTreeNode n=wormhead;
     gleanNextNode();
     return n;}
 
@@ -42,7 +42,7 @@ public abstract class NodeIterator_Abstract implements Iterator<BubbleTreeNode_A
    * @param node The node getting filtered
    * @return true if node passes the filter, false if it is rejected.
    */
-  protected abstract boolean filter(BubbleTreeNode_Abstract node);
+  protected abstract boolean filter(BubbleTreeNode node);
   
   //if we're finished then set wormhead to null
   private void testFinished(){

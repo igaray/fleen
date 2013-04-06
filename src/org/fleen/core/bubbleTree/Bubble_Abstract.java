@@ -1,6 +1,6 @@
 package org.fleen.core.bubbleTree;
 
-import org.fleen.core.gKis.DVertex;
+import org.fleen.core.gKis.KVertex;
 
 /*
  * A loop of vertices in this bubble's parent grid
@@ -10,21 +10,9 @@ import org.fleen.core.gKis.DVertex;
  * it has 0 or 1 child, a grid 
  * it is immutable, more or less
  */
-public class Bubble extends BubbleTreeNode_Abstract{
+public abstract class Bubble_Abstract extends BubbleTreeNode implements GridStackElement{
   
   private static final long serialVersionUID=7403675520824450721L;
-  
-  /*
-   * ################################
-   * CONSTRUCTOR
-   * ################################
-   */
-
-  public Bubble(DVertex[] vertices,int chorusindex){
-    this.vertices=vertices;
-    this.chorusindex=chorusindex;}
-  
-  public Bubble(){}
   
   /*
    * ################################
@@ -38,7 +26,7 @@ public class Bubble extends BubbleTreeNode_Abstract{
   public Grid getChildGrid(){
     return (Grid)getChild(0);}
   
-  public Bubble getParentBubble(){
+  public Bubble_Abstract getParentBubble(){
     return getFirstAncestorBubble();}
   
 //  public List<Bubble> getChildBubbles(){
@@ -58,29 +46,25 @@ public class Bubble extends BubbleTreeNode_Abstract{
    * ################################
    */
   
-  protected int chorusindex=0;
+  private int chorusindex=0;
   
   public int getChorusIndex(){
     return chorusindex;}
   
+  public void setChorusIndex(int i){
+    chorusindex=i; }
+  
   /*
    * ################################
-   * KGEOM
+   * GEOM KIS
    * ################################
    */
   
-  protected DVertex[] vertices=null;
-  
-  /*
-   * This is the most basic way to do this of course
-   * In the grammar we do it with bubblemodels
-   */
-  public DVertex[] getVertices(){
-    return vertices;}
+  public abstract KVertex[] getVertices();
   
   /*
    * ################################
-   * DGEOM
+   * GEOM 2D
    * ################################
    */
   
@@ -100,7 +84,7 @@ public class Bubble extends BubbleTreeNode_Abstract{
     return vertexpoints2d;}
   
   private void initVertexPoints2D(){
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     int s=v.length;
     vertexpoints2d=new double[s][2];
     Grid parentgrid=getParentGrid();
@@ -127,11 +111,11 @@ public class Bubble extends BubbleTreeNode_Abstract{
   private void initDetailSize(){
     if(gds_v0==-1)
       initIndicesOfFurthestAdjacentVerticesForGetDetailSize();
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     detailsize=v[gds_v0].getDistance(v[gds_v1])*getParentGrid().getFish();}
   
   private void initIndicesOfFurthestAdjacentVerticesForGetDetailSize(){
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     int inext;
     double dtest,dfurthest=Double.MIN_VALUE;
     for(int i=0;i<v.length;i++){
@@ -145,11 +129,50 @@ public class Bubble extends BubbleTreeNode_Abstract{
   
   /*
    * ################################
+   * GRID STACK ELEMENT
+   * ################################
+   */
+  
+  GridStackElementParam gseparam;
+  
+  public GridStackElementParam getGSEParam(){
+    return gseparam;}
+
+  public void setGSEParam(GridStackElementParam gseparam){
+    this.gseparam=gseparam;}
+
+  public double[] getStackOrigin(){
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public double getStackForeward(){
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public boolean getStackTwist(){
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public double getStackFish(){
+    // TODO Auto-generated method stub
+    return 0;
+  }  
+  
+  
+  
+  /*
+   * ################################
    * OBJECT
    * ################################
    */
   
   public String toString(){
     return getClass().getSimpleName()+"["+hashCode()+"]";}
-  
+
 }
