@@ -1,4 +1,4 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * A vertex in a diamond grid
  * 
  */
-public class DVertex implements Serializable{
+public class KVertex implements Serializable{
   
   private static final long serialVersionUID=5215014207521492571L;
 
@@ -25,13 +25,13 @@ public class DVertex implements Serializable{
    * dog for point relative to local t12
    * range [0,5]
    */
-  public DVertex(int ant,int bat,int cat,int dog){
+  public KVertex(int ant,int bat,int cat,int dog){
     coors=new int[]{ant,bat,cat,dog};}
   
-  public DVertex(int[] params){
+  public KVertex(int[] params){
     this.coors=params;}
   
-  public DVertex(){
+  public KVertex(){
     coors=new int[4];}
   
   /*
@@ -82,34 +82,34 @@ public class DVertex implements Serializable{
   
   //returns the direction from this vertex to v
   //returns DIRECTION_NULL if this vertex and v are not colinear
-  public int getDirection(DVertex v){
+  public int getDirection(KVertex v){
     return KGeom.getDirection_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
   
-  public double getDistance(DVertex v){
+  public double getDistance(KVertex v){
     return KGeom.getDistance_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
   
   //returns null if invalid
-  public DVertex getVertexTransitionswise(int dir,int trans){
+  public KVertex getVertexTransitionswise(int dir,int trans){
     int[] v1coor=new int[4];
     KGeom.getVertex_Transitionswise(
       coors[0],coors[1],coors[2],coors[3],dir,trans,v1coor);
     if(v1coor[3]==KGeom.DIRECTION_NULL)return null;
-    return new DVertex(v1coor);}
+    return new KVertex(v1coor);}
   
-  public DVertex getVertex_DirDis(int dir,double dis){
+  public KVertex getVertex_DirDis(int dir,double dis){
     int[] v1coor=new int[4];
     KGeom.getVertex_VertexVector(coors[0],coors[1],coors[2],coors[3],dir,dis,v1coor);
     if(v1coor[3]==KGeom.DIRECTION_NULL)return null;
-    return new DVertex(v1coor);}
+    return new KVertex(v1coor);}
   
   /*
    * returns true if this vertex is colinear with the specified
    */
-  public boolean isColinear(DVertex v){
+  public boolean isColinear(KVertex v){
     return KGeom.getColinear_VertexVertex(
       coors[0],coors[1],coors[2],coors[3],
       v.coors[0],v.coors[1],v.coors[2],v.coors[3]);}
@@ -127,7 +127,7 @@ public class DVertex implements Serializable{
    */
   
   public boolean equals(Object a){
-    DVertex b=(DVertex)a;
+    KVertex b=(KVertex)a;
     return coors[0]==b.coors[0]&&coors[1]==b.coors[1]&&coors[2]==b.coors[2]&&coors[3]==b.coors[3];}
   
   public int hashCode(){
@@ -139,6 +139,6 @@ public class DVertex implements Serializable{
     return s;}
   
   public Object clone(){
-    return new DVertex(coors[0],coors[1],coors[2],coors[3]);}
+    return new KVertex(coors[0],coors[1],coors[2],coors[3]);}
   
 }

@@ -1,20 +1,20 @@
-package org.fleen.core.grammar;
+package org.fleen.core.pGrammatic;
 
 import java.io.Serializable;
 
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.gKis.KVertex;
 
 public class JigBubbleDef implements Serializable{
   
   private static final long serialVersionUID=-7934141313458833281L;
   
   public String bubblemodelid;
-  public DVertex v0,v1;
+  public KVertex v0,v1;
   public boolean twist;
   public int foamindex;
   public int chorusindex;
   
-  public JigBubbleDef(String bubblemodelid,DVertex v0,DVertex v1,
+  public JigBubbleDef(String bubblemodelid,KVertex v0,KVertex v1,
     boolean twist,int foamindex,int chorusindex){
     this.bubblemodelid=bubblemodelid;
     this.v0=v0;

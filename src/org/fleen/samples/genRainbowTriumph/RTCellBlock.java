@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.gKis.KVertex;
 import org.fleen.samples.genRainbowTriumph.palette.Palette_Abstract;
 
 /*
@@ -118,7 +118,7 @@ public class RTCellBlock{
         if(x%2==y%2){
           ant=(x-y)/2;
           cat=y;
-          bat=DVertex.getBat(ant,cat);
+          bat=KVertex.getBat(ant,cat);
           c.add(new RTCell(this,ant,bat,cat,0));
           c.add(new RTCell(this,ant,bat,cat,1));
           c.add(new RTCell(this,ant,bat,cat,2));
@@ -128,7 +128,7 @@ public class RTCellBlock{
         }else{
           ant=((x+1)-y)/2;
           cat=y;
-          bat=DVertex.getBat(ant,cat);
+          bat=KVertex.getBat(ant,cat);
           c.add(new RTCell(this,ant,bat,cat,9));
           c.add(new RTCell(this,ant,bat,cat,10));
           c.add(new RTCell(this,ant,bat,cat,11));

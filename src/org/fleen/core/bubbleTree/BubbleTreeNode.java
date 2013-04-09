@@ -126,29 +126,18 @@ public class BubbleTreeNode implements Serializable{
       if(n!=null)c++;}
     return c;}
   
-  /**
-   * @return The number of grids encountered when traversing the tree from this node to the root.
-   */
-  public int getGridDepth(){
-    int c=0;
-    BubbleTreeNode n=this;
-    while(n!=null){
-      n=n.getFirstAncestorGrid();
-      if(n!=null)c++;}
-    return c;}
-  
   /*
    * ################################
    * RELATIVE NODE ACCESS
    * ################################
    */
   
-  public Bubble_Abstract getFirstAncestorGridStackElement(){
+  public GridStackElement getFirstAncestorGridStackElement(){
     BubbleTreeNode n=getParent();
     while(!(n instanceof GridStackElement)){
       if(n==null)return null;
       n=n.getParent();}
-    return (Bubble_Abstract)n;}
+    return (GridStackElement)n;}
   
   public Bubble_Abstract getFirstAncestorBubble(){
     BubbleTreeNode n=getParent();
@@ -163,13 +152,6 @@ public class BubbleTreeNode implements Serializable{
       if(n==null)return null;
       n=n.getParent();}
     return (Foam)n;}
-  
-  public Grid getFirstAncestorGrid(){
-    BubbleTreeNode n=getParent();
-    while(!(n instanceof Grid)){
-      if(n==null)return null;
-      n=n.getParent();}
-    return (Grid)n;}
   
   /**
    * @return Leaves of the branch rooted at this node
@@ -195,13 +177,5 @@ public class BubbleTreeNode implements Serializable{
     return new NodeIterator_Abstract(this){
       protected boolean filter(BubbleTreeNode node){
         return node instanceof Foam;}};}
-  
-  /**
-   * @return Grids in the branch rooted at this node
-   */
-  public Iterator<? extends BubbleTreeNode> getGridIterator(){
-    return new NodeIterator_Abstract(this){
-      protected boolean filter(BubbleTreeNode node){
-        return node instanceof Grid;}};}
   
 }

@@ -1,6 +1,8 @@
 package org.fleen.core.bubbleTree;
 
-public class GridSpec{
+public class GridRoot extends BubbleTreeNode implements GridStackElement{
+  
+  private static final long serialVersionUID=-6976402647903611804L;
   
   /*
    * ################################
@@ -8,7 +10,7 @@ public class GridSpec{
    * ################################
    */
   
-  public GridSpec(double[] origin,double foreward,boolean twist,double fish){
+  public GridRoot(double[] origin,double foreward,boolean twist,double fish){
     this.origin=origin;
     this.foreward=foreward;
     this.twist=twist;
@@ -62,5 +64,14 @@ public class GridSpec{
   
   public double getFish(){
     return fish;}
+  
+  /*
+   * ################################
+   * GRID
+   * ################################
+   */
+  
+  public Grid getGrid(){
+    return new Grid(origin,foreward,twist,fish);}
 
 }

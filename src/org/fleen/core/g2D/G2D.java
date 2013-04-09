@@ -1,4 +1,4 @@
-package org.fleen.core.dGeom;
+package org.fleen.core.g2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * curves and/or whatever.
  * Herein are contained various constants and primitive functions for handling geometry in both of our systems. 
  */
-public class DGeom{
+public class G2D{
   
   //################
   // CONSTANTS

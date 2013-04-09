@@ -1,4 +1,4 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 /*
  * diamond vector relative direction path
  */
-public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
+public class KVectorRDPath extends ArrayList<KVectorRD> implements Serializable{
 
   /*
    * ################################
@@ -24,18 +24,18 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
    * ################################
    */
   
-  public DVectorRDPath(){}
+  public KVectorRDPath(){}
   
-  public DVectorRDPath(int size){
+  public KVectorRDPath(int size){
     super.size();}
   
-  public DVectorRDPath(List<DVectorRD> vectors){
+  public KVectorRDPath(List<KVectorRD> vectors){
     super(vectors);}
   
-  public DVectorRDPath(DVectorRD... vectors){
+  public KVectorRDPath(KVectorRD... vectors){
     this(Arrays.asList(vectors));}
   
-  public DVectorRDPath(DVertexPath vertexpath){
+  public KVectorRDPath(KVertexPath vertexpath){
     super(vertexpath.getVectorPath());}
   
   /*
@@ -46,12 +46,12 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
   
   public boolean isClockwise(){
     int a=0;
-    for(DVectorRD v:this)
+    for(KVectorRD v:this)
       a+=v.directiondelta;
     return a>0;}
   
   public void reverseDeltas(){
-    for(DVectorRD v:this)
+    for(KVectorRD v:this)
       v.directiondelta=(v.directiondelta*-1);}
   
   /*
@@ -65,10 +65,10 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
    * it starts at the specified vertex0 and v0 to v1 direction 
    * returns null on fail
    */
-  public DVertexPath getVertexPath(DVertex vertex,int direction,double scale){
-    DVertexPath p=new DVertexPath();
+  public KVertexPath getVertexPath(KVertex vertex,int direction,double scale){
+    KVertexPath p=new KVertexPath();
     p.add(vertex);
-    DVectorRD vector=get(0);
+    KVectorRD vector=get(0);
     int vcount=size();
     double distance=scale*vector.distance;
     for(int i=1;i<vcount;i++){
@@ -83,7 +83,7 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
   /*
    * same as above with scale=1.0
    */
-  public DVertexPath getVertexPath(DVertex v0,int d0){
+  public KVertexPath getVertexPath(KVertex v0,int d0){
     return getVertexPath(v0,d0,1.0);}
   
   /*
@@ -92,13 +92,13 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
    * v0 to v1 direction is dir(v0,v1)
    * scale is dis(v0,v1)/vector0.distance
    */
-  public DVertexPath getVertexPath(DVertex v0,DVertex v1){
+  public KVertexPath getVertexPath(KVertex v0,KVertex v1){
     int dir=v0.getDirection(v1);
     double scale=v0.getDistance(v1)/get(0).distance;
     return getVertexPath(v0,dir,scale);}
   
   private static final int MAXSTANDARDFORMATVERTEXPATHINITTRANSITIONS=200;
-  private static final DVertex ORIGIN=new DVertex(0,0,0,0);
+  private static final KVertex ORIGIN=new KVertex(0,0,0,0);
   
   /*
    * returns a vertex path corrosponding to this vector path
@@ -115,9 +115,9 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
    * increments  go 2,1,1,2,1,1,2,1,1,etc
    * on fail return null.
    */
-  public DVertexPath getVertexPath(){
+  public KVertexPath getVertexPath(){
     int initdistance=0,transitioncount=0;
-    DVertexPath newvertexpath=null;
+    KVertexPath newvertexpath=null;
     while(newvertexpath==null&&transitioncount<MAXSTANDARDFORMATVERTEXPATHINITTRANSITIONS){
       switch(transitioncount%4){
       case 0:
@@ -143,10 +143,10 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
    * with that initialdistance.
    * then create that vertexpath and return it, be it null or not.
    */
-  private DVertexPath getVertexPathWithInitialDistance(double initdistance){
+  private KVertexPath getVertexPathWithInitialDistance(double initdistance){
     double a=get(0).distance;
     double scale=initdistance/a;
-    DVertexPath p=getVertexPath(ORIGIN,0,scale);
+    KVertexPath p=getVertexPath(ORIGIN,0,scale);
     return p;}
   
   /*
@@ -160,7 +160,7 @@ public class DVectorRDPath extends ArrayList<DVectorRD> implements Serializable{
     StringBuffer a=new StringBuffer();
     a.append("["+get(0));
     if(size()>1){
-      DVectorRD v;
+      KVectorRD v;
       for(int i=1;i<size();i++){
         v=get(i);
         a.append(","+v);}

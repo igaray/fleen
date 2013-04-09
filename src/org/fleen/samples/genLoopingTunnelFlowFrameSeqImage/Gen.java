@@ -8,7 +8,7 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.g2D.G2D;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameSequence;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.VFrame;
 
@@ -42,7 +42,7 @@ public class Gen{
       d=Math.sqrt(w0*w0+h0*h0);;
     double scale=d/seq.outerradius;
     //
-    double rotateincrement=(2.0*DGeom.PI)/((double)FRAMECOUNT);
+    double rotateincrement=(2.0*G2D.PI)/((double)FRAMECOUNT);
     //
     Iterator<VFrame> i=seq.getVFrameIterator();
     VFrame frame;

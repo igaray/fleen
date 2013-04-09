@@ -1,4 +1,4 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DVertexPath extends ArrayList<DVertex> implements Serializable{
+public class KVertexPath extends ArrayList<KVertex> implements Serializable{
 
   /*
    * ################################
@@ -22,15 +22,15 @@ public class DVertexPath extends ArrayList<DVertex> implements Serializable{
    * ################################
    */
   
-  public DVertexPath(){}
+  public KVertexPath(){}
   
-  public DVertexPath(int size){
+  public KVertexPath(int size){
     super.size();}
   
-  public DVertexPath(List<DVertex> vectors){
+  public KVertexPath(List<KVertex> vectors){
     super(vectors);}
   
-  public DVertexPath(DVertex... vectors){
+  public KVertexPath(KVertex... vectors){
     this(Arrays.asList(vectors));}
   
   /*
@@ -43,10 +43,10 @@ public class DVertexPath extends ArrayList<DVertex> implements Serializable{
    * returns a DVectorRelativePath comprised of directiondeltas and distances from v0 to v1, v1 to v2 etc
    * returns null on fail
    */
-  public DVectorRDPath getVectorPath(){
+  public KVectorRDPath getVectorPath(){
     int vertexcount=size();
-    DVertex[] v=toArray(new DVertex[vertexcount]);
-    DVectorRDPath bvr=new DVectorRDPath ();
+    KVertex[] v=toArray(new KVertex[vertexcount]);
+    KVectorRDPath bvr=new KVectorRDPath ();
     double distance;
     int delta,iprior,inext,d0,d1;
     for(int i=0;i<vertexcount;i++){
@@ -58,12 +58,12 @@ public class DVertexPath extends ArrayList<DVertex> implements Serializable{
       d0=v[iprior].getDirection(v[i]);
       d1=v[i].getDirection(v[inext]);
       delta=KGeom.getDirectionDelta(d0,d1);
-      bvr.add(new DVectorRD(delta,distance));}
+      bvr.add(new KVectorRD(delta,distance));}
     return bvr;}
   
   public List<double[]> getBasicPoint2Ds(){
     List<double[]> p=new ArrayList<double[]>();
-    for(DVertex v:this)
+    for(KVertex v:this)
       p.add(v.getBasicPoint2D());
     return p;}
   
@@ -78,7 +78,7 @@ public class DVertexPath extends ArrayList<DVertex> implements Serializable{
     StringBuffer a=new StringBuffer();
     a.append("["+get(0));
     if(size()>1){
-      DVertex v;
+      KVertex v;
       for(int i=1;i<size();i++){
         v=get(i);
         a.append(","+v);}

@@ -1,4 +1,4 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 
 /*
@@ -9,7 +9,7 @@ package org.fleen.core.kGeom;
  *    A sum of integers (1s and 2s) or integer multiples of sqrt3.
  *    Or some relative proportion thereof
  */
-public class DVector{
+public class KVector{
   
   /*
    * ################################
@@ -17,9 +17,9 @@ public class DVector{
    * ################################
    */
   
-  public DVector(){}
+  public KVector(){}
   
-  public DVector(int direction,double distance){
+  public KVector(int direction,double distance){
     this.direction=direction;
     this.distance=distance;}
   
@@ -39,7 +39,7 @@ public class DVector{
    */
   
   public boolean equals(Object a){
-    DVector b=(DVector)a;
+    KVector b=(KVector)a;
     return direction==b.direction&&distance==b.distance;}
   
   public int hashCode(){

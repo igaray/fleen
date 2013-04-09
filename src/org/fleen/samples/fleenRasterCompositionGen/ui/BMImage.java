@@ -7,9 +7,9 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import org.fleen.core.grammar.BubbleModel;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
+import org.fleen.core.pGrammatic.BubbleModel;
 import org.fleen.grammarEditor.C;
 import org.fleen.samples.fleenRasterCompositionGen.FRCG;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_Abstract;
@@ -67,11 +67,11 @@ public class BMImage extends BufferedImage{
   
   public Path2D.Double getImagePath(BubbleModel bm){
     Path2D.Double imagepath;
-    DVertexPath vertexpath=bm.getVectorPath().getVertexPath();
+    KVertexPath vertexpath=bm.getVectorPath().getVertexPath();
     if(vertexpath.size()<3)
       throw new IllegalArgumentException("VERTEX COUNT IS <3");
     imagepath=new Path2D.Double();
-    DVertex v=vertexpath.get(0);
+    KVertex v=vertexpath.get(0);
     double[] p=v.getBasicPoint2D();
     imagepath.moveTo(p[0],p[1]);
     for(int i=1;i<vertexpath.size();i++){

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.fleen.core.kGeom.DVectorRDPath;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.gKis.KVectorRDPath;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
 import org.fleen.grammarEditor.jigEditor.JigEditorBMListBubbleModelImage;
 import org.fleen.grammarEditor.overview.OverviewGridBubbleModelImage;
 import org.fleen.grammarEditor.overview.OverviewGridElement;
@@ -91,12 +91,12 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
    * ################################
    */
   
-  public DVertexPath vertexpath=new DVertexPath();
+  public KVertexPath vertexpath=new KVertexPath();
   
   //no duplicated vertices
   //no noncolinear adjacent vertices
   //no path self-intersection//TODO
-  public boolean addVertex(DVertex v){
+  public boolean addVertex(KVertex v){
     if(vertexpath.contains(v))return false;
     if((!vertexpath.isEmpty())&&(!v.isColinear(vertexpath.get(vertexpath.size()-1))))return false;
     vertexpath.add(v);
@@ -106,7 +106,7 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
     validate();
     return true;}
   
-  public boolean removeVertex(DVertex v){
+  public boolean removeVertex(KVertex v){
     if(!vertexpath.contains(v))return false;
     vertexpath.remove(v);
     //invalidate all cached stuff that depends on dvertexpath
@@ -118,7 +118,7 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
   public boolean hasVertices(){
     return !vertexpath.isEmpty();}
   
-  public DVertexPath getVertexPath(){
+  public KVertexPath getVertexPath(){
     return vertexpath;}
   
   /*
@@ -140,7 +140,7 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
     if(vertexpath.size()<3)
       throw new IllegalArgumentException("VERTEX COUNT IS <3");
     imagepath=new Path2D.Double();
-    DVertex v=vertexpath.get(0);
+    KVertex v=vertexpath.get(0);
     double[] p=v.getBasicPoint2D();
     imagepath.moveTo(p[0],p[1]);
     for(int i=1;i<vertexpath.size();i++){
@@ -201,13 +201,13 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
   
   public void cleanGeometry(){
     if(locked)return;
-    DVertexPath thisvertexpath=getVertexPath();
+    KVertexPath thisvertexpath=getVertexPath();
     System.out.println("VERTEX PATH 0 : "+thisvertexpath);
     if(thisvertexpath.size()<3)return;
-    DVectorRDPath vectorpath=thisvertexpath.getVectorPath();
+    KVectorRDPath vectorpath=thisvertexpath.getVectorPath();
     System.out.println("VECTOR PATH 0 : "+vectorpath);
     if(!vectorpath.isClockwise())vectorpath.reverseDeltas();//cuz standard is clockwise
-    DVertexPath newvertexpath=vectorpath.getVertexPath();//p0->p1 is moving north etc
+    KVertexPath newvertexpath=vectorpath.getVertexPath();//p0->p1 is moving north etc
     System.out.println("VERTEX PATH 1 : "+newvertexpath);
     System.out.println("VECTOR PATH 1 : "+newvertexpath.getVectorPath());
     if(newvertexpath==null){
@@ -242,11 +242,11 @@ public class GPBubbleModel implements Serializable,OverviewGridElement{
    */
   
   //CANVAS PARAMS
-  static final DVertex BMEC_VIEWCENTER_DEFAULT=new DVertex(0,0,0,0);
+  static final KVertex BMEC_VIEWCENTER_DEFAULT=new KVertex(0,0,0,0);
   static final int BMEC_VIEWZOOM_DEFAULT=0;
   //we center on a v12
   //panning moves center to next v12 to the up down,left,right
-  public DVertex bmecviewcenter=BMEC_VIEWCENTER_DEFAULT;
+  public KVertex bmecviewcenter=BMEC_VIEWCENTER_DEFAULT;
   //zoom - halves scale, zoom + doubles it
   public int bmecviewzoom=BMEC_VIEWZOOM_DEFAULT;
   

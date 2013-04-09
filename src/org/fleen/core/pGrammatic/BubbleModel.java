@@ -1,10 +1,10 @@
-package org.fleen.core.grammar;
+package org.fleen.core.pGrammatic;
 
 import java.io.Serializable;
 
-import org.fleen.core.kGeom.DVectorRD;
-import org.fleen.core.kGeom.DVectorRDPath;
-import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.gKis.KVectorRD;
+import org.fleen.core.gKis.KVectorRDPath;
+import org.fleen.core.gKis.KVertexPath;
 
 /*
  * A loop of vectors describing a loop of vertices in a diamond grid in a 
@@ -48,12 +48,12 @@ public class BubbleModel implements Serializable{
    * ################################
    */
   
-  public BubbleModel(String id,DVectorRDPath vectorpath){
+  public BubbleModel(String id,KVectorRDPath vectorpath){
     setID(id);
     setVectorPath(vectorpath);}
   
-  public BubbleModel(String id,DVertexPath vertexpath){
-    this(id,new DVectorRDPath(vertexpath));}
+  public BubbleModel(String id,KVertexPath vertexpath){
+    this(id,new KVectorRDPath(vertexpath));}
   
   public BubbleModel(){}
   
@@ -75,15 +75,15 @@ public class BubbleModel implements Serializable{
    * ################################
    */
   
-  private DVectorRD[] vectors; 
+  private KVectorRD[] vectors; 
   
-  public void setVectorPath(DVectorRDPath v){
-    vectors=v.toArray(new DVectorRD[v.size()]);}
+  public void setVectorPath(KVectorRDPath v){
+    vectors=v.toArray(new KVectorRD[v.size()]);}
   
-  public DVectorRDPath getVectorPath(){
-    return new DVectorRDPath(vectors);}
+  public KVectorRDPath getVectorPath(){
+    return new KVectorRDPath(vectors);}
   
-  public DVectorRD getVector(int index){
+  public KVectorRD getVector(int index){
     return vectors[index];}
   
   public int getVectorCount(){

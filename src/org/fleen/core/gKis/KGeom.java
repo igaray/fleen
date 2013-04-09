@@ -1,8 +1,8 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.util.Random;
 
-import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.g2D.G2D;
 
 /*
  * diamond math constants and methods.
@@ -111,18 +111,18 @@ public class KGeom{
    */
   
   public static final double[] DIRECTION_2D={
-    (0.0/12.0)*(DGeom.PI*2.0),
-    (1.0/12.0)*(DGeom.PI*2.0),
-    (2.0/12.0)*(DGeom.PI*2.0),
-    (3.0/12.0)*(DGeom.PI*2.0),
-    (4.0/12.0)*(DGeom.PI*2.0),
-    (5.0/12.0)*(DGeom.PI*2.0),
-    (6.0/12.0)*(DGeom.PI*2.0),
-    (7.0/12.0)*(DGeom.PI*2.0),
-    (8.0/12.0)*(DGeom.PI*2.0),
-    (9.0/12.0)*(DGeom.PI*2.0),
-    (10.0/12.0)*(DGeom.PI*2.0),
-    (11.0/12.0)*(DGeom.PI*2.0)};
+    (0.0/12.0)*(G2D.PI*2.0),
+    (1.0/12.0)*(G2D.PI*2.0),
+    (2.0/12.0)*(G2D.PI*2.0),
+    (3.0/12.0)*(G2D.PI*2.0),
+    (4.0/12.0)*(G2D.PI*2.0),
+    (5.0/12.0)*(G2D.PI*2.0),
+    (6.0/12.0)*(G2D.PI*2.0),
+    (7.0/12.0)*(G2D.PI*2.0),
+    (8.0/12.0)*(G2D.PI*2.0),
+    (9.0/12.0)*(G2D.PI*2.0),
+    (10.0/12.0)*(G2D.PI*2.0),
+    (11.0/12.0)*(G2D.PI*2.0)};
   
   /*
    * convert diamond direction to real 2d direciton
@@ -607,8 +607,8 @@ public class KGeom{
    */
   
   private static final double 
-    GETDIRVV_ERROR=1.0/(65596.0*2.0*DGeom.PI),
-    DIRECTION_2D_0_ALTERNATE=DGeom.PI*2.0;
+    GETDIRVV_ERROR=1.0/(65596.0*2.0*G2D.PI),
+    DIRECTION_2D_0_ALTERNATE=G2D.PI*2.0;
   private static final double[][] GETDIRVV_RANGES={
     {DIRECTION_2D_0_ALTERNATE-GETDIRVV_ERROR,GETDIRVV_ERROR},
     {DIRECTION_2D[1]-GETDIRVV_ERROR,DIRECTION_2D[1]+GETDIRVV_ERROR},
@@ -634,7 +634,7 @@ public class KGeom{
     double[] p0=new double[2],p1=new double[2];
     getBasicPoint2D_Vertex(v0a,v0b,v0c,v0d,p0);
     getBasicPoint2D_Vertex(v1a,v1b,v1c,v1d,p1);
-    double d2d=DGeom.getDirection_2Points(p0[0],p0[1],p1[0],p1[1]);
+    double d2d=G2D.getDirection_2Points(p0[0],p0[1],p1[0],p1[1]);
     double[] range;
     //filter the 2d direction value for diamond direction 0
     if(d2d>GETDIRVV_RANGES[0][0]||d2d<GETDIRVV_RANGES[0][1])
@@ -672,7 +672,7 @@ public class KGeom{
     double[] p0=new double[2],p1=new double[2];
     getBasicPoint2D_Vertex(v0a,v0b,v0c,v0d,p0);
     getBasicPoint2D_Vertex(v1a,v1b,v1c,v1d,p1);
-    return DGeom.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);}
+    return G2D.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);}
   
   /*
    * ++++++++++++++++++++++++++++++++
@@ -680,7 +680,7 @@ public class KGeom{
    * ++++++++++++++++++++++++++++++++
    */
   
-  public static final DVectorRD getVector_VertexVertex(
+  public static final KVectorRD getVector_VertexVertex(
     int v0a,int v0b,int v0c,int v0d,int v1a,int v1b,int v1c,int v1d){
     int dir=getDirection_VertexVertex(v0a,v0b,v0c,v0d,v1a,v1b,v1c,v1d);
     //if it's a null direction then bad vector
@@ -689,7 +689,7 @@ public class KGeom{
     if(!(hasLiberty(v0d,dir))&&(hasLiberty(v1d,dir)))return null;
     //get distance and that's that
     double dis=getDistance_VertexVertex(v0a,v0b,v0c,v0d,v1a,v1b,v1c,v1d);
-    return new DVectorRD(dir,dis);}
+    return new KVectorRD(dir,dis);}
   
   /*
    * ++++++++++++++++++++++++++++++++
@@ -704,11 +704,11 @@ public class KGeom{
     GETVERTEXVV_TRAVERSALERRORCEILING=1.0/65536.0,
     GETVERTEXVV_TRAVERSALERRORFLOOR=-GETVERTEXVV_TRAVERSALERRORCEILING; 
   
-  public static final DVertex getVertex_VertexVector(DVertex v,DVectorRD t){
+  public static final KVertex getVertex_VertexVector(KVertex v,KVectorRD t){
     int[] v1=new int[4];
     getVertex_VertexVector(v.getAnt(),v.getBat(),v.getCat(),v.getDog(),t.directiondelta,t.distance,v1);
     if(v1[3]==VERTEX_NULL)return null;
-    DVertex vertex=new DVertex(v1);
+    KVertex vertex=new KVertex(v1);
     return vertex;}
   
   /*

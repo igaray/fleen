@@ -1,4 +1,4 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * direction is integer in range [-5,5].
  * distance is double. A sum of integers (1s and 2s) or integer multiples of sqrt3.
  */
-public class DVectorRD implements Serializable{
+public class KVectorRD implements Serializable{
   
   private static final long serialVersionUID=1794434316990821717L;
 
@@ -18,9 +18,9 @@ public class DVectorRD implements Serializable{
    * ################################
    */
   
-  public DVectorRD(){}
+  public KVectorRD(){}
   
-  public DVectorRD(int direction,double distance){
+  public KVectorRD(int direction,double distance){
     this.directiondelta=direction;
     this.distance=distance;}
   
@@ -40,7 +40,7 @@ public class DVectorRD implements Serializable{
    */
   
   public boolean equals(Object a){
-    DVectorRD b=(DVectorRD)a;
+    KVectorRD b=(KVectorRD)a;
     return directiondelta==b.directiondelta&&distance==b.distance;}
   
   public int hashCode(){

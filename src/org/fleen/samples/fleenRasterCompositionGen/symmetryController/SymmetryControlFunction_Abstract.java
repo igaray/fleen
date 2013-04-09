@@ -2,7 +2,7 @@ package org.fleen.samples.fleenRasterCompositionGen.symmetryController;
 
 import java.io.Serializable;
 
-import org.fleen.core.grammar.GBubble;
+import org.fleen.core.pGrammatic.GBubble;
 
 public abstract class SymmetryControlFunction_Abstract implements Serializable{
   

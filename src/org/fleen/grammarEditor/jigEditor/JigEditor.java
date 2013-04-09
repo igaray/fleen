@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-import org.fleen.core.grammar.Jig;
+import org.fleen.core.pGrammatic.Jig;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPCreateJigBubbleDef;
 import org.fleen.grammarEditor.grammarProject.C_GPDestroyJigBubbleDef;

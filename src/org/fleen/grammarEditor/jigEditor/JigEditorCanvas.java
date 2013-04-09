@@ -7,10 +7,10 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-import org.fleen.core.kGeom.DVectorRDPath;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
-import org.fleen.core.kGeom.KGeom;
+import org.fleen.core.gKis.KVectorRDPath;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
+import org.fleen.core.gKis.KGeom;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPFocusBubbleModelTouchVertex;
 import org.fleen.grammarEditor.grammarProject.GPJigBubbleDef;
@@ -27,7 +27,7 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
   
   //if we have a focus bubble def this adds or removes a v0 or v1
   protected void mouseClickVertex(int[] v){
-    GE.command(new C_GPFocusBubbleModelTouchVertex(),new DVertex(v[0],v[1],v[2],+v[3]));
+    GE.command(new C_GPFocusBubbleModelTouchVertex(),new KVertex(v[0],v[1],v[2],+v[3]));
     GE.command(new C_JigEditorRefreshAll());
     }
   
@@ -37,16 +37,16 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
    * ################################
    */
     
-  private static final DVertex VIEWCENTER_DEFAULT=new DVertex(0,0,0,0);
+  private static final KVertex VIEWCENTER_DEFAULT=new KVertex(0,0,0,0);
   private static final int GRIDZOOM_DEFAULT=0;
   
-  protected DVertex getViewCenter(){
+  protected KVertex getViewCenter(){
     if(GE.grammarproject.hasFocusJig()){
       return GE.grammarproject.focusbubblemodel.focusjig.jecviewcenter;
     }else{
       return VIEWCENTER_DEFAULT;}}
   
-  protected void setViewCenter(DVertex v){
+  protected void setViewCenter(KVertex v){
     if(GE.grammarproject.hasFocusJig())
       GE.grammarproject.focusbubblemodel.focusjig.jecviewcenter=v;}
 
@@ -113,7 +113,7 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
     SPAN_VERTEX_DEFAULT=14,
     SPAN_ORIGINBOX=18;
 
-  private static final DVertex ORIGIN=new DVertex(0,0,0,0);
+  private static final KVertex ORIGIN=new KVertex(0,0,0,0);
   
   //if the bubblemodel is valid then we render it and the bubbledefs.
   //if it isn't then we do some kind of invalidity icon
@@ -133,7 +133,7 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
       SPAN_ORIGINBOX);
     //RENDER BUBBLEMODEL
     if(!GE.grammarproject.hasFocusJig())return;
-    List<DVertex> vertices=GE.grammarproject.focusbubblemodel.focusjig.getBubbleModelVertexPathForJigEditor();
+    List<KVertex> vertices=GE.grammarproject.focusbubblemodel.focusjig.getBubbleModelVertexPathForJigEditor();
     if(vertices.isEmpty())return;
     List<double[]> points=getPoint2Ds(vertices);
     //render invalid bubblemodel icon if necessary
@@ -150,7 +150,7 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
     //TODO
   }
   
-  private void renderBubbleModelPath(Graphics2D graphics,List<DVertex> vertices,List<double[]> points){
+  private void renderBubbleModelPath(Graphics2D graphics,List<KVertex> vertices,List<double[]> points){
     int vertexcount=vertices.size();
     Path2D.Double path=new Path2D.Double();
     double[] p=points.get(0);
@@ -184,8 +184,8 @@ public class JigEditorCanvas extends DiamondCanvas_Abstract{
     Path2D.Double path=null;
     if(bd.bubblemodel==null||bd.v0==null||bd.v1==null)return null;
     try{
-      DVertexPath p0=bd.bubblemodel.getVertexPath();
-      DVectorRDPath p1=p0.getVectorPath();
+      KVertexPath p0=bd.bubblemodel.getVertexPath();
+      KVectorRDPath p1=p0.getVectorPath();
       if(bd.twist==KGeom.TWIST_NEGATIVE)
         p1.reverseDeltas();
       p0=p1.getVertexPath(bd.v0,bd.v1);

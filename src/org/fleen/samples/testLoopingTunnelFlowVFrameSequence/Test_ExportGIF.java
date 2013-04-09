@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.g2D.G2D;
 import org.fleen.grammarEditor.GE;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameSequence;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.VFrame;
@@ -45,7 +45,7 @@ public class Test_ExportGIF{
     //get the number of frames
     //index through them then repeat
     int framecount=seq.frames.size();
-    double rotateincrement=(2.0*DGeom.PI)/((double)framecount);
+    double rotateincrement=(2.0*G2D.PI)/((double)framecount);
     
     
     while(keeprunning){

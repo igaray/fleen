@@ -10,8 +10,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 
-import org.fleen.core.grammar.BubbleModel;
-import org.fleen.core.grammar.Grammar;
+import org.fleen.core.pGrammatic.BubbleModel;
+import org.fleen.core.pGrammatic.Grammar;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_000;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_001;
 import org.fleen.samples.fleenRasterCompositionGen.renderer.Renderer_002;

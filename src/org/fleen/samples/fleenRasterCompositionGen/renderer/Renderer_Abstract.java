@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import org.fleen.core.bubbleTree.BubbleTree;
-import org.fleen.core.grammar.GBubble;
+import org.fleen.core.pGrammatic.GBubble;
 import org.fleen.samples.fleenRasterCompositionGen.Composition;
 import org.fleen.samples.fleenRasterCompositionGen.Log;
 import org.fleen.samples.fleenRasterCompositionGen.ui.ImageViewer;

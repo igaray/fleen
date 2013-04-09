@@ -3,8 +3,8 @@ package org.fleen.samples.genRainbowTriumph;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 
-import org.fleen.core.kGeom.DCell;
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.gKis.KCell;
+import org.fleen.core.gKis.KVertex;
 
 public class RTCell{
   
@@ -15,7 +15,7 @@ public class RTCell{
    */
   
   public RTCell(RTCellBlock block,int ant,int bat,int cat,int dog){
-    dcell=new DCell(ant,bat,cat,dog);
+    dcell=new KCell(ant,bat,cat,dog);
     this.block=block;
     initCoorGeom();
     initPoints();
@@ -153,7 +153,7 @@ public class RTCell{
    */
   
   //this CDCell's form in the diamond grid
-  public DCell dcell;
+  public KCell dcell;
   //the cell triangle's 3 vertex points
   public double[] pv12,pv6,pv4;
   //cell triangle center point in real terms unscaled
@@ -162,7 +162,7 @@ public class RTCell{
   public Path2D.Double path=null;
   
   private void initPoints(){
-    DVertex[] v=dcell.getVertices();
+    KVertex[] v=dcell.getVertices();
     pv12=v[0].getBasicPoint2D();
     pv6=v[1].getBasicPoint2D();
     pv4=v[2].getBasicPoint2D();

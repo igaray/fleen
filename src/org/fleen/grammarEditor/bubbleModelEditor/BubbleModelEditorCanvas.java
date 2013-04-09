@@ -7,7 +7,7 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.List;
 
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.gKis.KVertex;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.grammarProject.C_GPAddVertexToFocusBubbleModel;
 import org.fleen.grammarEditor.util.DiamondCanvas_Abstract;
@@ -22,7 +22,7 @@ public class BubbleModelEditorCanvas extends DiamondCanvas_Abstract{
    */
   
   protected void mouseClickVertex(int[] v){
-    GE.command(new C_GPAddVertexToFocusBubbleModel(),new DVertex(v[0],v[1],v[2],+v[3]));
+    GE.command(new C_GPAddVertexToFocusBubbleModel(),new KVertex(v[0],v[1],v[2],+v[3]));
     GE.command(new C_BubbleModelEditorRefreshForModelChange());}
   
   /*
@@ -31,10 +31,10 @@ public class BubbleModelEditorCanvas extends DiamondCanvas_Abstract{
    * ################################
    */
     
-  protected DVertex getViewCenter(){
+  protected KVertex getViewCenter(){
     return GE.grammarproject.focusbubblemodel.bmecviewcenter;}
   
-  protected void setViewCenter(DVertex v){
+  protected void setViewCenter(KVertex v){
     GE.grammarproject.focusbubblemodel.bmecviewcenter=v;}
 
   protected int getZoom(){
@@ -98,7 +98,7 @@ public class BubbleModelEditorCanvas extends DiamondCanvas_Abstract{
     SPAN_VERTEX_SPECIAL=14,
     SPAN_ORIGINBOX=18;
   
-  private static final DVertex ORIGIN=new DVertex(0,0,0,0);
+  private static final KVertex ORIGIN=new KVertex(0,0,0,0);
   
   protected void createDetailsImage(){
     super.createDetailsImage();
@@ -115,14 +115,14 @@ public class BubbleModelEditorCanvas extends DiamondCanvas_Abstract{
       SPAN_ORIGINBOX,
       SPAN_ORIGINBOX);
     //render model form and associated details
-    List<DVertex> vertices=GE.grammarproject.focusbubblemodel.getVertexPath();
+    List<KVertex> vertices=GE.grammarproject.focusbubblemodel.getVertexPath();
     if(vertices.isEmpty())return;
     List<double[]> points=getPoint2Ds(vertices);
 //    renderGlyphs();//origin location foreward and twist. model foreward and twist
     renderPaths(graphics,vertices,points);
     renderVertices(graphics,vertices,points);}
   
-  private void renderVertices(Graphics2D graphics,List<DVertex> vertices,List<double[]> points){
+  private void renderVertices(Graphics2D graphics,List<KVertex> vertices,List<double[]> points){
     double[] p;
     int span;
     Color color;
@@ -143,10 +143,10 @@ public class BubbleModelEditorCanvas extends DiamondCanvas_Abstract{
     
     }
   
-  private void renderPaths(Graphics2D graphics,List<DVertex> vertices,List<double[]> points){
+  private void renderPaths(Graphics2D graphics,List<KVertex> vertices,List<double[]> points){
     int vertexcount=vertices.size();
     if(vertexcount<2)return;
-    DVertex vlast=vertices.get(vertices.size()-1),vfirst=vertices.get(0);
+    KVertex vlast=vertices.get(vertices.size()-1),vfirst=vertices.get(0);
     boolean colinearends=vlast.isColinear(vfirst);
     //RENDER INVALID FORM
     if(vertexcount==2||(!colinearends)){

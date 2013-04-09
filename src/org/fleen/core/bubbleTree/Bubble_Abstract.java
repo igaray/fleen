@@ -5,54 +5,14 @@ import org.fleen.core.gKis.KVertex;
 /*
  * A loop of vertices in this bubble's parent grid
  * a node in a bubbletree
- * it's parent or grandparent is a grid
- * it's parent is either a foam or a grid
- * it has 0 or 1 child, a grid 
- * it is immutable, more or less
+ * It stores a list of vertices
+ * It refers to the first Grid in it's ancestry to convert those vertices to point2ds.
+ * It has an identifier : chorusindex.
+ *   we differentiate bubbles into choruses to control symmetry
  */
-public abstract class Bubble_Abstract extends BubbleTreeNode implements GridStackElement{
+public abstract class Bubble_Abstract extends BubbleTreeNode{
   
   private static final long serialVersionUID=7403675520824450721L;
-  
-  /*
-   * ################################
-   * BUBBLETREE
-   * ################################
-   */
-  
-  public Grid getParentGrid(){
-    return getFirstAncestorGrid();}
-  
-  public Grid getChildGrid(){
-    return (Grid)getChild(0);}
-  
-  public Bubble_Abstract getParentBubble(){
-    return getFirstAncestorBubble();}
-  
-//  public List<Bubble> getChildBubbles(){
-//    Grid g=getChildGrid();
-//    if(g==null)return new ArrayList<Bubble>(0);
-//    return g.getChildBubbles();}
-//  
-//  public List<Bubble> getSiblingBubbles(){
-//    List<Bubble> a=new ArrayList<Bubble>(getParentGrid().getChildBubbles());
-//    a.remove(this);
-//    return a;}
-  
-  /*
-   * ################################
-   * CHORUS INDEX
-   * a contextual signifier. groups bubbles into chorusses
-   * ################################
-   */
-  
-  private int chorusindex=0;
-  
-  public int getChorusIndex(){
-    return chorusindex;}
-  
-  public void setChorusIndex(int i){
-    chorusindex=i; }
   
   /*
    * ################################
@@ -87,9 +47,9 @@ public abstract class Bubble_Abstract extends BubbleTreeNode implements GridStac
     KVertex[] v=getVertices();
     int s=v.length;
     vertexpoints2d=new double[s][2];
-    Grid parentgrid=getParentGrid();
+    Grid grid=getFirstAncestorGridStackElement().getGrid();
     for(int i=0;i<s;i++)
-      vertexpoints2d[i]=parentgrid.getPoint2D(v[i]);}
+      vertexpoints2d[i]=grid.getPoint2D(v[i]);}
   
   /*
    * ++++++++++++++++++++++++++++++++
@@ -112,7 +72,7 @@ public abstract class Bubble_Abstract extends BubbleTreeNode implements GridStac
     if(gds_v0==-1)
       initIndicesOfFurthestAdjacentVerticesForGetDetailSize();
     KVertex[] v=getVertices();
-    detailsize=v[gds_v0].getDistance(v[gds_v1])*getParentGrid().getFish();}
+    detailsize=v[gds_v0].getDistance(v[gds_v1])*getFirstAncestorGridStackElement().getGrid().getFish();}
   
   private void initIndicesOfFurthestAdjacentVerticesForGetDetailSize(){
     KVertex[] v=getVertices();
@@ -129,42 +89,18 @@ public abstract class Bubble_Abstract extends BubbleTreeNode implements GridStac
   
   /*
    * ################################
-   * GRID STACK ELEMENT
+   * CHORUS INDEX
+   * a contextual signifier. groups bubbles into chorusses
    * ################################
    */
   
-  GridStackElementParam gseparam;
+  private int chorusindex=0;
   
-  public GridStackElementParam getGSEParam(){
-    return gseparam;}
-
-  public void setGSEParam(GridStackElementParam gseparam){
-    this.gseparam=gseparam;}
-
-  public double[] getStackOrigin(){
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public double getStackForeward(){
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public boolean getStackTwist(){
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public double getStackFish(){
-    // TODO Auto-generated method stub
-    return 0;
-  }  
+  public int getChorusIndex(){
+    return chorusindex;}
   
-  
+  public void setChorusIndex(int i){
+    chorusindex=i; }
   
   /*
    * ################################

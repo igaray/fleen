@@ -8,11 +8,11 @@ import java.util.Random;
 
 import org.fleen.core.bubbleTree.BubbleTree;
 import org.fleen.core.bubbleTree.Grid;
-import org.fleen.core.grammar.BubbleSignature;
-import org.fleen.core.grammar.GBubble;
-import org.fleen.core.grammar.BubbleModel;
-import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Jig;
+import org.fleen.core.pGrammatic.BubbleModel;
+import org.fleen.core.pGrammatic.BubbleSignature;
+import org.fleen.core.pGrammatic.GBubble;
+import org.fleen.core.pGrammatic.Grammar;
+import org.fleen.core.pGrammatic.Jig;
 import org.fleen.samples.fleenRasterCompositionGen.symmetryController.SymmetryControlFunction_Abstract;
 
 public class Composition extends BubbleTree{

@@ -1,6 +1,6 @@
 package org.fleen.samples.fleenRasterCompositionGen.symmetryController;
 
-import org.fleen.core.grammar.GBubble;
+import org.fleen.core.pGrammatic.GBubble;
 
 public class SC_BigRandomSmallSymmetry extends SymmetryControlFunction_Abstract{
 

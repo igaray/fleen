@@ -1,9 +1,9 @@
-package org.fleen.core.grammar;
+package org.fleen.core.pGrammatic;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fleen.core.bubbleTree.Bubble;
+import org.fleen.core.bubbleTree.Bubble_Abstract;
 
 
 /*
@@ -21,7 +21,7 @@ public class BubbleSignature{
    */
   
   public BubbleSignature(GBubble bubble){
-    Bubble pb=bubble.getParentBubble();
+    Bubble_Abstract pb=bubble.getParentBubble();
     if(pb!=null){
       BubbleSignature s0=bubble.getParentBubble().getSignature();
       components.addAll(s0.components);}

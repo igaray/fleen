@@ -1,4 +1,4 @@
-package org.fleen.core.grammar;
+package org.fleen.core.pGrammatic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,14 +7,14 @@ import java.util.List;
 
 import javax.swing.tree.TreeNode;
 
-import org.fleen.core.bubbleTree.Bubble;
+import org.fleen.core.bubbleTree.Bubble_Abstract;
 import org.fleen.core.bubbleTree.Foam;
 import org.fleen.core.bubbleTree.Grid;
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.kGeom.DVectorRD;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
-import org.fleen.core.kGeom.KGeom;
+import org.fleen.core.g2D.G2D;
+import org.fleen.core.gKis.KVectorRD;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
+import org.fleen.core.gKis.KGeom;
 
 /*
  * A loop of vertices in this bubble's parent grid
@@ -24,7 +24,7 @@ import org.fleen.core.kGeom.KGeom;
  *   twist
  * it also has a parentgrid, childgrid, foam, chorusindex and multipurpose data object
  */
-public class GBubble extends Bubble implements Serializable{
+public class GBubble extends Bubble_Abstract implements Serializable{
   
   /*
    * ################################
@@ -39,7 +39,7 @@ public class GBubble extends Bubble implements Serializable{
   //it's "geometric class"
   public BubbleModel model;
   //from these 2 vertices we get location, foreward and scale
-  public DVertex v0,v1;
+  public KVertex v0,v1;
   //positive or negative twist (true or false, respectively)
   //which side of the mirror?
   //twist==true means same as parent grid, false means opposite
@@ -64,8 +64,8 @@ public class GBubble extends Bubble implements Serializable{
     Grid parentgrid,
     BubbleModel model,
     int type,
-    DVertex v0,
-    DVertex v1,
+    KVertex v0,
+    KVertex v1,
     boolean twist,
     Foam foam,
     int chorusindex){
@@ -95,7 +95,7 @@ public class GBubble extends Bubble implements Serializable{
     this.parentgrid=parentgrid;
     parentgrid.childbubbles.add(this);
     this.model=model;
-    DVertexPath p=model.getVectorPath().getVertexPath();
+    KVertexPath p=model.getVectorPath().getVertexPath();
     type=TYPE_RAFT;
     v0=p.get(0);
     v1=p.get(1);
@@ -190,7 +190,7 @@ public class GBubble extends Bubble implements Serializable{
     double[] 
       p0=parentgrid.getPoint2D(v0),
       p1=parentgrid.getPoint2D(v1);
-    double a=DGeom.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);
+    double a=G2D.getDistance_2Points(p0[0],p0[1],p1[0],p1[1]);
     double fish=a/model.getVector(0).distance;
     return fish;}
   
@@ -210,7 +210,7 @@ public class GBubble extends Bubble implements Serializable{
     return vertexpoints2d;}
   
   private void initVertexPoints2D(){
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     int s=v.length;
     vertexpoints2d=new double[s][2];
     for(int i=0;i<s;i++)
@@ -236,13 +236,13 @@ public class GBubble extends Bubble implements Serializable{
   private void initDetailSize(){
     if(gds_v0==-1)
       initIndicesOfFurthestAdjacentVerticesForGetDetailSize();
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     detailsize=v[gds_v0].getDistance(v[gds_v1])*parentgrid.getFish();
     
   }
   
   private void initIndicesOfFurthestAdjacentVerticesForGetDetailSize(){
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     int inext;
     double dtest,dfurthest=Double.MIN_VALUE;
     for(int i=0;i<v.length;i++){
@@ -262,17 +262,17 @@ public class GBubble extends Bubble implements Serializable{
    * ++++++++++++++++++++++++++++++++
    */
   
-  private DVertex[] vertices=null;
+  private KVertex[] vertices=null;
   
-  public DVertex[] getVertices(){
+  public KVertex[] getVertices(){
     if(vertices==null)initVertices();
     return vertices;}
   
   private void initVertices(){
-    DVectorRD vector=new DVectorRD(getBaseForeward(),0);
+    KVectorRD vector=new KVectorRD(getBaseForeward(),0);
     int vectorcount=model.getVectorCount();
     double scale=v0.getDistance(v1)/model.getVector(0).distance;
-    vertices=new DVertex[vectorcount];
+    vertices=new KVertex[vectorcount];
     vertices[0]=v0;
     vertices[1]=v1;
     int directiondelta;

@@ -1,9 +1,9 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
-import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.g2D.G2D;
 
 /*
  * A cell in the diamond system
@@ -36,7 +36,7 @@ import org.fleen.core.dGeom.DGeom;
  *        v4   f0
  *        
  */
-public class DCell{
+public class KCell{
   
   /*
    * ################################
@@ -57,7 +57,7 @@ public class DCell{
    * ################################
    */
   
-  public DCell(int ant,int bat,int cat,int dog){
+  public KCell(int ant,int bat,int cat,int dog){
     this.ant=ant;
     this.bat=bat;
     this.cat=cat;
@@ -91,19 +91,19 @@ public class DCell{
   /*
    * returns this cells 3 vertices in order : v12,v6,v4
    */
-  public DVertex[] getVertices(){
-    DVertex p0=new DVertex(ant,bat,cat,0);
-    DVertex p1=new DVertex(
+  public KVertex[] getVertices(){
+    KVertex p0=new KVertex(ant,bat,cat,0);
+    KVertex p1=new KVertex(
       ant+DVERTEX_OFFSETS[dog][0][0],
       bat+DVERTEX_OFFSETS[dog][0][1],
       cat+DVERTEX_OFFSETS[dog][0][2],
       DVERTEX_OFFSETS[dog][0][3]);
-    DVertex p2=new DVertex(
+    KVertex p2=new KVertex(
       ant+DVERTEX_OFFSETS[dog][1][0],
       bat+DVERTEX_OFFSETS[dog][1][1],
       cat+DVERTEX_OFFSETS[dog][1][2],
       DVERTEX_OFFSETS[dog][1][3]);
-    return new DVertex[]{p0,p1,p2};}
+    return new KVertex[]{p0,p1,p2};}
   
   /*
    * ################################
@@ -117,7 +117,7 @@ public class DCell{
    * goat=1
    * hawk=2
    */
-  public DCell getAdjacent(int face){
+  public KCell getAdjacent(int face){
     //normalize
     face%=3;
     if(face<0)face+=3;
@@ -126,107 +126,107 @@ public class DCell{
     case 0:
       switch(face){
       case 0:
-        return new DCell(ant,bat+1,cat+1,7);
+        return new KCell(ant,bat+1,cat+1,7);
       case 1:
-        return new DCell(ant,bat,cat,1);
+        return new KCell(ant,bat,cat,1);
       case 2:
-        return new DCell(ant,bat,cat,11);}
+        return new KCell(ant,bat,cat,11);}
     case 1:
       switch(face){
       case 0:
-        return new DCell(ant,bat+1,cat+1,6);
+        return new KCell(ant,bat+1,cat+1,6);
       case 1:
-        return new DCell(ant,bat,cat,0);
+        return new KCell(ant,bat,cat,0);
       case 2:
-        return new DCell(ant,bat,cat,2);}
+        return new KCell(ant,bat,cat,2);}
     case 2:
       switch(face){
       case 0:
-        return new DCell(ant+1,bat+1,cat,9);
+        return new KCell(ant+1,bat+1,cat,9);
       case 1:
-        return new DCell(ant,bat,cat,3);
+        return new KCell(ant,bat,cat,3);
       case 2:
-        return new DCell(ant,bat,cat,1);}
+        return new KCell(ant,bat,cat,1);}
     case 3:
       switch(face){
       case 0:
-        return new DCell(ant+1,bat+1,cat,8);
+        return new KCell(ant+1,bat+1,cat,8);
       case 1:
-        return new DCell(ant,bat,cat,2); 
+        return new KCell(ant,bat,cat,2); 
       case 2:
-        return new DCell(ant,bat,cat,4);}
+        return new KCell(ant,bat,cat,4);}
     case 4:
       switch(face){
       case 0:
-        return new DCell(ant+1,bat,cat-1,11);
+        return new KCell(ant+1,bat,cat-1,11);
       case 1:
-        return new DCell(ant,bat,cat,5);
+        return new KCell(ant,bat,cat,5);
       case 2:
-        return new DCell(ant,bat,cat,3);}
+        return new KCell(ant,bat,cat,3);}
     case 5:
       switch(face){
       case 0:
-        return new DCell(ant+1,bat,cat-1,10); 
+        return new KCell(ant+1,bat,cat-1,10); 
       case 1:
-        return new DCell(ant,bat,cat,4);
+        return new KCell(ant,bat,cat,4);
       case 2:
-        return new DCell(ant,bat,cat,6);}
+        return new KCell(ant,bat,cat,6);}
     case 6:
       switch(face){
       case 0:
-        return new DCell(ant,bat-1,cat-1,1);
+        return new KCell(ant,bat-1,cat-1,1);
       case 1:
-        return new DCell(ant,bat,cat,7); 
+        return new KCell(ant,bat,cat,7); 
       case 2:
-        return new DCell(ant,bat,cat,5);}
+        return new KCell(ant,bat,cat,5);}
     case 7:
       switch(face){
       case 0:
-        return new DCell(ant,bat-1,cat-1,0);
+        return new KCell(ant,bat-1,cat-1,0);
       case 1:
-        return new DCell(ant,bat,cat,6); 
+        return new KCell(ant,bat,cat,6); 
       case 2:
-        return new DCell(ant,bat,cat,8);}
+        return new KCell(ant,bat,cat,8);}
     case 8:
       switch(face){
       case 0:
-        return new DCell(ant-1,bat-1,cat,3);
+        return new KCell(ant-1,bat-1,cat,3);
       case 1:
-        return new DCell(ant,bat,cat,9); 
+        return new KCell(ant,bat,cat,9); 
       case 2:
-        return new DCell(ant,bat,cat,7);}
+        return new KCell(ant,bat,cat,7);}
     case 9:
       switch(face){
       case 0:
-        return new DCell(ant-1,bat-1,cat,2);
+        return new KCell(ant-1,bat-1,cat,2);
       case 1:
-        return new DCell(ant,bat,cat,8); 
+        return new KCell(ant,bat,cat,8); 
       case 2:
-        return new DCell(ant,bat,cat,10);}
+        return new KCell(ant,bat,cat,10);}
     case 10:
       switch(face){
       case 0:
-        return new DCell(ant-1,bat,cat+1,5);
+        return new KCell(ant-1,bat,cat+1,5);
       case 1:
-        return new DCell(ant,bat,cat,11); 
+        return new KCell(ant,bat,cat,11); 
       case 2:
-        return new DCell(ant,bat,cat,9);}
+        return new KCell(ant,bat,cat,9);}
     case 11:
       switch(face){
       case 0:
-        return new DCell(ant-1,bat,cat+1,4);
+        return new KCell(ant-1,bat,cat+1,4);
       case 1:
-        return new DCell(ant,bat,cat,10); 
+        return new KCell(ant,bat,cat,10); 
       case 2:
-        return new DCell(ant,bat,cat,0);}
+        return new KCell(ant,bat,cat,0);}
     default:
       throw new IllegalArgumentException("foo");}}
   
   /*
    * returns the 3 cells adjacent to this one in standard face order 
    */
-  public DCell[] getAdjacents(){
-    DCell[] a={getAdjacent(0),getAdjacent(1),getAdjacent(2)};
+  public KCell[] getAdjacents(){
+    KCell[] a={getAdjacent(0),getAdjacent(1),getAdjacent(2)};
     return a;}
   
   /*
@@ -236,7 +236,7 @@ public class DCell{
    */
   
   public Path2D.Double getPath2D(){
-    DVertex[] v=getVertices();
+    KVertex[] v=getVertices();
     double[] p0=v[0].getBasicPoint2D(),p1=v[1].getBasicPoint2D(),p2=v[2].getBasicPoint2D();
     Path2D.Double path=new Path2D.Double();
     path.moveTo(p0[0],p0[1]);
@@ -252,7 +252,7 @@ public class DCell{
    */
   
   public boolean contains(double x,double y){
-    DCell c=getCell(x,y);
+    KCell c=getCell(x,y);
     return c.equals(this);}
   
   /*
@@ -270,28 +270,28 @@ public class DCell{
    * TODO move this into DMath or something
    * 
    */
-  public static final DCell getCell(double x,double y){
+  public static final KCell getCell(double x,double y){
     //get min rect cartesian grid coordinates for lower-left corner dpoint of selected min rect
-    int mrx=(int)Math.floor(x/DGeom.SQRT3);
+    int mrx=(int)Math.floor(x/G2D.SQRT3);
     int mry=(int)Math.floor(y/(3));
     //get cell by rectangle type
     //if px and py are identically even/odd then we use the lower-left corner dpoint of the
     //rectangle as reference. If they aren't then we use the lower right.
-    DCell cell;
+    KCell cell;
     int mrxc=mrx%2,mryc=mry%2;
     //MIN RECT TYPE A if they're both odd or both even
     if((mrxc==0&&mryc==0)||(mrxc!=0&&mryc!=0)){
       int ant=(mrx-mry)/2;
       int cat=mry;
-      int bat=DVertex.getBat(ant,cat);
-      DVertex dpr=new DVertex(ant,bat,cat,0);
+      int bat=KVertex.getBat(ant,cat);
+      KVertex dpr=new KVertex(ant,bat,cat,0);
       cell=getCell_RectA(x,y,dpr);
     //MIN RECT TYPE B if one is odd and the other is even
     }else{//px%2!=py%2
       int ant=(mrx-mry+1)/2;
       int cat=mry;
-      int bat=DVertex.getBat(ant,cat);
-      DVertex dpr=new DVertex(ant,bat,cat,0);
+      int bat=KVertex.getBat(ant,cat);
+      KVertex dpr=new KVertex(ant,bat,cat,0);
       cell=getCell_RectB(x,y,dpr);}
     return cell;}
   
@@ -299,16 +299,16 @@ public class DCell{
    * get cell in rectangle type A specified by lower-left corner point dpr that contains the point (px,py)    
    * TODO use DGeom interval constants instead of literal values       
    */
-  private static final DCell getCell_RectA(double px,double py,DVertex dpr){
-    DCell cell;
+  private static final KCell getCell_RectA(double px,double py,KVertex dpr){
+    KCell cell;
     double[] pr=dpr.getBasicPoint2D();
     //get our 7 test points
     double 
       p0x=pr[0],p0y=pr[1]+2.0,
       p1x=pr[0],p1y=pr[1]+3.0,
-      p2x=pr[0]+DGeom.SQRT3,p2y=pr[1]+3.0,
-      p3x=pr[0]+DGeom.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
-      p4x=pr[0]+DGeom.SQRT3,p4y=pr[1]+1.0;
+      p2x=pr[0]+G2D.SQRT3,p2y=pr[1]+3.0,
+      p3x=pr[0]+G2D.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
+      p4x=pr[0]+G2D.SQRT3,p4y=pr[1]+1.0;
 //      p5x=pr[0]+FM.SQRT3,p5y=pr[1];
     //
     //test (pr,p1,p2)
@@ -317,26 +317,26 @@ public class DCell{
       if(triangleContainsPoint(pr[0],pr[1],p0x,p0y,p2x,p2y,px,py)){
         //test (pr,p0,p3)
         if(triangleContainsPoint(pr[0],pr[1],p0x,p0y,p3x,p3y,px,py)){
-          cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],0);
+          cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],0);
         //not contained in (pr,p0,p3), therefor contained in (p0,p2,p3)
         }else{
-          cell=new DCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,7);}
+          cell=new KCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,7);}
       //not contained in (pr,p0,p2) therefor it's contained in (p0,p1,p2)
       }else{
-        cell=new DCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,8);}
+        cell=new KCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,8);}
     //not contained in (pr,p1,p2) therefor it's contained in (pr,p2,p5)
     }else{
       //test (pr,p2,p4)
       if(triangleContainsPoint(pr[0],pr[1],p2x,p2y,p4x,p4y,px,py)){
         //test (pr,p3,p4)
         if(triangleContainsPoint(pr[0],pr[1],p3x,p3y,p4x,p4y,px,py)){
-          cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],1);
+          cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],1);
         //not contained in (pr,p3,p4) therefor contained in (p3,p2,p4)
         }else{
-          cell=new DCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,6);}
+          cell=new KCell(dpr.coors[0],dpr.coors[1]+1,dpr.coors[2]+1,6);}
       //not contained in (pr,p2,p4) therefor contained in (pr,p4,p5) 
       }else{
-        cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],2);}}
+        cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],2);}}
     //
     return cell;}
   
@@ -344,16 +344,16 @@ public class DCell{
    * get cell in rectangle type B specified by lower-right corner point dpr that contains the point (px,py)    
    * TODO use DGeom interval constants instead of literal values       
    */
-  private static final DCell getCell_RectB(double px,double py,DVertex dpr){
-    DCell cell;
+  private static final KCell getCell_RectB(double px,double py,KVertex dpr){
+    KCell cell;
     double[] pr=dpr.getBasicPoint2D();
     //get our 7 test points
     double 
       p0x=pr[0],p0y=pr[1]+2.0,
       p1x=pr[0],p1y=pr[1]+3.0,
-      p2x=pr[0]-DGeom.SQRT3,p2y=pr[1]+3.0,
-      p3x=pr[0]-DGeom.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
-      p4x=pr[0]-DGeom.SQRT3,p4y=pr[1]+1.0;
+      p2x=pr[0]-G2D.SQRT3,p2y=pr[1]+3.0,
+      p3x=pr[0]-G2D.SQRT3/2.0,p3y=pr[1]+3.0/2.0,
+      p4x=pr[0]-G2D.SQRT3,p4y=pr[1]+1.0;
 //      p5x=pr.x-FM.SQRT3,p5y=pr.y;
     //
     //test (pr,p1,p2)
@@ -362,26 +362,26 @@ public class DCell{
       if(triangleContainsPoint(pr[0],pr[1],p0x,p0y,p2x,p2y,px,py)){
         //test (pr,p0,p3)
         if(triangleContainsPoint(pr[0],pr[1],p0x,p0y,p3x,p3y,px,py)){
-          cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],11);
+          cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],11);
         //not contained in (pr,p0,p3), therefor contained in (p0,p2,p3)
         }else{
-          cell=new DCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,4);}
+          cell=new KCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,4);}
       //not contained in (pr,p0,p2) therefor it's contained in (p0,p1,p2)
       }else{
-        cell=new DCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,3);}
+        cell=new KCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,3);}
     //not contained in (pr,p1,p2) therefor it's contained in (pr,p2,p5)
     }else{
       //test (pr,p2,p4)
       if(triangleContainsPoint(pr[0],pr[1],p2x,p2y,p4x,p4y,px,py)){
         //test (pr,p3,p4)
         if(triangleContainsPoint(pr[0],pr[1],p3x,p3y,p4x,p4y,px,py)){
-          cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],10);
+          cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],10);
         //not contained in (pr,p3,p4) therefor contained in (p3,p2,p4)
         }else{
-          cell=new DCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,5);}
+          cell=new KCell(dpr.coors[0]-1,dpr.coors[1],dpr.coors[2]+1,5);}
       //not contained in (pr,p2,p4) therefor contained in (pr,p4,p5) 
       }else{
-        cell=new DCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],9);}}
+        cell=new KCell(dpr.coors[0],dpr.coors[1],dpr.coors[2],9);}}
     //
     return cell;}
   
@@ -415,8 +415,8 @@ public class DCell{
    */
   
   public boolean equals(Object a){
-    if(!(a instanceof DCell))return false;
-    DCell b=(DCell)a;
+    if(!(a instanceof KCell))return false;
+    KCell b=(KCell)a;
     boolean e=b.ant==ant&&b.bat==bat&&b.cat==cat&&b.dog==dog;
     return e;}
   

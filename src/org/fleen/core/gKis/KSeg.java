@@ -1,10 +1,10 @@
-package org.fleen.core.kGeom;
+package org.fleen.core.gKis;
 
 
 /*
  * ordered : (v4,v6),(v6,v12) or (v12,v4)
  */
-public class DSeg{
+public class KSeg{
   
   /*
    * ################################
@@ -12,7 +12,7 @@ public class DSeg{
    * ################################
    */
   
-  public DSeg(DVertex a,DVertex b){
+  public KSeg(KVertex a,KVertex b){
     //put the vertices in the proper order
     int gta=a.getGeneralType(),gtb=b.getGeneralType();
     if(gta==KGeom.VERTEX_GTYPE_4){
@@ -43,12 +43,12 @@ public class DSeg{
    * ################################
    */
   
-  private DVertex vertex0,vertex1;
+  private KVertex vertex0,vertex1;
   
-  public DVertex getVertex0(){
+  public KVertex getVertex0(){
     return vertex0;}
   
-  public DVertex getVertex1(){
+  public KVertex getVertex1(){
     return vertex1;}
   
   /*
@@ -72,10 +72,10 @@ public class DSeg{
         vertex1.coors[3];}
     return hashcode;}
   
-  private DSeg equals_a;
+  private KSeg equals_a;
   
   public boolean equals(Object a){
-    equals_a=(DSeg)a;
+    equals_a=(KSeg)a;
     if(equals_a.hashCode()==hashCode()){
       return 
         equals_a.vertex0.coors[0]==vertex0.coors[0]&&

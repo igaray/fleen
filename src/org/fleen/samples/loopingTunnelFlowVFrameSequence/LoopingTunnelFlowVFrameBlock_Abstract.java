@@ -10,11 +10,11 @@ import java.util.Random;
 
 import org.fleen.core.bubbleTree.BubbleTree;
 import org.fleen.core.bubbleTree.Grid;
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.grammar.BubbleSignature;
-import org.fleen.core.grammar.GBubble;
-import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Jig;
+import org.fleen.core.g2D.G2D;
+import org.fleen.core.pGrammatic.BubbleSignature;
+import org.fleen.core.pGrammatic.GBubble;
+import org.fleen.core.pGrammatic.Grammar;
+import org.fleen.core.pGrammatic.Jig;
 
 /*
  * A LoopingTunnelFlowVFrameBlock is a special kind of fleen designed to give us nice tunnel flow frames
@@ -215,7 +215,7 @@ public abstract class LoopingTunnelFlowVFrameBlock_Abstract extends BubbleTree{
     double bubbledetailsize=bubble.getDetailSize();
     double[] bubblecentroid=bubble.getCentroid2D();
     double normalizedradiusatbubblecentroid=
-      (DGeom.getDistance_2Points(0,0,bubblecentroid[0],bubblecentroid[1])-mouthradius)/radiusrange;
+      (G2D.getDistance_2Points(0,0,bubblecentroid[0],bubblecentroid[1])-mouthradius)/radiusrange;
     double smallestdetailatbubblecentroid=
       smallestdetailatinnerradius+normalizedradiusatbubblecentroid*smallestdetailrange;
     boolean bigenough=bubbledetailsize>smallestdetailatbubblecentroid;

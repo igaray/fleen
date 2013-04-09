@@ -22,9 +22,9 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.KGeom;
+import org.fleen.core.g2D.G2D;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KGeom;
 import org.fleen.grammarEditor.GE;
 
 /*
@@ -219,9 +219,9 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
    * ################################
    */
     
-  protected abstract DVertex getViewCenter();
+  protected abstract KVertex getViewCenter();
   
-  protected abstract void setViewCenter(DVertex v);
+  protected abstract void setViewCenter(KVertex v);
   
   protected abstract int getZoom();
   
@@ -335,7 +335,7 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
    */
   
   protected BufferedImage detailsimage=null;
-  private static final double GRID_2D_DIR_INCREMENT=(DGeom.PI*2.0)/12.0;
+  private static final double GRID_2D_DIR_INCREMENT=(G2D.PI*2.0)/12.0;
   //TODO we have variable foreward functionality but we don't need it. Remove it for efficiency.
   private static final int GRIDFOREWARD=0;
   
@@ -343,14 +343,14 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
     int w=getWidth(),h=getHeight();
     detailsimage=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);}
   
-  protected final List<double[]> getPoint2Ds(List<DVertex> vertices){
+  protected final List<double[]> getPoint2Ds(List<KVertex> vertices){
     List<double[]> a=new ArrayList<double[]>(vertices.size());
-    for(DVertex v:vertices)
+    for(KVertex v:vertices)
       a.add(getPoint2D(v));
     return a;}
   
   //return the point in image plane corrosponding to the specified vertex
-  protected final double[] getPoint2D(DVertex v){
+  protected final double[] getPoint2D(KVertex v){
     //get basic 2d points for the vertex and the viewcenter vertex
     double[] p=v.getBasicPoint2D();
     double[] pcenter;
@@ -364,10 +364,10 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
     //adjust for foreward
     int f=GRIDFOREWARD;
     if(f!=0){
-      double dis=DGeom.getDistance_2Points(0,0,p[0],p[1]);
-      double dir=DGeom.getDirection_2Points(0,0,p[0],p[1]);
-      dir=DGeom.normalizeDirection(dir+(GRID_2D_DIR_INCREMENT*f));
-      p=DGeom.getPoint_PointDirectionInterval(0,0,dir,dis);}
+      double dis=G2D.getDistance_2Points(0,0,p[0],p[1]);
+      double dir=G2D.getDirection_2Points(0,0,p[0],p[1]);
+      dir=G2D.normalizeDirection(dir+(GRID_2D_DIR_INCREMENT*f));
+      p=G2D.getPoint_PointDirectionInterval(0,0,dir,dis);}
     //adjust for scale
     double gi=getGraphicInterval();
     p[0]*=gi;
@@ -399,7 +399,7 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
     //get the hexagon radius
     int hexrad=getHexRad();
     //get the loop of vertices
-    List<DVertex> hexloopvertices;
+    List<KVertex> hexloopvertices;
     hexloopvertices=getHexLoopVertices(hexrad);
     //get the pairs
     Set<VertexPair> vertexpairs;
@@ -431,7 +431,7 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
     //get greater dimension in terms of diamond intervals
     int di;
     if(w>h){
-      di=(int)(w/(gui*DGeom.SQRT3));
+      di=(int)(w/(gui*G2D.SQRT3));
     }else{
       di=(int)(w/(gui*2.0/3.0));}
     di*=HEXRAD_FILLFACTOR;
@@ -445,10 +445,10 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
    * every vertex is paired with other vertices constant over a function that considers type, index and s_index
    */
   
-  private Set<VertexPair> getVertexPairs(int hexrad,List<DVertex> hlv){
+  private Set<VertexPair> getVertexPairs(int hexrad,List<KVertex> hlv){
     Set<VertexPair> pairs=new HashSet<VertexPair>();
     int s=hexrad*6,s_index;
-    DVertex v;
+    KVertex v;
     for(int index=0;index<s;index++){
       s_index=index%hexrad;
       v=hlv.get(index);
@@ -488,11 +488,11 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
   //START CLASS VERTEX PAIR
   class VertexPair{
     
-    VertexPair(DVertex v0,DVertex v1){
+    VertexPair(KVertex v0,KVertex v1){
       this.v0=v0;
       this.v1=v1;}
     
-    DVertex v0,v1;
+    KVertex v0,v1;
     
     public boolean equals(Object a){
       VertexPair b=(VertexPair)a;
@@ -505,27 +505,27 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
   /*
    * returns a hexagonal loop of diamond vertices centered at vertex(0,0,0,0)
    */
-  private List<DVertex> getHexLoopVertices(int hexrad){
+  private List<KVertex> getHexLoopVertices(int hexrad){
     int[] v={0,0,0,0};
     KGeom.getVertex_Transitionswise(0,0,0,0,0,hexrad,v);
-    List<DVertex> vertices=new ArrayList<DVertex>();
+    List<KVertex> vertices=new ArrayList<KVertex>();
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],4,v);}
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],6,v);}
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],8,v);}
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],10,v);}
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],0,v);}
     for(int i=0;i<hexrad;i++){
-      vertices.add(new DVertex(v[0],v[1],v[2],v[3]));
+      vertices.add(new KVertex(v[0],v[1],v[2],v[3]));
       KGeom.getVertexAdjacent(v[0],v[1],v[2],v[3],2,v);}
     return vertices;}
   
@@ -550,10 +550,10 @@ public abstract class DiamondCanvas_Abstract extends JPanel{
     if(f!=0){
       int cx=getWidth()/2;
       int cy=getHeight()/2;
-      double dis=DGeom.getDistance_2Points(cx,cy,x,y);
-      double dir=DGeom.getDirection_2Points(cx,cy,x,y);
-      dir=DGeom.normalizeDirection(dir+(GRID_2D_DIR_INCREMENT*f));
-      double[] p=DGeom.getPoint_PointDirectionInterval(cx,cy,dir,dis);
+      double dis=G2D.getDistance_2Points(cx,cy,x,y);
+      double dir=G2D.getDirection_2Points(cx,cy,x,y);
+      dir=G2D.normalizeDirection(dir+(GRID_2D_DIR_INCREMENT*f));
+      double[] p=G2D.getPoint_PointDirectionInterval(cx,cy,dir,dis);
       x=(int)p[0];
       y=(int)p[1];}
     //make the coordinates proper cartesian with origin at view center

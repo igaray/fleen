@@ -6,12 +6,12 @@ import java.io.ObjectInputStream;
 
 import org.fleen.core.bubbleTree.Foam;
 import org.fleen.core.bubbleTree.Grid;
-import org.fleen.core.dGeom.DGeom;
-import org.fleen.core.grammar.GBubble;
-import org.fleen.core.grammar.BubbleModel;
-import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Jig;
-import org.fleen.core.kGeom.DVertex;
+import org.fleen.core.g2D.G2D;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.pGrammatic.BubbleModel;
+import org.fleen.core.pGrammatic.GBubble;
+import org.fleen.core.pGrammatic.Grammar;
+import org.fleen.core.pGrammatic.Jig;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameBlock_Abstract;
 
 /*
@@ -54,10 +54,10 @@ public class LoopingTunnelFlowVFrameBlock_TF0000_Short extends LoopingTunnelFlow
     double radius;
     double[][] vp=bubble.getVertexPoints2D();
     if(bubble.model.id.equals(IDSTAR)){
-      radius=DGeom.getDistance_2Points(0,0,vp[0][0],vp[0][1]);
+      radius=G2D.getDistance_2Points(0,0,vp[0][0],vp[0][1]);
     }else{//model id == "FC_hexagon" or "FC_triangle"
-      double[] mp=DGeom.getPoint_Mid2Points(vp[0][0],vp[0][1],vp[1][0],vp[1][1]);
-      radius=DGeom.getDistance_2Points(0,0,mp[0],mp[1]);}
+      double[] mp=G2D.getPoint_Mid2Points(vp[0][0],vp[0][1],vp[1][0],vp[1][1]);
+      radius=G2D.getDistance_2Points(0,0,mp[0],mp[1]);}
     return radius;}
   
   /*
@@ -71,9 +71,9 @@ public class LoopingTunnelFlowVFrameBlock_TF0000_Short extends LoopingTunnelFlow
     Grid rg=new Grid();
     setRootGrid(rg);
     BubbleModel rootbubblemodel=grammar.getBubbleModel(IDHEXAGON);
-    DVertex 
-      v0=new DVertex(-1,-1,0,4),
-      v1=new DVertex(0,0,0,2);
+    KVertex 
+      v0=new KVertex(-1,-1,0,4),
+      v1=new KVertex(0,0,0,2);
     GBubble rootbubble=new GBubble(
       rg,
       rootbubblemodel,

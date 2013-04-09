@@ -4,10 +4,10 @@ import java.awt.geom.Path2D;
 import java.io.Serializable;
 import java.util.List;
 
-import org.fleen.core.kGeom.DVectorRDPath;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
-import org.fleen.core.kGeom.KGeom;
+import org.fleen.core.gKis.KVectorRDPath;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
+import org.fleen.core.gKis.KGeom;
 
 public class GPJigBubbleDef implements Serializable{
 
@@ -41,7 +41,7 @@ public class GPJigBubbleDef implements Serializable{
    * ################################
    */
 
-  public DVertex 
+  public KVertex 
     v0=null,
     v1=null;
   
@@ -57,7 +57,7 @@ public class GPJigBubbleDef implements Serializable{
     }else{
       return v1.toString();}}
   
-  public void touchVertex(DVertex v){
+  public void touchVertex(KVertex v){
     if(v0!=null&&v0.equals(v)){
       v0=null;
       return;}
@@ -136,8 +136,8 @@ public class GPJigBubbleDef implements Serializable{
     //
     imagepath=null;
     try{
-      DVertexPath p0=bubblemodel.getVertexPath();
-      DVectorRDPath p1=p0.getVectorPath();
+      KVertexPath p0=bubblemodel.getVertexPath();
+      KVectorRDPath p1=p0.getVectorPath();
       if(twist==KGeom.TWIST_NEGATIVE)
         p1.reverseDeltas();
       p0=p1.getVertexPath(v0,v1);

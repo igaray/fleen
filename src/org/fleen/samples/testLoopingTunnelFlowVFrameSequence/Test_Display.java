@@ -12,7 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.fleen.core.dGeom.DGeom;
+import org.fleen.core.g2D.G2D;
 import org.fleen.grammarEditor.GE;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.LoopingTunnelFlowVFrameSequence;
 import org.fleen.samples.loopingTunnelFlowVFrameSequence.VFrame;
@@ -39,7 +39,7 @@ public class Test_Display{
       h0=((double)h)/2.0,
       d=Math.sqrt(w0*w0+h0*h0);;
     double scale=d/seq.outerradius;
-    double rotateincrement=(2.0*DGeom.PI)/((double)seq.framecount);
+    double rotateincrement=(2.0*G2D.PI)/((double)seq.framecount);
     //get an iterator, iterate and render, repeat forever
     Iterator<VFrame> frameiterator;
     VFrame frame;

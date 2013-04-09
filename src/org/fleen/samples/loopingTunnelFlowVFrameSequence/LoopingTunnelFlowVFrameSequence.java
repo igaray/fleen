@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.fleen.core.grammar.GBubble;
+import org.fleen.core.pGrammatic.GBubble;
 
 /*
  * It's a sequence of VFrames giving us a smooth zoom through a LoopingTunnelFlowVFrameBlock.

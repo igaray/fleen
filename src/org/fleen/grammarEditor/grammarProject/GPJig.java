@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fleen.core.grammar.Grammar;
-import org.fleen.core.grammar.Jig;
-import org.fleen.core.grammar.JigBubbleDef;
-import org.fleen.core.kGeom.DVectorRDPath;
-import org.fleen.core.kGeom.DVertex;
-import org.fleen.core.kGeom.DVertexPath;
+import org.fleen.core.gKis.KVectorRDPath;
+import org.fleen.core.gKis.KVertex;
+import org.fleen.core.gKis.KVertexPath;
+import org.fleen.core.pGrammatic.Grammar;
+import org.fleen.core.pGrammatic.Jig;
+import org.fleen.core.pGrammatic.JigBubbleDef;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.overview.OverviewGridElement;
 import org.fleen.grammarEditor.overview.OverviewGridJigImage;
@@ -147,11 +147,11 @@ public class GPJig implements Serializable,OverviewGridElement{
    * ################################
    */
   
-  static final DVertex JEC_VIEWCENTER_DEFAULT=new DVertex(0,0,0,0);
+  static final KVertex JEC_VIEWCENTER_DEFAULT=new KVertex(0,0,0,0);
   static final int JEC_VIEWZOOM_DEFAULT=0;
   //we center on a v12
   //panning moves center to next v12 to the up down,left,right
-  public DVertex jecviewcenter=JEC_VIEWCENTER_DEFAULT;
+  public KVertex jecviewcenter=JEC_VIEWCENTER_DEFAULT;
   //zoom - halves scale, zoom + doubles it
   public int jecviewzoom=JEC_VIEWZOOM_DEFAULT;
   
@@ -161,14 +161,14 @@ public class GPJig implements Serializable,OverviewGridElement{
    * ################################
    */
   
-  private static final DVertex ORIGIN=new DVertex(0,0,0,0);
+  private static final KVertex ORIGIN=new KVertex(0,0,0,0);
   
   /*
    * get the vector path from the bubblemodel
    * get a scaled standard-format vertexpath from it
    */
-  public DVertexPath getBubbleModelVertexPathForJigEditor(){
-    DVectorRDPath vectorpath=GE.grammarproject.focusbubblemodel.getVertexPath().getVectorPath();
+  public KVertexPath getBubbleModelVertexPathForJigEditor(){
+    KVectorRDPath vectorpath=GE.grammarproject.focusbubblemodel.getVertexPath().getVectorPath();
     return vectorpath.getVertexPath(ORIGIN,0,griddensity);}
   
   /*

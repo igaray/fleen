@@ -1,6 +1,6 @@
 package org.fleen.grammarEditor.bubbleModelEditor;
 
-import org.fleen.core.kGeom.DVectorRDPath;
+import org.fleen.core.gKis.KVectorRDPath;
 import org.fleen.grammarEditor.GE;
 import org.fleen.grammarEditor.util.C_UIRefresh_Abstract;
 
@@ -20,7 +20,7 @@ public class C_BubbleModelEditorRefreshDetails extends C_UIRefresh_Abstract{
   
   private static void setVectorDetails(){
     if(GE.grammarproject.focusbubblemodel.locked){
-      DVectorRDPath p=GE.grammarproject.focusbubblemodel.getVertexPath().getVectorPath();
+      KVectorRDPath p=GE.grammarproject.focusbubblemodel.getVertexPath().getVectorPath();
       GE.bubblemodeleditor.txtVectors.setText("VECTORS : "+p.toString());}}
 
 }
